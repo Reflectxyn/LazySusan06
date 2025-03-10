@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "658292802853",
+    "firebase_url": "https://lazysusan-ad87c-default-rtdb.firebaseio.com",
+    "project_id": "lazysusan-ad87c",
+    "storage_bucket": "lazysusan-ad87c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:658292802853:android:c924810de98856ada006cc",
+        "android_client_info": {
+          "package_name": "com.example.lazy_susan"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAC31XUNlNnUCiCdJWJuHGjJdfpy9k6EcU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

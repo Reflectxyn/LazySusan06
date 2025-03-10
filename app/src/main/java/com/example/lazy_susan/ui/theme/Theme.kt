@@ -1,5 +1,6 @@
 package com.example.lazy_susan.ui.theme
 
+import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -11,19 +12,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = HoneyMustardYellow,
-    secondary = PicnicRed,
-    tertiaryContainer = MediumGray,
-    secondaryContainer = LightGray,
-    primaryContainer = DarkGray
+    primary = Purple80,
+    secondary = PurpleGrey80,
+    tertiary = Pink80
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = HoneyMustardYellow,
-    secondary = PicnicRed,
-    tertiaryContainer = MediumGray,
-    secondaryContainer = LightGray,
-    primaryContainer = DarkGray
+    primary = Purple40,
+    secondary = PurpleGrey40,
+    tertiary = Pink40
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
