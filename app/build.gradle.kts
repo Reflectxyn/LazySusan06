@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     // Add the Google services Gradle plugin
     id("com.google.gms.google-services")
+    id("com.google.relay") version "0.3.12"
 }
 
 android {
@@ -60,8 +61,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // Import the Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:33.10.0"))
+    implementation(platform(libs.firebase.bom))
     //user authentication
-    implementation("com.google.firebase:firebase-auth")
+    implementation(libs.firebase.auth)
 
 }
