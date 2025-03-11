@@ -1,6 +1,10 @@
 package com.example.lazy_susan
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -11,7 +15,10 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -27,19 +34,19 @@ enum class AppScreen(@StringRes val title: Int) {
 @Composable
 fun LazySusanAppBar(
     modifier: Modifier = Modifier,
-    currentScreen: AppScreen,
-    canNavigateBack: Boolean,
-    navigateUp: () -> Unit = {}
+    currentScreen: AppScreen
 ) {
     CenterAlignedTopAppBar(
         title = {
             Text(
                 text = stringResource(currentScreen.title),
-                style = MaterialTheme.typography.headlineLarge
+                style = MaterialTheme.typography.headlineLarge,
+                modifier = Modifier.padding(top = 44.dp)
             ) },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = HoneyMustardYellow
-        )
+        ),
+        modifier = Modifier.height(100.dp)
     )
 }
 
@@ -54,11 +61,19 @@ fun LazySusanApp(
 
     Scaffold(
         topBar = {
-            LazySusanAppBar(
-                currentScreen = currentScreen,
-                canNavigateBack = navController.previousBackStackEntry != null,
-                navigateUp = { navController.navigateUp() }
-            )
+            Column {
+                LazySusanAppBar(
+                    currentScreen = currentScreen
+                )
+                Canvas(modifier = Modifier.fillMaxWidth()) {
+                    drawLine(
+                        color = Color.Black,
+                        start = Offset(x = 0f, y = 0f),
+                        end = Offset(x = size.width, y = 0f),
+                        strokeWidth = 10f
+                    )
+                }
+            }
         }
     ) { innerPadding ->
 

@@ -98,6 +98,7 @@ int dimen notification_small_icon_size_as_large 0x7f030014
 int dimen notification_subtext_size 0x7f030015
 int dimen notification_top_pad 0x7f030016
 int dimen notification_top_pad_large_text 0x7f030017
+int drawable background 0x7f04002e
 int drawable common_full_open_on_phone 0x7f040001
 int drawable common_google_signin_btn_icon_dark 0x7f040002
 int drawable common_google_signin_btn_icon_dark_focused 0x7f040003
@@ -143,6 +144,8 @@ int drawable notification_template_icon_bg 0x7f04002a
 int drawable notification_template_icon_low_bg 0x7f04002b
 int drawable notification_tile_bg 0x7f04002c
 int drawable notify_panel_notification_icon_bg 0x7f04002d
+int drawable wheel_base 0x7f04002f
+int drawable wheel_center 0x7f040030
 int id accessibility_action_clickable_span 0x7f050000
 int id accessibility_custom_action_0 0x7f050001
 int id accessibility_custom_action_1 0x7f050002
@@ -268,6 +271,7 @@ int string android_credentials_TYPE_PASSWORD_CREDENTIAL 0x7f0a0000
 int string androidx_credentials_TYPE_PUBLIC_KEY_CREDENTIAL 0x7f0a0001
 int string androidx_startup 0x7f0a0002
 int string app_name 0x7f0a0003
+int string base_desc 0x7f0a0077
 int string call_notification_answer_action 0x7f0a0005
 int string call_notification_answer_video_action 0x7f0a0006
 int string call_notification_decline_action 0x7f0a0007
@@ -382,6 +386,7 @@ int string tab 0x7f0a0073
 int string template_percent 0x7f0a0074
 int string tooltip_description 0x7f0a0075
 int string tooltip_label 0x7f0a0076
+int string wheel_prompt 0x7f0a0078
 int style DialogWindowTheme 0x7f0b0000
 int style EdgeToEdgeFloatingDialogTheme 0x7f0b0001
 int style EdgeToEdgeFloatingDialogWindowTheme 0x7f0b0002
