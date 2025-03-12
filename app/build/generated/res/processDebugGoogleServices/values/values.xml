@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="firebase_database_url" translatable="false">https://lazysusan-ad87c-default-rtdb.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">658292802853</string>
+    <string name="google_api_key" translatable="false">AIzaSyAC31XUNlNnUCiCdJWJuHGjJdfpy9k6EcU</string>
+    <string name="google_app_id" translatable="false">1:658292802853:android:c924810de98856ada006cc</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAC31XUNlNnUCiCdJWJuHGjJdfpy9k6EcU</string>
+    <string name="google_storage_bucket" translatable="false">lazysusan-ad87c.firebasestorage.app</string>
+    <string name="project_id" translatable="false">lazysusan-ad87c</string>
+</resources>
