@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">Lazy Susan</string>
+    <string name="map_page">Map</string>
+    <string name="filters_page">Filters</string>
+    <string name="featured_page">Featured</string>
+    <string name="history_page">History</string>
+    <string name="accounts_page">Accounts</string>
+    <string name="presets_page">Presets</string>
     <string name="base_desc">Wheel Base</string>
     <string name="wheel_prompt">Spin</string>
 </resources>
