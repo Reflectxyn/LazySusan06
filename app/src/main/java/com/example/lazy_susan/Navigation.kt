@@ -9,8 +9,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.BottomNavigation
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.BottomNavigationItem
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Icon
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -53,7 +56,7 @@ val topLevelRoutes = listOf(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LazySusanAppBar(modifier: Modifier = Modifier, currentScreen: AppScreen) {
+fun LazySusanAppBar(currentScreen: AppScreen) {
     CenterAlignedTopAppBar(
         title = {
             Text(
@@ -71,7 +74,7 @@ fun LazySusanAppBar(modifier: Modifier = Modifier, currentScreen: AppScreen) {
 @Composable
 fun LazySusanNavBar(navController: NavHostController, navBackStackEntry: NavBackStackEntry) {
     BottomNavigation(backgroundColor = Color.White) {
-        val currentDestination = navBackStackEntry?.destination
+        val currentDestination = navBackStackEntry.destination
         topLevelRoutes.forEach { topLevelRoute ->
             BottomNavigationItem(
                 icon = { Icon(painter = painterResource(topLevelRoute.icon), contentDescription = topLevelRoute.route, tint = Color.Black, modifier = Modifier.size(69.dp)) },
