@@ -78,7 +78,7 @@ fun LazySusanNavBar(navController: NavHostController, navBackStackEntry: NavBack
         topLevelRoutes.forEach { topLevelRoute ->
             BottomNavigationItem(
                 icon = { Icon(painter = painterResource(topLevelRoute.icon), contentDescription = topLevelRoute.route, tint = Color.Black, modifier = Modifier.size(69.dp)) },
-                selected = currentDestination?.hierarchy?.any { it.hasRoute(topLevelRoute.route::class) } == true,
+                selected = currentDestination.hierarchy.any { it.hasRoute(topLevelRoute.route::class) } == true,
                 onClick = {
                     navController.navigate(topLevelRoute.route) {
                         popUpTo(navController.graph.findStartDestination().id) {
