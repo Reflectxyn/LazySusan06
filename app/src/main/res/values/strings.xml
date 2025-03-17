@@ -8,4 +8,8 @@
     <string name="presets_page">Presets</string>
     <string name="base_desc">Wheel Base</string>
     <string name="wheel_prompt">Spin</string>
+
+    <string name="restaurant_name_default">Restaurant Name</string>
+    <string name="address">Address</string>
+    <string name="hours">Hours</string>
 </resources>

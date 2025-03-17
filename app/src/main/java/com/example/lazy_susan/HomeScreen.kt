@@ -59,6 +59,8 @@ fun HomeScreen() {
                 Wheel()
             }
             Spacer(modifier = Modifier.height(48.dp))
+
+            // Modify this to receive list from the other one before
             Button(
                 onClick = {
                     result.value = list.random()

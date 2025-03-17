@@ -69,4 +69,19 @@ dependencies {
     //user authentication
     implementation(libs.firebase.auth)
 
+    implementation("androidx.appcompat:appcompat:1.4.0")
+    // Networking (OkHttp + Retrofit)
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0") // For JSON parsing
+
+    // JSON Parsing (Gson)
+    implementation("com.google.code.gson:gson:2.8.9")
+
+    // Jetpack Compose for Lists (LazyColumn)
+    implementation("androidx.compose.foundation:foundation:1.5.0")
+
+    // RecyclerView (if not using Compose)
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
+
 }
