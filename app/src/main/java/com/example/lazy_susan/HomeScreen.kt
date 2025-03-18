@@ -63,6 +63,29 @@ fun HomeScreen() {
             // Modify this to receive list from the other one before
             Button(
                 onClick = {
+                    // Change this to the user's location later,
+                    // Only checks when opened, like the map
+                    val address = "4551 Linden Ave, Long Beach, CA"
+
+                    ApiHelper.getCoordinates(address) { lat, lng ->
+                        // Once coordinates are fetched, call to get nearby restaurants
+                        ApiHelper.getNearbyRestaurants(lat, lng) { restaurants ->
+                            // Run UI-related code on the main thread
+                            runOnUiThread {
+                                if(restaurants.isNotEmpty()){
+                                    val randomRestaurant = restaurants.random()
+
+                                    selectedRestaurantTextView.text = "Restaurant: ${randomRestaurant.name}" +
+                                            "\nAddress: ${randomRestaurant.address}" +
+                                            "\nPhone Number: ${randomRestaurant.phoneNumber}" +
+                                            "\nHours: ${randomRestaurant.hours}"
+                                } else {
+                                    selectedRestaurantTextView.text = "No restaurants found nearby."
+                                }
+                            }
+                        }
+                    }
+
                     result.value = list.random()
                     showResult.value = true
                 },
