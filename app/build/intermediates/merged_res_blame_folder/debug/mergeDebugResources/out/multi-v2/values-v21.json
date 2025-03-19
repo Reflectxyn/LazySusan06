@@ -1,29 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.lazy_susan.app-mergeDebugResources-60:/values-v21/values-v21.xml",
+            "outputFile": "com.example.lazy_susan.app-mergeDebugResources-62:/values-v21/values-v21.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\phung\\.gradle\\caches\\8.11.1\\transforms\\a0abbfb801835e46d8037b5277d68988\\transformed\\core-1.15.0\\res\\values-v21\\values-v21.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,13",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,173,237,304,368,484,610,736,864,1036",
-                        "endLines": "2,3,4,5,6,7,8,9,12,17",
-                        "endColumns": "117,63,66,63,115,125,125,127,12,12",
-                        "endOffsets": "168,232,299,363,479,605,731,859,1031,1383"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8,9,18,21",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,173,237,304,368,484,610,736,1357,1529",
-                        "endLines": "2,3,4,5,6,7,8,9,20,25",
-                        "endColumns": "117,63,66,63,115,125,125,127,12,12",
-                        "endOffsets": "168,232,299,363,479,605,731,859,1524,1876"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\phung\\.gradle\\caches\\8.11.1\\transforms\\a9307b57f6722d0c954a50059ab9bda6\\transformed\\credentials-play-services-auth-1.2.0-rc01\\res\\values-v21\\values-v21.xml",
+                    "source": "C:\\Users\\brand\\.gradle\\caches\\8.11.1\\transforms\\a6ffae52885a63895089eaf0b41d5ae0\\transformed\\credentials-play-services-auth-1.2.0-rc01\\res\\values-v21\\values-v21.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -39,6 +20,25 @@
                         "endLines": "17",
                         "endColumns": "12",
                         "endOffsets": "1352"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\brand\\.gradle\\caches\\8.11.1\\transforms\\eac5e0629e0746f2f278ad4fbb9039eb\\transformed\\core-1.15.0\\res\\values-v21\\values-v21.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,13",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,173,237,304,368,484,610,736,864,1036",
+                        "endLines": "2,3,4,5,6,7,8,9,12,17",
+                        "endColumns": "117,63,66,63,115,125,125,127,12,12",
+                        "endOffsets": "168,232,299,363,479,605,731,859,1031,1383"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,18,21",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,173,237,304,368,484,610,736,1357,1529",
+                        "endLines": "2,3,4,5,6,7,8,9,20,25",
+                        "endColumns": "117,63,66,63,115,125,125,127,12,12",
+                        "endOffsets": "168,232,299,363,479,605,731,859,1524,1876"
                     }
                 }
             ]

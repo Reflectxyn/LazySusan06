@@ -1,102 +1,98 @@
 [
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\mipmap-xxxhdpi\\ic_launcher.webp"
+        "merged": "com.example.lazy_susan.app-debug-64:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.lazy_susan.app-main-66:/mipmap-xxxhdpi/ic_launcher.webp"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\xml_backup_rules.xml.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\xml\\backup_rules.xml"
+        "merged": "com.example.lazy_susan.app-debug-64:/xml_backup_rules.xml.flat",
+        "source": "com.example.lazy_susan.app-main-66:/xml/backup_rules.xml"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\mipmap-mdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\mipmap-mdpi\\ic_launcher.webp"
+        "merged": "com.example.lazy_susan.app-debug-64:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.lazy_susan.app-main-66:/mipmap-xxxhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+        "merged": "com.example.lazy_susan.app-debug-64:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "com.example.lazy_susan.app-main-66:/mipmap-xhdpi/ic_launcher.webp"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\drawable_history.xml.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\drawable\\history.xml"
+        "merged": "com.example.lazy_susan.app-debug-64:/drawable_history.xml.flat",
+        "source": "com.example.lazy_susan.app-main-66:/drawable/history.xml"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\drawable_fire.png.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\drawable\\fire.png"
+        "merged": "com.example.lazy_susan.app-debug-64:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "com.example.lazy_susan.app-main-66:/mipmap-hdpi/ic_launcher.webp"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\drawable_filter.xml.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\drawable\\filter.xml"
+        "merged": "com.example.lazy_susan.app-debug-64:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.lazy_susan.app-main-66:/mipmap-xxhdpi/ic_launcher.webp"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\drawable_background.jpg.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\drawable\\background.jpg"
+        "merged": "com.example.lazy_susan.app-debug-64:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.example.lazy_susan.app-main-66:/drawable/ic_launcher_background.xml"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\drawable_wheel_center.xml.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\drawable\\wheel_center.xml"
+        "merged": "com.example.lazy_susan.app-debug-64:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.example.lazy_susan.app-main-66:/drawable/ic_launcher_foreground.xml"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\xml_data_extraction_rules.xml.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\xml\\data_extraction_rules.xml"
+        "merged": "com.example.lazy_susan.app-debug-64:/drawable_wheel_base.xml.flat",
+        "source": "com.example.lazy_susan.app-main-66:/drawable/wheel_base.xml"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\drawable_person.xml.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\drawable\\person.xml"
+        "merged": "com.example.lazy_susan.app-debug-64:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.lazy_susan.app-main-66:/mipmap-xhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\mipmap-xhdpi\\ic_launcher_round.webp"
+        "merged": "com.example.lazy_susan.app-debug-64:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.example.lazy_susan.app-main-66:/mipmap-anydpi-v26/ic_launcher.xml"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\drawable_star.xml.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\drawable\\star.xml"
+        "merged": "com.example.lazy_susan.app-debug-64:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "com.example.lazy_susan.app-main-66:/mipmap-mdpi/ic_launcher.webp"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\drawable_ic_launcher_background.xml.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\drawable\\ic_launcher_background.xml"
+        "merged": "com.example.lazy_susan.app-debug-64:/drawable_person.xml.flat",
+        "source": "com.example.lazy_susan.app-main-66:/drawable/person.xml"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
+        "merged": "com.example.lazy_susan.app-debug-64:/drawable_filter.xml.flat",
+        "source": "com.example.lazy_susan.app-main-66:/drawable/filter.xml"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\drawable_wheel_base.xml.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\drawable\\wheel_base.xml"
+        "merged": "com.example.lazy_susan.app-debug-64:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.lazy_susan.app-main-66:/mipmap-hdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\mipmap-xhdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\mipmap-xhdpi\\ic_launcher.webp"
+        "merged": "com.example.lazy_susan.app-debug-64:/drawable_star.xml.flat",
+        "source": "com.example.lazy_susan.app-main-66:/drawable/star.xml"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\mipmap-mdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\mipmap-mdpi\\ic_launcher_round.webp"
+        "merged": "com.example.lazy_susan.app-debug-64:/drawable_wheel_center.xml.flat",
+        "source": "com.example.lazy_susan.app-main-66:/drawable/wheel_center.xml"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\mipmap-anydpi-v26\\ic_launcher.xml"
+        "merged": "com.example.lazy_susan.app-debug-64:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.example.lazy_susan.app-main-66:/mipmap-anydpi-v26/ic_launcher_round.xml"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\mipmap-xxhdpi\\ic_launcher_round.webp"
+        "merged": "com.example.lazy_susan.app-debug-64:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.lazy_susan.app-main-66:/mipmap-mdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\drawable_ic_launcher_foreground.xml.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\drawable\\ic_launcher_foreground.xml"
+        "merged": "com.example.lazy_susan.app-debug-64:/xml_data_extraction_rules.xml.flat",
+        "source": "com.example.lazy_susan.app-main-66:/xml/data_extraction_rules.xml"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\mipmap-xxhdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\mipmap-xxhdpi\\ic_launcher.webp"
+        "merged": "com.example.lazy_susan.app-debug-64:/drawable_background.jpg.flat",
+        "source": "com.example.lazy_susan.app-main-66:/drawable/background.jpg"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\mipmap-hdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\mipmap-hdpi\\ic_launcher.webp"
+        "merged": "com.example.lazy_susan.app-debug-64:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.lazy_susan.app-main-66:/mipmap-xxhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\drawable_home.xml.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\drawable\\home.xml"
-    },
-    {
-        "merged": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-debug-62:\\mipmap-hdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\phung\\.gradle\\daemon\\8.11.1\\com.example.lazy_susan.app-main-64:\\mipmap-hdpi\\ic_launcher_round.webp"
+        "merged": "com.example.lazy_susan.app-debug-64:/drawable_home.xml.flat",
+        "source": "com.example.lazy_susan.app-main-66:/drawable/home.xml"
     }
 ]
