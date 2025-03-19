@@ -24,7 +24,7 @@ fun ProfilePage(modifier: Modifier, navController: NavController, authViewModel:
 
     LaunchedEffect(authState.value) {
         when(authState.value){
-            is AuthState.Unauthenticated -> navController.navigate("login")
+            is AuthState.Unauthenticated -> navController.navigate(route = AppScreen.Profile.name)
             else -> Unit
         }
     }

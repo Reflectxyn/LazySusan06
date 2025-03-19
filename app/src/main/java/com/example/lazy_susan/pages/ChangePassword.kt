@@ -56,7 +56,7 @@ fun ChangePassword(modifier: Modifier, navController: NavController, authViewMod
             }
             Button(onClick = {
                 authViewModel.changePassword(email)
-                navController.navigate("Profile")
+                navController.navigate(route = AppScreen.ProfileHome.name)
             })
             {
                 Text(text = "Send")

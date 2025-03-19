@@ -50,7 +50,7 @@ fun LoginPage(modifier: Modifier, navController: NavController, authViewModel: A
 
     LaunchedEffect(authState.value) {
         when(authState.value){
-            is AuthState.Authenticated -> navController.navigate("Profile")
+            is AuthState.Authenticated -> navController.navigate(route = AppScreen.Profile.name)
             is AuthState.Error -> Toast.makeText(context,
                 (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT).show()
             else -> Unit
@@ -84,7 +84,7 @@ fun LoginPage(modifier: Modifier, navController: NavController, authViewModel: A
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        TextButton(onClick = { navController.navigate("Signup")}) {
+        TextButton(onClick = { navController.navigate(route = AppScreen.Signup.name)}) {
             Text(text = "Don't have an account? Signup")
         }
         TextButton(onClick = { navController.navigate("Change")}) {
