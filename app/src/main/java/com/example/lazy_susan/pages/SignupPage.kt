@@ -23,8 +23,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.lazy_susan.AuthViewModel
-import com.example.lazy_susan.AuthState
 
 @Composable
 fun SignupPage(modifier: Modifier, navController: NavController, authViewModel: AuthViewModel) {

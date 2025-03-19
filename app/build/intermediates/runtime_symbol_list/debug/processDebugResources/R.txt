@@ -119,10 +119,7 @@ int drawable common_google_signin_btn_text_light_focused 0x7f040012
 int drawable common_google_signin_btn_text_light_normal 0x7f040013
 int drawable common_google_signin_btn_text_light_normal_background 0x7f040014
 int drawable filter 0x7f040015
-int drawable fire 0x7f040016
-int drawable fire_300 0x7f040039
-int drawable fire_bigger 0x7f040038
-int drawable fire_new 0x7f040037
+int drawable fire_300 0x7f040016
 int drawable googleg_disabled_color_18 0x7f040017
 int drawable googleg_standard_color_18 0x7f040018
 int drawable history 0x7f040019
