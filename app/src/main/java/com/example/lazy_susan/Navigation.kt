@@ -1,5 +1,6 @@
 package com.example.lazy_susan
 
+import androidx.activity.viewModels
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Canvas
@@ -44,14 +45,18 @@ enum class AppScreen(@StringRes val title: Int, @DrawableRes val icon: Int) {
     Featured(title = R.string.featured_page, icon = R.drawable.star),
     Home(title = R.string.app_name, icon = R.drawable.home),
     History(title = R.string.history_page, icon = R.drawable.history),
-    Profile(title = R.string.accounts_page, icon = R.drawable.person)
+    Profile(title = R.string.accounts_page, icon = R.drawable.person),
+    Signup(title = R.string.accounts_page, icon = R.drawable.person),
+    ProfileHome(title = R.string.accounts_page, icon = R.drawable.person),
+    ChangePassword(title = R.string.accounts_page, icon = R.drawable.person)
+
 }
 
 val topLevelRoutes = listOf(
     TopLevelRoute(AppScreen.Featured.name, AppScreen.Featured.icon),
     TopLevelRoute(AppScreen.Home.name, AppScreen.Home.icon),
     TopLevelRoute(AppScreen.History.name, AppScreen.History.icon),
-    TopLevelRoute(AppScreen.Profile.name, AppScreen.Profile.icon)
+    TopLevelRoute(AppScreen.Profile.name, AppScreen.Profile.icon),
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -96,6 +101,7 @@ fun LazySusanNavBar(navController: NavHostController, navBackStackEntry: NavBack
 
 @Composable
 fun LazySusanApp(
+    modifier: Modifier = Modifier, authViewModel: AuthViewModel,
     navController: NavHostController = rememberNavController()
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
@@ -144,6 +150,16 @@ fun LazySusanApp(
 
             }
             composable(route = AppScreen.Profile.name) {
+                LoginPage(modifier, navController, authViewModel)
+            }
+            composable(route = AppScreen.Signup.name){
+                SignupPage(modifier, navController, authViewModel)
+            }
+            composable(route = AppScreen.ChangePassword.name){
+                ChangePassword(modifier, navController, authViewModel)
+            }
+            composable(route = AppScreen.ProfileHome.name){
+                ProfilePage(modifier, navController, authViewModel)
 
             }
         }
