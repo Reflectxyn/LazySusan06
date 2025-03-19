@@ -8,6 +8,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="white">#FFFFFFFF</color>
     <string name="accounts_page">Accounts</string>
+    <string name="address">Address</string>
     <string name="app_name">Lazy Susan</string>
     <string name="base_desc">Wheel Base</string>
     <string name="featured_page">Featured</string>
@@ -19,9 +20,11 @@
     <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAC31XUNlNnUCiCdJWJuHGjJdfpy9k6EcU</string>
     <string name="google_storage_bucket" translatable="false">lazysusan-ad87c.firebasestorage.app</string>
     <string name="history_page">History</string>
+    <string name="hours">Hours</string>
     <string name="map_page">Map</string>
     <string name="presets_page">Presets</string>
     <string name="project_id" translatable="false">lazysusan-ad87c</string>
+    <string name="restaurant_name_default">Restaurant Name</string>
     <string name="wheel_prompt">Spin</string>
     <style name="Theme.Lazy_Susan" parent="android:Theme.Material.Light.NoActionBar"/>
 </resources>

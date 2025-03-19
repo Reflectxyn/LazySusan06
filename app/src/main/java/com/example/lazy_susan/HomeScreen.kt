@@ -41,12 +41,24 @@ import androidx.compose.ui.window.Dialog
 import com.example.lazy_susan.ui.theme.HoneyMustardYellow
 import com.example.lazy_susan.ui.theme.PicnicTableRed
 import kotlin.math.sqrt
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import kotlinx.coroutines.launch
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 
 @Composable
 fun HomeScreen() {
-    val list = listOf("1", "2", "3", "4")
-    var result = remember { mutableStateOf("") }
+    val coroutineScope = rememberCoroutineScope()
+
+    // Mutable states for restaurants and selected restaurant
+    var restaurants by remember { mutableStateOf<List<Restaurant>>(emptyList()) }
+    var selectedRestaurant by remember { mutableStateOf<Restaurant?>(null) }
     val showResult = remember { mutableStateOf(false) }
+
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(R.drawable.background),
@@ -65,29 +77,23 @@ fun HomeScreen() {
                 onClick = {
                     // Change this to the user's location later,
                     // Only checks when opened, like the map
-                    val address = "4551 Linden Ave, Long Beach, CA"
+                    coroutineScope.launch {
+                        val address = "4551 Linden Ave, Long Beach, CA"
 
-                    ApiHelper.getCoordinates(address) { lat, lng ->
-                        // Once coordinates are fetched, call to get nearby restaurants
-                        ApiHelper.getNearbyRestaurants(lat, lng) { restaurants ->
-                            // Run UI-related code on the main thread
-                            runOnUiThread {
-                                if(restaurants.isNotEmpty()){
-                                    val randomRestaurant = restaurants.random()
-
-                                    selectedRestaurantTextView.text = "Restaurant: ${randomRestaurant.name}" +
-                                            "\nAddress: ${randomRestaurant.address}" +
-                                            "\nPhone Number: ${randomRestaurant.phoneNumber}" +
-                                            "\nHours: ${randomRestaurant.hours}"
+                        // Fetch restaurants only when button is clicked
+                        ApiHelper.getCoordinates(address) { lat, lng ->
+                            ApiHelper.getNearbyRestaurants(lat, lng) { fetchedRestaurants ->
+                                if (fetchedRestaurants.isNotEmpty()) {
+                                    restaurants = fetchedRestaurants
+                                    selectedRestaurant = restaurants.random()  // Pick random restaurant
+                                    showResult.value = true
                                 } else {
-                                    selectedRestaurantTextView.text = "No restaurants found nearby."
+                                    selectedRestaurant = null
+                                    showResult.value = false
                                 }
                             }
                         }
                     }
-
-                    result.value = list.random()
-                    showResult.value = true
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = HoneyMustardYellow),
@@ -105,7 +111,7 @@ fun HomeScreen() {
         }
     }
     if(showResult.value) {
-        Result(showResult, result)
+        Result(showResult, selectedRestaurant!!)
     }
 }
 
@@ -185,15 +191,24 @@ fun Wheel() {
 }
 
 @Composable
-fun Result(showResult: MutableState<Boolean>, result: MutableState<String>) {
-    Dialog(onDismissRequest = {showResult.value = false}) {
+fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant) {
+    Dialog(onDismissRequest = { showResult.value = false }) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(400.dp),
+                .height(400.dp)
+                .padding(16.dp),
             shape = RoundedCornerShape(16.dp)
         ) {
-            Text(text = result.value)
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(text = "Restaurant: ${restaurant.name}", style = MaterialTheme.typography.titleLarge)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = "Address: ${restaurant.address}", style = MaterialTheme.typography.bodyMedium)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = "Phone: ${restaurant.phoneNumber}", style = MaterialTheme.typography.bodyMedium)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = "Hours: ${restaurant.hours}", style = MaterialTheme.typography.bodyMedium)
+            }
         }
     }
 }
