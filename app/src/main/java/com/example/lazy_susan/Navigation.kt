@@ -1,6 +1,5 @@
 package com.example.lazy_susan
 
-import androidx.activity.viewModels
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Canvas
@@ -39,6 +38,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.lazy_susan.pages.HomeScreen
 import com.example.lazy_susan.ui.theme.HoneyMustardYellow
 
 enum class AppScreen(@StringRes val title: Int, @DrawableRes val icon: Int) {
