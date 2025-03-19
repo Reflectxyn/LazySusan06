@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.lazy_susan.app-mergeDebugResources-60:/values-km/values-km.xml",
+            "outputFile": "com.example.lazy_susan.app-mergeDebugResources-61:/values-km/values-km.xml",
             "map": [
                 {
                     "source": "C:\\Users\\phung\\.gradle\\caches\\8.11.1\\transforms\\d9143f4257e685d914e3271277ae56ff\\transformed\\play-services-basement-18.4.0\\res\\values-km\\values.xml",

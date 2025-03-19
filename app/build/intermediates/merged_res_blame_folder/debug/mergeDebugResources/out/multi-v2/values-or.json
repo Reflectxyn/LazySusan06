@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.lazy_susan.app-mergeDebugResources-60:/values-or/values-or.xml",
+            "outputFile": "com.example.lazy_susan.app-mergeDebugResources-61:/values-or/values-or.xml",
             "map": [
                 {
                     "source": "C:\\Users\\phung\\.gradle\\caches\\8.11.1\\transforms\\99222b3a60ad6030ea6aa3dd6c72af06\\transformed\\play-services-base-18.0.1\\res\\values-or\\values.xml",

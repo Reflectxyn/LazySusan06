@@ -28,11 +28,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -86,7 +88,7 @@ fun HomeScreen() {
 
 @Composable
 fun Wheel() {
-    val painterFire = rememberVectorPainter(ImageVector.vectorResource(R.drawable.star))
+    val painterFire = ImageBitmap.imageResource(R.drawable.fire_300)
     val painterFunnel = rememberVectorPainter(ImageVector.vectorResource(R.drawable.filter))
     Canvas(modifier = Modifier.size(360.dp)) {
         val offset = size.height * (2 - sqrt(2.0)) / 4
@@ -130,9 +132,7 @@ fun Wheel() {
                 color = Color.Black,
                 style = Stroke(width = 10f)
             )
-            with(painterFire) {
-                draw(size = Size(140.dp.toPx(), 140.dp.toPx()))
-            }
+            drawImage(painterFire, topLeft = Offset(x = 12.dp.toPx(), y = 12.dp.toPx()))
         }
     }
     Box(

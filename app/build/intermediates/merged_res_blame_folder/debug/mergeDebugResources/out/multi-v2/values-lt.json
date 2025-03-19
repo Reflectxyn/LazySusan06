@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.lazy_susan.app-mergeDebugResources-60:/values-lt/values-lt.xml",
+            "outputFile": "com.example.lazy_susan.app-mergeDebugResources-61:/values-lt/values-lt.xml",
             "map": [
                 {
                     "source": "C:\\Users\\phung\\.gradle\\caches\\8.11.1\\transforms\\a0abbfb801835e46d8037b5277d68988\\transformed\\core-1.15.0\\res\\values-lt\\values-lt.xml",
