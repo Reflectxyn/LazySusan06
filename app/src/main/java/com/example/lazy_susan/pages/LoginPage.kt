@@ -50,7 +50,7 @@ fun LoginPage(modifier: Modifier, navController: NavController, authViewModel: A
 
     LaunchedEffect(authState.value) {
         when(authState.value){
-            is AuthState.Authenticated -> navController.navigate(route = AppScreen.Profile.name)
+            is AuthState.Authenticated -> navController.navigate(route = AppScreen.ProfileHome.name)
             is AuthState.Error -> Toast.makeText(context,
                 (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT).show()
             else -> Unit
