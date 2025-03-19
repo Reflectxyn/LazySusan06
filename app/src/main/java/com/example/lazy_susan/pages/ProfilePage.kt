@@ -47,7 +47,7 @@ fun ProfilePage(modifier: Modifier, navController: NavController, authViewModel:
             Text(text = "Blocked Lists")
         }
         Button(onClick = {
-            navController.navigate("Change")
+            navController.navigate(route = AppScreen.ChangePassword.name)
 
         }) {
             Text(text = "Change Password")

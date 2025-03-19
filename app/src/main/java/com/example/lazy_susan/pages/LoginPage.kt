@@ -87,7 +87,7 @@ fun LoginPage(modifier: Modifier, navController: NavController, authViewModel: A
         TextButton(onClick = { navController.navigate(route = AppScreen.Signup.name)}) {
             Text(text = "Don't have an account? Signup")
         }
-        TextButton(onClick = { navController.navigate("Change")}) {
+        TextButton(onClick = { navController.navigate(route = AppScreen.ChangePassword.name)}) {
             Text(text = "Forgot Password")
         }
     }

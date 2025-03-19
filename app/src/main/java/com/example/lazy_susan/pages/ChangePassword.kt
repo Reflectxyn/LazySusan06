@@ -50,7 +50,7 @@ fun ChangePassword(modifier: Modifier, navController: NavController, authViewMod
             Spacer(modifier = Modifier.height(8.dp))
 
             Button(onClick = {
-                navController.navigate("login")
+                navController.navigate(route = AppScreen.ChangePassword.name)
             }){
                 Text(text ="Cancel")
             }
