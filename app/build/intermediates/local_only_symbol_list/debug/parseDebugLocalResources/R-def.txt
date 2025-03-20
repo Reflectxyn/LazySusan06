@@ -9,6 +9,7 @@ color teal_700
 color white
 drawable background
 drawable filter
+drawable fire_300
 drawable history
 drawable home
 drawable ic_launcher_background

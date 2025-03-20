@@ -1,106 +1,110 @@
 [
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "com.example.lazy_susan.app-main-70:/mipmap-anydpi-v26/ic_launcher_round.xml"
+        "merged": "com.example.lazy_susan.app-debug-69:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.lazy_susan.app-main-71:/mipmap-xxxhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/mipmap-xxxhdpi_ic_launcher.webp.flat",
-        "source": "com.example.lazy_susan.app-main-70:/mipmap-xxxhdpi/ic_launcher.webp"
+        "merged": "com.example.lazy_susan.app-debug-69:/drawable_wheel_base.xml.flat",
+        "source": "com.example.lazy_susan.app-main-71:/drawable/wheel_base.xml"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/drawable_history.xml.flat",
-        "source": "com.example.lazy_susan.app-main-70:/drawable/history.xml"
+        "merged": "com.example.lazy_susan.app-debug-69:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.lazy_susan.app-main-71:/mipmap-xxxhdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/xml_backup_rules.xml.flat",
-        "source": "com.example.lazy_susan.app-main-70:/xml/backup_rules.xml"
+        "merged": "com.example.lazy_susan.app-debug-69:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.example.lazy_susan.app-main-71:/mipmap-anydpi-v26/ic_launcher.xml"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/mipmap-mdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.lazy_susan.app-main-70:/mipmap-mdpi/ic_launcher_round.webp"
+        "merged": "com.example.lazy_susan.app-debug-69:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.lazy_susan.app-main-71:/mipmap-mdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/drawable_wheel_base.xml.flat",
-        "source": "com.example.lazy_susan.app-main-70:/drawable/wheel_base.xml"
+        "merged": "com.example.lazy_susan.app-debug-69:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.example.lazy_susan.app-main-71:/mipmap-anydpi-v26/ic_launcher_round.xml"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/drawable_ic_launcher_background.xml.flat",
-        "source": "com.example.lazy_susan.app-main-70:/drawable/ic_launcher_background.xml"
+        "merged": "com.example.lazy_susan.app-debug-69:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.lazy_susan.app-main-71:/mipmap-xxhdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/mipmap-xhdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.lazy_susan.app-main-70:/mipmap-xhdpi/ic_launcher_round.webp"
+        "merged": "com.example.lazy_susan.app-debug-69:/layout_item_restaurant.xml.flat",
+        "source": "com.example.lazy_susan.app-main-71:/layout/item_restaurant.xml"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/drawable_filter.xml.flat",
-        "source": "com.example.lazy_susan.app-main-70:/drawable/filter.xml"
+        "merged": "com.example.lazy_susan.app-debug-69:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "com.example.lazy_susan.app-main-71:/mipmap-xhdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/mipmap-mdpi_ic_launcher.webp.flat",
-        "source": "com.example.lazy_susan.app-main-70:/mipmap-mdpi/ic_launcher.webp"
+        "merged": "com.example.lazy_susan.app-debug-69:/drawable_star.xml.flat",
+        "source": "com.example.lazy_susan.app-main-71:/drawable/star.xml"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/mipmap-xxhdpi_ic_launcher.webp.flat",
-        "source": "com.example.lazy_susan.app-main-70:/mipmap-xxhdpi/ic_launcher.webp"
+        "merged": "com.example.lazy_susan.app-debug-69:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "com.example.lazy_susan.app-main-71:/mipmap-hdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/drawable_home.xml.flat",
-        "source": "com.example.lazy_susan.app-main-70:/drawable/home.xml"
+        "merged": "com.example.lazy_susan.app-debug-69:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.example.lazy_susan.app-main-71:/drawable/ic_launcher_background.xml"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/drawable_ic_launcher_foreground.xml.flat",
-        "source": "com.example.lazy_susan.app-main-70:/drawable/ic_launcher_foreground.xml"
+        "merged": "com.example.lazy_susan.app-debug-69:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.lazy_susan.app-main-71:/mipmap-xxhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/drawable_person.xml.flat",
-        "source": "com.example.lazy_susan.app-main-70:/drawable/person.xml"
+        "merged": "com.example.lazy_susan.app-debug-69:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.lazy_susan.app-main-71:/mipmap-xhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/mipmap-hdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.lazy_susan.app-main-70:/mipmap-hdpi/ic_launcher_round.webp"
+        "merged": "com.example.lazy_susan.app-debug-69:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.example.lazy_susan.app-main-71:/drawable/ic_launcher_foreground.xml"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.lazy_susan.app-main-70:/mipmap-xxxhdpi/ic_launcher_round.webp"
+        "merged": "com.example.lazy_susan.app-debug-69:/xml_backup_rules.xml.flat",
+        "source": "com.example.lazy_susan.app-main-71:/xml/backup_rules.xml"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/mipmap-xhdpi_ic_launcher.webp.flat",
-        "source": "com.example.lazy_susan.app-main-70:/mipmap-xhdpi/ic_launcher.webp"
+        "merged": "com.example.lazy_susan.app-debug-69:/drawable_home.xml.flat",
+        "source": "com.example.lazy_susan.app-main-71:/drawable/home.xml"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/layout_item_restaurant.xml.flat",
-        "source": "com.example.lazy_susan.app-main-70:/layout/item_restaurant.xml"
+        "merged": "com.example.lazy_susan.app-debug-69:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "com.example.lazy_susan.app-main-71:/mipmap-mdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/drawable_star.xml.flat",
-        "source": "com.example.lazy_susan.app-main-70:/drawable/star.xml"
+        "merged": "com.example.lazy_susan.app-debug-69:/layout_activity_main.xml.flat",
+        "source": "com.example.lazy_susan.app-main-71:/layout/activity_main.xml"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/drawable_background.jpg.flat",
-        "source": "com.example.lazy_susan.app-main-70:/drawable/background.jpg"
+        "merged": "com.example.lazy_susan.app-debug-69:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.lazy_susan.app-main-71:/mipmap-hdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/xml_data_extraction_rules.xml.flat",
-        "source": "com.example.lazy_susan.app-main-70:/xml/data_extraction_rules.xml"
+        "merged": "com.example.lazy_susan.app-debug-69:/drawable_background.jpg.flat",
+        "source": "com.example.lazy_susan.app-main-71:/drawable/background.jpg"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "com.example.lazy_susan.app-main-70:/mipmap-anydpi-v26/ic_launcher.xml"
+        "merged": "com.example.lazy_susan.app-debug-69:/drawable_filter.xml.flat",
+        "source": "com.example.lazy_susan.app-main-71:/drawable/filter.xml"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/mipmap-hdpi_ic_launcher.webp.flat",
-        "source": "com.example.lazy_susan.app-main-70:/mipmap-hdpi/ic_launcher.webp"
+        "merged": "com.example.lazy_susan.app-debug-69:/drawable_fire_300.png.flat",
+        "source": "com.example.lazy_susan.app-main-71:/drawable/fire_300.png"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.lazy_susan.app-main-70:/mipmap-xxhdpi/ic_launcher_round.webp"
+        "merged": "com.example.lazy_susan.app-debug-69:/drawable_person.xml.flat",
+        "source": "com.example.lazy_susan.app-main-71:/drawable/person.xml"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/layout_activity_main.xml.flat",
-        "source": "com.example.lazy_susan.app-main-70:/layout/activity_main.xml"
+        "merged": "com.example.lazy_susan.app-debug-69:/xml_data_extraction_rules.xml.flat",
+        "source": "com.example.lazy_susan.app-main-71:/xml/data_extraction_rules.xml"
     },
     {
-        "merged": "com.example.lazy_susan.app-debug-68:/drawable_wheel_center.xml.flat",
-        "source": "com.example.lazy_susan.app-main-70:/drawable/wheel_center.xml"
+        "merged": "com.example.lazy_susan.app-debug-69:/drawable_history.xml.flat",
+        "source": "com.example.lazy_susan.app-main-71:/drawable/history.xml"
+    },
+    {
+        "merged": "com.example.lazy_susan.app-debug-69:/drawable_wheel_center.xml.flat",
+        "source": "com.example.lazy_susan.app-main-71:/drawable/wheel_center.xml"
     }
 ]
