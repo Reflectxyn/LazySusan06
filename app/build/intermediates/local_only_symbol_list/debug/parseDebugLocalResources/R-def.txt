@@ -18,9 +18,17 @@ drawable person
 drawable star
 drawable wheel_base
 drawable wheel_center
+id restaurantAddress
+id restaurantHours
+id restaurantName
+id restaurantPhone
+id selectedRestaurant
+layout activity_main
+layout item_restaurant
 mipmap ic_launcher
 mipmap ic_launcher_round
 string accounts_page
+string address
 string app_name
 string awards
 string base_desc
@@ -39,6 +47,7 @@ string google_app_id
 string google_crash_reporting_api_key
 string google_storage_bucket
 string history_page
+string hours
 string login_prompt
 string login_question
 string logout
@@ -46,6 +55,7 @@ string map_page
 string password_prompt
 string presets_page
 string project_id
+string restaurant_name_default
 string restaurant_stats
 string send
 string signup_prompt

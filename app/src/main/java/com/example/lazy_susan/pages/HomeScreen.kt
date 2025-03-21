@@ -61,7 +61,8 @@ import com.example.lazy_susan.ApiHelper
 import com.example.lazy_susan.RestaurantAdapter
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(modifier: Modifier, navController: NavHostController) {
+    var displayState = remember { mutableStateOf("Wheel") }
     val coroutineScope = rememberCoroutineScope()
 
     // Mutable states for restaurants and selected restaurant
