@@ -1,5 +1,6 @@
 package com.example.lazy_susan.pages
 
+
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -52,6 +53,9 @@ import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import com.example.lazy_susan.Restaurant
+import com.example.lazy_susan.ApiHelper
+import com.example.lazy_susan.RestaurantAdapter
 
 @Composable
 fun HomeScreen() {
