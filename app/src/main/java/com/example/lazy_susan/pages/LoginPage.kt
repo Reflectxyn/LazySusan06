@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -33,7 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -87,16 +88,16 @@ fun LoginPage(modifier: Modifier, navController: NavController, authViewModel: A
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text(text = "Email") })
+                    label = { Text(text = stringResource(R.string.email_prompt)) })
 
                 Spacer(modifier = Modifier.height(8.dp))
 
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text(text = "Password") })
+                    label = { Text(text = stringResource(R.string.password_prompt)) })
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
                 Button(
                     onClick = { authViewModel.login(email, password) },
@@ -106,7 +107,7 @@ fun LoginPage(modifier: Modifier, navController: NavController, authViewModel: A
                         .width(280.dp)
                         .height(40.dp)
                 ) {
-                    Text(text = "Login")
+                    Text(text = stringResource(R.string.login_prompt))
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -115,14 +116,18 @@ fun LoginPage(modifier: Modifier, navController: NavController, authViewModel: A
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.height(36.dp)
                 ) {
-                    Text(text = "Don't have an account?", fontWeight = FontWeight.Bold)
+                    Text(
+                        text = stringResource(R.string.signup_question),
+                        style = MaterialTheme.typography.labelLarge
+                    )
                     TextButton(
                         onClick = { navController.navigate(route = AppScreen.Signup.name) }
                     ) {
                         Text(
-                            text = "Sign Up",
+                            text = stringResource(R.string.signup_prompt),
                             textDecoration = TextDecoration.Underline,
-                            color = Color.Black
+                            color = Color.Black,
+                            style = MaterialTheme.typography.labelLarge
                         )
                     }
                 }
@@ -131,7 +136,7 @@ fun LoginPage(modifier: Modifier, navController: NavController, authViewModel: A
                     modifier = Modifier.height(36.dp)
                 ) {
                     Text(
-                        text = "Forgot Password?",
+                        text = stringResource(R.string.forgot_password),
                         textDecoration = TextDecoration.Underline,
                         color = Color.Black
                     )

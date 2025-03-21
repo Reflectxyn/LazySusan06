@@ -10,10 +10,17 @@
     <string name="accounts_page">Accounts</string>
     <string name="address">Address</string>
     <string name="app_name">Lazy Susan</string>
+    <string name="awards">Awards</string>
     <string name="base_desc">Wheel Base</string>
+    <string name="blocked">Blocked</string>
+    <string name="cancel">Cancel</string>
+    <string name="change_password">Change Password</string>
+    <string name="distance_stats">Miles\ntraveled:\n%d</string>
+    <string name="email_prompt">Email</string>
     <string name="featured_page">Featured</string>
     <string name="filters_page">Filters</string>
     <string name="firebase_database_url" translatable="false">https://lazysusan-ad87c-default-rtdb.firebaseio.com</string>
+    <string name="forgot_password">Forgot Password?</string>
     <string name="gcm_defaultSenderId" translatable="false">658292802853</string>
     <string name="google_api_key" translatable="false">AIzaSyAC31XUNlNnUCiCdJWJuHGjJdfpy9k6EcU</string>
     <string name="google_app_id" translatable="false">1:658292802853:android:c924810de98856ada006cc</string>
@@ -21,10 +28,19 @@
     <string name="google_storage_bucket" translatable="false">lazysusan-ad87c.firebasestorage.app</string>
     <string name="history_page">History</string>
     <string name="hours">Hours</string>
+    <string name="login_prompt">Login</string>
+    <string name="login_question">Have an account?</string>
+    <string name="logout">Log Out</string>
     <string name="map_page">Map</string>
+    <string name="password_prompt">Password</string>
     <string name="presets_page">Presets</string>
     <string name="project_id" translatable="false">lazysusan-ad87c</string>
     <string name="restaurant_name_default">Restaurant Name</string>
+    <string name="restaurant_stats">You discovered:\n%d new\nrestaurants!</string>
+    <string name="send">Send</string>
+    <string name="signup_prompt">Sign Up</string>
+    <string name="signup_question">Don\'t have an account?</string>
+    <string name="streak_stats">Hot\nStreak:\n%d</string>
     <string name="wheel_prompt">Spin</string>
     <style name="Theme.Lazy_Susan" parent="android:Theme.Material.Light.NoActionBar"/>
 </resources>
