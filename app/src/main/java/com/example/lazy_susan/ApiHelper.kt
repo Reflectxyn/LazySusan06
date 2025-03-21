@@ -13,6 +13,9 @@ import org.json.JSONObject
 import android.util.Log
 import java.io.IOException
 
+// Operation 1: {User location} -> Get restaurants nearby that {User Location} including the address -> Restaurant location -> get cords from restaurant(restaurant location)
+// -> get distance from {User Cords} && {Restaurant Cords} -> display it
+
 object ApiHelper {
     private const val API_KEY = "AIzaSyDtrWstvsa-DLgoSRDuWbQDySxjOskpRpk"
 
@@ -125,7 +128,6 @@ object ApiHelper {
                                     }
                                 }.joinToString("\n") // Each formatted entry on a new line
                             } ?: "Hours not available"
-
 
                         Log.d("PARSED_DATA", "Name: $name, Address: $address, Phone Number: $phone, Hours: $hours") // Print extracted data to Logcat
                         restaurants.add(Restaurant(name, address, phone, hours))

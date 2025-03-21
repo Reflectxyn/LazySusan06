@@ -48,17 +48,14 @@ import com.example.lazy_susan.R
 import com.example.lazy_susan.ui.theme.HoneyMustardYellow
 import com.example.lazy_susan.ui.theme.PicnicTableRed
 import kotlin.math.sqrt
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import kotlinx.coroutines.launch
-
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import com.example.lazy_susan.Restaurant
 import com.example.lazy_susan.ApiHelper
-import com.example.lazy_susan.RestaurantAdapter
+import kotlin.math.*
+import android.util.Log
+
 
 @Composable
 fun HomeScreen(modifier: Modifier, navController: NavHostController) {
@@ -132,8 +129,24 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
                             ApiHelper.getNearbyRestaurants(lat, lng) { fetchedRestaurants ->
                                 if (fetchedRestaurants.isNotEmpty()) {
                                     restaurants = fetchedRestaurants
-                                    selectedRestaurant = restaurants.random()  // Pick random restaurant
-                                    showResult.value = true
+                                    selectedRestaurant = restaurants.random()  // Picks a random restaurant
+
+                                    val selectedAddress = selectedRestaurant?.address ?: "No address available"
+
+                                    //
+                                    ApiHelper.getCoordinates(selectedAddress){ lat2, lng2 ->
+                                        // Step 5: Calculate the distance between user and restaurant
+                                        val distance = calculateDistance(lat, lng, lat2, lng2)
+
+                                        selectedRestaurant?.distance = "%.2f mi away".format(distance)
+
+                                        // Log the results
+                                        Log.d("DISTANCE_RESULT", "Distance to ${selectedRestaurant?.name}: ${"%.2f".format(distance)} mi")
+
+                                        // Display the result
+                                        showResult.value = true
+
+                                    }
                                 } else {
                                     selectedRestaurant = null
                                     showResult.value = false
@@ -161,6 +174,28 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
         Result(showResult, selectedRestaurant!!)
     }
 }
+
+fun calculateDistance(
+    lat1: Double, lon1: Double,
+    lat2: Double, lon2: Double
+): Double {
+    val R = 6371.0  // Earth's radius in km
+
+    val dLat = Math.toRadians(lat2 - lat1)
+    val dLon = Math.toRadians(lon2 - lon1)
+
+    val a = sin(dLat / 2) * sin(dLat / 2) +
+            cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2)) *
+            sin(dLon / 2) * sin(dLon / 2)
+
+    val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+    val distanceKm = R * c  // Distance in km
+    val distanceMiles = distanceKm * 0.621371  // Convert km to miles
+
+    return distanceMiles
+}
+
 
 @Composable
 fun Wheel(navController: NavHostController, displayState: MutableState<String>) {
@@ -255,11 +290,14 @@ fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(text = "Restaurant: ${restaurant.name}", style = MaterialTheme.typography.titleLarge)
                 Spacer(modifier = Modifier.height(8.dp))
+                Text(text = "Distance: ${restaurant.distance}", style = MaterialTheme.typography.bodyMedium)
+                Spacer(modifier = Modifier.height(8.dp))
                 Text(text = "Address: ${restaurant.address}", style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = "Phone: ${restaurant.phoneNumber}", style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = "Hours: ${restaurant.hours}", style = MaterialTheme.typography.bodyMedium)
+
             }
         }
     }
