@@ -28,6 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
@@ -60,14 +61,14 @@ fun ChangePassword(modifier: Modifier, navController: NavController, authViewMod
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Change Password",
+                    text = stringResource(R.string.change_password),
                     style = MaterialTheme.typography.headlineLarge,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text(text = "Email") })
+                    label = { Text(text = stringResource(R.string.email_prompt)) })
                 Spacer(modifier = Modifier.height(24.dp))
                 Button(
                     onClick = { navController.navigate(route = AppScreen.ProfileHome.name) },
@@ -77,7 +78,7 @@ fun ChangePassword(modifier: Modifier, navController: NavController, authViewMod
                         .width(280.dp)
                         .height(40.dp)
                 ) {
-                    Text(text = "Cancel")
+                    Text(text = stringResource(R.string.cancel))
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
@@ -91,7 +92,7 @@ fun ChangePassword(modifier: Modifier, navController: NavController, authViewMod
                         .width(280.dp)
                         .height(40.dp)
                 ) {
-                    Text(text = "Send")
+                    Text(text = stringResource(R.string.send))
                 }
             }
         }

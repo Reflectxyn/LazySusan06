@@ -16,6 +16,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
@@ -42,7 +43,7 @@ fun ProfilePage(modifier: Modifier, navController: NavController, authViewModel:
                         .width(280.dp)
                         .height(40.dp)
                 ) {
-                    Text(text = "Presets")
+                    Text(text = stringResource(R.string.presets_page))
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
@@ -53,7 +54,7 @@ fun ProfilePage(modifier: Modifier, navController: NavController, authViewModel:
                         .width(280.dp)
                         .height(40.dp)
                 ) {
-                    Text(text = "Blocked")
+                    Text(text = stringResource(R.string.blocked))
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
@@ -64,7 +65,7 @@ fun ProfilePage(modifier: Modifier, navController: NavController, authViewModel:
                         .width(280.dp)
                         .height(40.dp)
                 ) {
-                    Text(text = "Change Password")
+                    Text(text = stringResource(R.string.change_password))
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
@@ -75,7 +76,7 @@ fun ProfilePage(modifier: Modifier, navController: NavController, authViewModel:
                         .width(280.dp)
                         .height(40.dp)
                 ) {
-                    Text(text = "Log Out")
+                    Text(text = stringResource(R.string.logout))
                 }
             }
         }

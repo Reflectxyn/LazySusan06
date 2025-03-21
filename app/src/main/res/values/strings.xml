@@ -8,4 +8,20 @@
     <string name="presets_page">Presets</string>
     <string name="base_desc">Wheel Base</string>
     <string name="wheel_prompt">Spin</string>
+    <string name="awards">Awards</string>
+    <string name="restaurant_stats">You discovered:\n%d new\nrestaurants!</string>
+    <string name="distance_stats">Miles\ntraveled:\n%d</string>
+    <string name="streak_stats">Hot\nStreak:\n%d</string>
+    <string name="signup_prompt">Sign Up</string>
+    <string name="login_prompt">Login</string>
+    <string name="email_prompt">Email</string>
+    <string name="password_prompt">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="signup_question">Don\'t have an account?</string>
+    <string name="login_question">Have an account?</string>
+    <string name="change_password">Change Password</string>
+    <string name="cancel">Cancel</string>
+    <string name="send">Send</string>
+    <string name="blocked">Blocked</string>
+    <string name="logout">Log Out</string>
 </resources>

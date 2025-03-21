@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -86,19 +87,19 @@ fun SignupPage(modifier: Modifier, navController: NavController, authViewModel: 
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Sign Up",
+                    text = stringResource(R.string.signup_prompt),
                     style = MaterialTheme.typography.headlineLarge,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text(text = "Email") })
+                    label = { Text(text = stringResource(R.string.email_prompt)) })
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text(text = "Password") })
+                    label = { Text(text = stringResource(R.string.password_prompt)) })
                 Spacer(modifier = Modifier.height(24.dp))
                 Button(
                     onClick = { authViewModel.signup(email, password) },
@@ -108,17 +109,17 @@ fun SignupPage(modifier: Modifier, navController: NavController, authViewModel: 
                         .width(280.dp)
                         .height(40.dp)
                 ) {
-                    Text(text = "Sign Up")
+                    Text(text = stringResource(R.string.signup_prompt))
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.height(36.dp)
                 ) {
-                    Text(text = "Have an account?")
+                    Text(text = stringResource(R.string.login_question))
                     TextButton(onClick = { navController.navigate(route = AppScreen.Profile.name) }) {
                         Text(
-                            text = "Login",
+                            text = stringResource(R.string.login_prompt),
                             textDecoration = TextDecoration.Underline,
                             color = Color.Black
                         )

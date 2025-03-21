@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,16 +39,20 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavHostController
+import com.example.lazy_susan.AppScreen
 import com.example.lazy_susan.R
 import com.example.lazy_susan.ui.theme.HoneyMustardYellow
 import com.example.lazy_susan.ui.theme.PicnicTableRed
 import kotlin.math.sqrt
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(modifier: Modifier, navController: NavHostController) {
     val list = listOf("1", "2", "3", "4")
+    var displayState = remember { mutableStateOf("Wheel") }
     var result = remember { mutableStateOf("") }
     val showResult = remember { mutableStateOf(false) }
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
@@ -59,7 +64,43 @@ fun HomeScreen() {
         )
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Box(contentAlignment = Alignment.Center) {
-                Wheel()
+                Wheel(navController, displayState)
+                if (displayState.value == "Stats") {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                        Text(
+                            text = stringResource(R.string.restaurant_stats, 10),
+                            style = MaterialTheme.typography.titleLarge,
+                            textAlign = TextAlign.Center
+                        )
+                        Spacer(modifier = Modifier.height(32.dp))
+                        Row {
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(text = stringResource(R.string.distance_stats, 4),
+                                style = MaterialTheme.typography.titleLarge,
+                                textAlign = TextAlign.Center)
+                            Spacer(modifier = Modifier.width(168.dp))
+                            Text(text = stringResource(R.string.streak_stats, 5),
+                                style = MaterialTheme.typography.titleLarge,
+                                textAlign = TextAlign.Center)
+                            Spacer(modifier = Modifier.width(12.dp))
+                        }
+                        Spacer(modifier = Modifier.height(48.dp))
+                        Button(
+                            onClick = {
+                                navController.navigate(AppScreen.Stats.name)
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = HoneyMustardYellow),
+                            modifier = Modifier
+                                .width(148.dp)
+                                .height(48.dp)
+                                .border(1.dp, Color.Black, CircleShape)
+                        ) {
+                            Text(text = "Awards", color = Color.Black, style = MaterialTheme.typography.titleLarge)
+                        }
+                        Spacer(modifier = Modifier.height(20.dp))
+                    }
+                }
             }
             Spacer(modifier = Modifier.height(48.dp))
             Button(
@@ -88,7 +129,7 @@ fun HomeScreen() {
 }
 
 @Composable
-fun Wheel() {
+fun Wheel(navController: NavHostController, displayState: MutableState<String>) {
     val painterFire = ImageBitmap.imageResource(R.drawable.fire_300)
     val painterFunnel = rememberVectorPainter(ImageVector.vectorResource(R.drawable.filter))
     Canvas(modifier = Modifier.size(360.dp)) {
@@ -98,18 +139,20 @@ fun Wheel() {
             color = Color.Black,
             style = Stroke(width = 10f)
         )
-        drawLine(
-            color = Color.Black,
-            start = Offset(x = size.width / 2, y = 0f),
-            end = Offset(x = size.width / 2, y = size.height),
-            strokeWidth = 10f
-        )
-        drawLine(
-            color = Color.Black,
-            start = Offset(x = 0f, y = size.height / 2),
-            end = Offset(x = size.width, y = size.height / 2),
-            strokeWidth = 10f
-        )
+        if (displayState.value == "Wheel") {
+            drawLine(
+                color = Color.Black,
+                start = Offset(x = size.width / 2, y = 0f),
+                end = Offset(x = size.width / 2, y = size.height),
+                strokeWidth = 10f
+            )
+            drawLine(
+                color = Color.Black,
+                start = Offset(x = 0f, y = size.height / 2),
+                end = Offset(x = size.width, y = size.height / 2),
+                strokeWidth = 10f
+            )
+        }
         drawLine(
             color = Color.Black,
             start = Offset(x = offset.toFloat(), y = offset.toFloat()),
@@ -127,7 +170,16 @@ fun Wheel() {
         )
     }
     Box {
-        Canvas(modifier = Modifier.size(140.dp)) {
+        Canvas(modifier = Modifier
+            .size(140.dp)
+            .clickable {
+                if (displayState.value == "Wheel") {
+                    displayState.value = "Stats"
+                } else if (displayState.value == "Stats") {
+                    displayState.value = "Wheel"
+                }
+            }
+        ) {
             drawCircle(color = HoneyMustardYellow)
             drawCircle(
                 color = Color.Black,
@@ -136,11 +188,7 @@ fun Wheel() {
             drawImage(painterFire, topLeft = Offset(x = 12.dp.toPx(), y = 12.dp.toPx()))
         }
     }
-    Box(
-        modifier = Modifier.clickable {
-
-        }
-    ) {
+    Box {
         Canvas(modifier = Modifier.size(64.dp)) {
             translate(left = 420f, top = -504f) {
                 drawCircle(color = HoneyMustardYellow)
