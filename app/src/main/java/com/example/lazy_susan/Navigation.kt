@@ -161,6 +161,7 @@ fun LazySusanApp(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(route = AppScreen.Featured.name) {
+                FeaturedScreen(userId = "99UfGbCweDT62RBhY4Vyuf4czYf2")
 
             }
             composable(route = AppScreen.Home.name) {
@@ -173,6 +174,7 @@ fun LazySusanApp(
 
             }
             composable(route = AppScreen.History.name) {
+                HistoryScreen(userId = "99UfGbCweDT62RBhY4Vyuf4czYf2")
 
             }
             composable(route = AppScreen.Profile.name) {
