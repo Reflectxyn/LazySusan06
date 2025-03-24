@@ -5,5 +5,7 @@ data class Restaurant(
     val address: String,
     val phoneNumber: String,
     val hours: String,
+    val id: String = "",
+    var isFavorited: Boolean = false,
     var distance: String = ""
 )
