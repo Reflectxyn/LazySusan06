@@ -20,6 +20,21 @@ class AuthViewModel : ViewModel() {
         checkAuthStatus()
     }
 
+    private fun mapFirebaseError(message: String?): String {
+        return when {
+            message?.contains("The supplied auth credential is incorrect") == true ->
+                "Invalid email or password. Please try again."
+
+            message?.contains("There is no user record") == true ->
+                "No account found with this email."
+
+            message?.contains("The email address is badly formatted") == true ->
+                "Please enter a valid email address."
+
+            else -> message ?: "Something went wrong. Please try again."
+        }
+    }
+
     fun checkAuthStatus() {
         if (auth.currentUser == null) {
             _authState.value = AuthState.Unauthenticated
@@ -40,7 +55,8 @@ class AuthViewModel : ViewModel() {
                 userId?.let { fetchUserData(it) }
                 _authState.value = AuthState.Authenticated
             } else {
-                _authState.value = AuthState.Error(task.exception?.message ?: "Something Went Wrong")
+                _authState.value = AuthState.Error(mapFirebaseError(task.exception?.message))
+
             }
         }
     }
@@ -59,7 +75,8 @@ class AuthViewModel : ViewModel() {
                 }
                 _authState.value = AuthState.Authenticated
             } else {
-                _authState.value = AuthState.Error(task.exception?.message ?: "Something Went Wrong")
+                _authState.value = AuthState.Error(mapFirebaseError(task.exception?.message))
+
             }
         }
     }
@@ -95,7 +112,8 @@ class AuthViewModel : ViewModel() {
                 _authState.value = AuthState.Authenticated
                 signout()
             } else {
-                _authState.value = AuthState.Error(task.exception?.message ?: "Something Went Wrong")
+                _authState.value = AuthState.Error(mapFirebaseError(task.exception?.message))
+
             }
         }
     }

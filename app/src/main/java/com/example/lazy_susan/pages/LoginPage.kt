@@ -51,14 +51,15 @@ fun LoginPage(modifier: Modifier, navController: NavController, authViewModel: A
         mutableStateOf("")
     }
 
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+
     val authState = authViewModel.authState.observeAsState()
-    val context = LocalContext.current
 
     LaunchedEffect(authState.value) {
         when(authState.value){
             is AuthState.Authenticated -> navController.navigate(route = AppScreen.ProfileHome.name)
-            is AuthState.Error -> Toast.makeText(context,
-                (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT).show()
+            is AuthState.Error -> {
+                errorMessage = (authState.value as AuthState.Error).message}
             else -> Unit
         }
     }
@@ -87,17 +88,34 @@ fun LoginPage(modifier: Modifier, navController: NavController, authViewModel: A
                 Text(text = "Login", style = Typography.headlineLarge, modifier = Modifier.padding(bottom = 4.dp))
                 OutlinedTextField(
                     value = email,
-                    onValueChange = { email = it },
-                    label = { Text(text = stringResource(R.string.email_prompt)) })
+                    onValueChange = {
+                        email = it
+                        errorMessage = null
+                    },
+                    label = { Text(text = stringResource(R.string.email_prompt)) }
+                )
 
                 Spacer(modifier = Modifier.height(8.dp))
 
                 OutlinedTextField(
                     value = password,
-                    onValueChange = { password = it },
-                    label = { Text(text = stringResource(R.string.password_prompt)) })
+                    onValueChange = {
+                        password = it
+                        errorMessage = null
+                    },
+                    label = { Text(text = stringResource(R.string.password_prompt)) }
+                )
 
                 Spacer(modifier = Modifier.height(24.dp))
+
+                if (errorMessage != null) {
+                    Text(
+                        text = errorMessage ?: "",
+                        color = Color.Red,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                }
 
                 Button(
                     onClick = { authViewModel.login(email, password) },
