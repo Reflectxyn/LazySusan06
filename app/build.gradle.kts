@@ -74,7 +74,7 @@ dependencies {
 
     implementation("androidx.appcompat:appcompat:1.4.0")
     // Networking (OkHttp + Retrofit)
-    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("com.squareup.okhttp3:okhttp:4.9.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0") // For JSON parsing
 
@@ -86,5 +86,10 @@ dependencies {
 
     // RecyclerView (if not using Compose)
     implementation("androidx.recyclerview:recyclerview:1.2.1")
+
+    implementation ("com.google.code.gson:gson:2.8.8")   // To parse JSON
+
+    implementation ("com.google.android.gms:play-services-location:18.0.0")
+    implementation ("com.google.accompanist:accompanist-permissions:0.28.0")
 
 }

@@ -1,5 +1,9 @@
+//Experimental API usage ->
+@file:OptIn(ExperimentalPermissionsApi::class)
+
 package com.example.lazy_susan.pages
 
+import android.Manifest
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -55,6 +59,17 @@ import com.example.lazy_susan.Restaurant
 import com.example.lazy_susan.ApiHelper
 import kotlin.math.*
 import android.util.Log
+import androidx.compose.ui.platform.LocalContext
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import org.json.JSONObject
+import java.io.IOException
+import com.google.android.gms.location.LocationServices
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
 
 @Composable
@@ -66,6 +81,18 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
     var restaurants by remember { mutableStateOf<List<Restaurant>>(emptyList()) }
     var selectedRestaurant by remember { mutableStateOf<Restaurant?>(null) }
     val showResult = remember { mutableStateOf(false) }
+
+    // location permissions
+    val context = LocalContext.current
+    val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
+    var address by remember { mutableStateOf<String>("") }
+
+    val locationPermissions = rememberMultiplePermissionsState(
+        permissions = listOf(
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
+    )
 
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
         Image(
@@ -119,10 +146,27 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
             // Modify this to receive list from the other one before
             Button(
                 onClick = {
-                    // Change this to the user's location later,
-                    // Only checks when opened, like the map
                     coroutineScope.launch {
-                        val address = "4551 Linden Ave, Long Beach, CA"
+                        //val address = "4551 Linden Ave, Long Beach, CA"
+                        if (!locationPermissions.allPermissionsGranted || locationPermissions.shouldShowRationale) {
+                            locationPermissions.launchMultiplePermissionRequest()
+                        } else {
+                            coroutineScope.launch {
+                                fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
+                                    location?.let {
+                                        val lat = it.latitude
+                                        val lng = it.longitude
+
+                                        // Fetch address from coordinates
+                                        getAddressFromCoordinates(lat, lng) { addr ->
+                                            address = addr
+                                        }
+                                    } ?: run {
+                                        address = "Failed to get location"
+                                    }
+                                }
+                            }
+                        }
 
                         // Fetch restaurants only when button is clicked
                         ApiHelper.getCoordinates(address) { lat, lng ->
@@ -173,6 +217,31 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
     if(showResult.value) {
         Result(showResult, selectedRestaurant!!)
     }
+}
+// Function to get address from coordinates
+private fun getAddressFromCoordinates(lat: Double, lng: Double, callback: (String) -> Unit) {
+    val API_KEY = "AIzaSyDtrWstvsa-DLgoSRDuWbQDySxjOskpRpk"
+    val url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=$API_KEY"
+
+    val request = Request.Builder().url(url).build()
+    OkHttpClient().newCall(request).enqueue(object : Callback {
+        override fun onFailure(call: Call, e: IOException) {
+            callback("Failed to fetch address")
+        }
+
+        override fun onResponse(call: Call, response: Response) {
+            response.body?.string()?.let {
+                val jsonObject = JSONObject(it)
+                val results = jsonObject.optJSONArray("results")
+                if (results != null && results.length() > 0) {
+                    val address = results.getJSONObject(0).getString("formatted_address")
+                    callback(address)
+                } else {
+                    callback("Address not found")
+                }
+            }
+        }
+    })
 }
 
 fun calculateDistance(

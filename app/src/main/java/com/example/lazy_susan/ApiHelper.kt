@@ -13,9 +13,6 @@ import org.json.JSONObject
 import android.util.Log
 import java.io.IOException
 
-// Operation 1: {User location} -> Get restaurants nearby that {User Location} including the address -> Restaurant location -> get cords from restaurant(restaurant location)
-// -> get distance from {User Cords} && {Restaurant Cords} -> display it
-
 object ApiHelper {
     private const val API_KEY = "AIzaSyDtrWstvsa-DLgoSRDuWbQDySxjOskpRpk"
 
@@ -40,6 +37,31 @@ object ApiHelper {
                         val lat = location.getDouble("lat")
                         val lng = location.getDouble("lng")
                         callback(lat, lng)
+                    }
+                }
+            }
+        })
+    }
+
+    // Function to get address from coordinates
+    private fun getAddressFromCoordinates(lat: Double, lng: Double, callback: (String) -> Unit) {
+        val url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=$API_KEY"
+
+        val request = Request.Builder().url(url).build()
+        OkHttpClient().newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                callback("Failed to fetch address")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                response.body?.string()?.let {
+                    val jsonObject = JSONObject(it)
+                    val results = jsonObject.optJSONArray("results")
+                    if (results != null && results.length() > 0) {
+                        val address = results.getJSONObject(0).getString("formatted_address")
+                        callback(address)
+                    } else {
+                        callback("Address not found")
                     }
                 }
             }
