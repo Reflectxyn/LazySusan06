@@ -689,6 +689,7 @@ drawable btn_radio_off_mtrl
 drawable btn_radio_off_to_on_mtrl_animation
 drawable btn_radio_on_mtrl
 drawable btn_radio_on_to_off_mtrl_animation
+drawable clock_icon
 drawable common_full_open_on_phone
 drawable common_google_signin_btn_icon_dark
 drawable common_google_signin_btn_icon_dark_focused
@@ -713,6 +714,7 @@ drawable fire_300
 drawable googleg_disabled_color_18
 drawable googleg_standard_color_18
 drawable history
+drawable history_popup_icon
 drawable home
 drawable ic_call_answer
 drawable ic_call_answer_low
@@ -739,7 +741,10 @@ drawable notification_template_icon_low_bg
 drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
 drawable person
+drawable phone_icon
 drawable star
+drawable star_favorited
+drawable star_unfavorited
 drawable test_level_drawable
 drawable tooltip_frame_dark
 drawable tooltip_frame_light

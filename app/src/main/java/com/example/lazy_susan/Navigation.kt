@@ -10,14 +10,21 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.BottomNavigation
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.BottomNavigationItem
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Icon
+//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.material.Tab
+//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.material.TabPosition
+//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.material.TabRow
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -25,7 +32,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -33,9 +46,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -44,6 +54,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.lazy_susan.pages.HomeScreen
 import com.example.lazy_susan.ui.theme.HoneyMustardYellow
 import com.example.lazy_susan.ui.theme.PicnicTableRed
+import kotlinx.coroutines.launch
 
 enum class AppScreen(@StringRes val title: Int, @DrawableRes val icon: Int) {
     Featured(title = R.string.featured_page, icon = R.drawable.star),
@@ -55,23 +66,29 @@ enum class AppScreen(@StringRes val title: Int, @DrawableRes val icon: Int) {
     Signup(title = R.string.accounts_page, icon = R.drawable.person),
     ProfileHome(title = R.string.accounts_page, icon = R.drawable.person),
     ChangePassword(title = R.string.accounts_page, icon = R.drawable.person)
-
 }
 
-val topLevelRoutes = listOf(
-    TopLevelRoute(AppScreen.Featured.name, AppScreen.Featured.icon, Color.White),
-    TopLevelRoute(AppScreen.Home.name, AppScreen.Home.icon, PicnicTableRed),
-    TopLevelRoute(AppScreen.History.name, AppScreen.History.icon, Color.White),
-    TopLevelRoute(AppScreen.Profile.name, AppScreen.Profile.icon, Color.White),
-)
+enum class TabPage(@StringRes val route: Int, @DrawableRes val icon: Int) {
+    Featured(AppScreen.Featured.title, AppScreen.Featured.icon),
+    Home(AppScreen.Home.title, AppScreen.Home.icon),
+    History(AppScreen.History.title, AppScreen.History.icon),
+    Profile(AppScreen.Profile.title, AppScreen.Profile.icon),
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LazySusanAppBar(currentScreen: AppScreen) {
+fun LazySusanAppBar(currentScreen: Int) {
+    val subject = when(currentScreen) {
+        0 -> TabPage.Featured
+        1 -> TabPage.Home
+        2 -> TabPage.History
+        3 -> TabPage.Profile
+        else -> TabPage.Home
+    }
     CenterAlignedTopAppBar(
         title = {
             Text(
-                text = stringResource(currentScreen.title),
+                text = stringResource(subject.route),
                 style = MaterialTheme.typography.headlineLarge,
                 modifier = Modifier.padding(top = 4.dp)
             ) },
@@ -83,57 +100,35 @@ fun LazySusanAppBar(currentScreen: AppScreen) {
 }
 
 @Composable
-fun LazySusanNavBar(navController: NavHostController, navBackStackEntry: NavBackStackEntry) {
-    BottomNavigation {
-        val currentDestination = navBackStackEntry.destination
-        topLevelRoutes.forEach { topLevelRoute ->
-            BottomNavigationItem(
-                icon = {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(topLevelRoute.background_color)
-                    ) {
-                        Icon(
-                            painter = painterResource(topLevelRoute.icon),
-                            contentDescription = topLevelRoute.route,
-                            tint = Color.Black,
-                            modifier = Modifier.size(69.dp)
-                        )
-                    }
-                       },
-                selected = currentDestination.hierarchy.any { it.hasRoute(topLevelRoute.route::class) } == true,
-                onClick = {
-                    topLevelRoutes.forEach { topLevelRoute ->
-                        topLevelRoute.setBackgroundColor(Color.White)
-                    }
-                    topLevelRoute.setBackgroundColor(PicnicTableRed)
-                    navController.navigate(topLevelRoute.route)
-                },
-                modifier = Modifier
-                    .size(98.dp)
-                    .border(width = 1.dp, color = Color.Black)
-            )
-        }
-    }
-}
-
-@Composable
 fun LazySusanApp(
-    modifier: Modifier = Modifier, authViewModel: AuthViewModel,
+    modifier: Modifier = Modifier,
+    authViewModel: AuthViewModel,
     navController: NavHostController = rememberNavController()
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = AppScreen.valueOf(
+    var currentScreen = AppScreen.valueOf(
         backStackEntry?.destination?.route ?: AppScreen.Home.name
     )
+    val pagerState = rememberPagerState(initialPage = 1) { TabPage.entries.size }
+    val scope = rememberCoroutineScope()
+    var selectedTab by remember { mutableIntStateOf(pagerState.currentPage) }
+
+    LaunchedEffect(pagerState.currentPage) {
+        selectedTab = pagerState.currentPage
+    }
+
+    when(selectedTab) {
+        0 -> currentScreen = AppScreen.valueOf(AppScreen.Featured.name)
+        1 -> currentScreen = AppScreen.valueOf(AppScreen.Home.name)
+        2 -> currentScreen = AppScreen.valueOf(AppScreen.History.name)
+        3 -> currentScreen = AppScreen.valueOf(AppScreen.Profile.name)
+    }
 
     Scaffold(
         topBar = {
             Column {
                 LazySusanAppBar(
-                    currentScreen = currentScreen
+                    currentScreen = pagerState.currentPage
                 )
                 Canvas(modifier = Modifier.fillMaxWidth()) {
                     drawLine(
@@ -146,49 +141,140 @@ fun LazySusanApp(
             }
         },
         bottomBar = {
-            backStackEntry?.let {
-                LazySusanNavBar(
-                    navController = navController,
-                    navBackStackEntry = it
+            TabHome(
+                selectedTabIndex = pagerState.currentPage,
+                onSelectedTab = { scope.launch {
+                    pagerState.scrollToPage(it.ordinal)
+                } }
+            )
+        }
+    ) { innerPadding ->
+        Column {
+            HorizontalPager(
+                    state = pagerState,
+                    modifier = Modifier.padding(innerPadding)
+            ) { currentPage ->
+                when (currentPage) {
+                    0 -> FeaturedScreen(userId = "99UfGbCweDT62RBhY4Vyuf4czYf2")
+                    1 -> HomeNav(modifier, navController)
+                    2 -> HistoryScreen(userId = "99UfGbCweDT62RBhY4Vyuf4czYf2")
+                    3 -> AccountNav(modifier, navController, authViewModel)
+                }
+            }
+
+        }
+    }
+}
+
+@Composable
+fun TabHome(selectedTabIndex: Int, onSelectedTab:(TabPage) -> Unit) {
+    TabRow(
+        selectedTabIndex = selectedTabIndex,
+        indicator = { TabIndicator(it, selectedTabIndex) }
+    ) {
+        TabPage.entries.forEachIndexed { index, tabPage ->
+            Tab(
+                selected = index == selectedTabIndex,
+                onClick = {
+                    onSelectedTab(tabPage)
+                },
+                modifier = Modifier
+                    .size(98.dp)
+                    .border(width = 1.dp, color = Color.Black)
+                    .background(Color.White)
+            ) {
+                Icon(
+                    painter = painterResource(tabPage.icon),
+                    contentDescription = stringResource(tabPage.route),
+                    tint = Color.Black,
+                    modifier = Modifier.size(69.dp)
                 )
             }
         }
-    ) { innerPadding ->
+    }
+}
 
-        NavHost(
-            navController = navController,
-            startDestination = AppScreen.Home.name,
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            composable(route = AppScreen.Featured.name) {
-                FeaturedScreen(userId = "99UfGbCweDT62RBhY4Vyuf4czYf2")
+@Composable
+fun TabIndicator(tabPosition: List<TabPosition>, index: Int) {
+    val width = tabPosition[index].width
+    val offsetX = tabPosition[index].left
+    val subject = when(index) {
+        0 -> TabPage.Featured
+        1 -> TabPage.Home
+        2 -> TabPage.History
+        3 -> TabPage.Profile
+        else -> TabPage.Home
+    }
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(align = Alignment.BottomStart)
+            .offset(x = offsetX)
+            .width(width)
+            .fillMaxSize()
+            .background(color = PicnicTableRed)
+            .border(width = 1.dp, color = Color.Black)
+    ) {
+        Icon(
+            painter = painterResource(subject.icon),
+            contentDescription = stringResource(subject.route),
+            tint = Color.Black,
+            modifier = Modifier.size(69.dp)
+        )
+    }
+}
 
-            }
-            composable(route = AppScreen.Home.name) {
-                HomeScreen(modifier, navController)
-            }
-            composable(route = AppScreen.Filters.name) {
+@Composable
+fun HomeNav(
+    modifier: Modifier = Modifier,
+    navController: NavHostController
+) {
+    NavHost(
+        navController = navController,
+        startDestination = AppScreen.Home.name,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        composable(route = AppScreen.Home.name) {
+            HomeScreen(modifier, navController)
+        }
+        composable(route = AppScreen.Filters.name){
 
-            }
-            composable(route = AppScreen.Stats.name) {
+        }
+        composable(route = AppScreen.Stats.name){
 
-            }
-            composable(route = AppScreen.History.name) {
-                HistoryScreen(userId = "99UfGbCweDT62RBhY4Vyuf4czYf2")
+        }
+    }
+}
 
-            }
-            composable(route = AppScreen.Profile.name) {
-                LoginPage(modifier, navController, authViewModel)
-            }
-            composable(route = AppScreen.Signup.name){
-                SignupPage(modifier, navController, authViewModel)
-            }
-            composable(route = AppScreen.ChangePassword.name){
-                ChangePassword(modifier, navController, authViewModel)
-            }
-            composable(route = AppScreen.ProfileHome.name){
-                ProfilePage(modifier, navController, authViewModel)
-            }
+@Composable
+fun AccountNav(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    authViewModel: AuthViewModel
+) {
+    val startDestination =
+        if(authViewModel.authState.observeAsState().value == AuthState.Authenticated) {
+            AppScreen.ProfileHome.name
+        } else {
+            AppScreen.Profile.name
+        }
+    NavHost(
+        navController = navController,
+        startDestination = startDestination,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        composable(route = AppScreen.Profile.name) {
+            LoginPage(modifier, navController, authViewModel)
+        }
+        composable(route = AppScreen.Signup.name){
+            SignupPage(modifier, navController, authViewModel)
+        }
+        composable(route = AppScreen.ChangePassword.name){
+            ChangePassword(modifier, navController, authViewModel)
+        }
+        composable(route = AppScreen.ProfileHome.name){
+            ProfilePage(modifier, navController, authViewModel)
         }
     }
 }

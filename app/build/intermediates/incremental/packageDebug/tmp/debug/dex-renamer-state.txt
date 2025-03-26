@@ -1,11 +1,11 @@
-#Mon Mar 24 13:35:22 PDT 2025
-base.0=C\:\\Users\\brand\\StudioProjects\\LazySusan06\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
-base.1=C\:\\Users\\brand\\StudioProjects\\LazySusan06\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
-base.2=C\:\\Users\\brand\\StudioProjects\\LazySusan06\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\15\\classes.dex
-base.3=C\:\\Users\\brand\\StudioProjects\\LazySusan06\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\7\\classes.dex
-base.4=C\:\\Users\\brand\\StudioProjects\\LazySusan06\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\8\\classes.dex
-base.5=C\:\\Users\\brand\\StudioProjects\\LazySusan06\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
-base.6=C\:\\Users\\brand\\StudioProjects\\LazySusan06\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes3.dex
+#Wed Mar 26 13:20:04 PDT 2025
+base.0=C\:\\Users\\phung\\AndroidStudioProjects\\LazySusan06\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
+base.1=C\:\\Users\\phung\\AndroidStudioProjects\\LazySusan06\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
+base.2=C\:\\Users\\phung\\AndroidStudioProjects\\LazySusan06\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\15\\classes.dex
+base.3=C\:\\Users\\phung\\AndroidStudioProjects\\LazySusan06\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\7\\classes.dex
+base.4=C\:\\Users\\phung\\AndroidStudioProjects\\LazySusan06\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\8\\classes.dex
+base.5=C\:\\Users\\phung\\AndroidStudioProjects\\LazySusan06\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
+base.6=C\:\\Users\\phung\\AndroidStudioProjects\\LazySusan06\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes3.dex
 path.0=classes.dex
 path.1=0/classes.dex
 path.2=15/classes.dex

@@ -24,6 +24,10 @@
         "source": "com.example.lazy_susan.app-main-71:/mipmap-anydpi-v26/ic_launcher_round.xml"
     },
     {
+        "merged": "com.example.lazy_susan.app-debug-69:/drawable_star_favorited.xml.flat",
+        "source": "com.example.lazy_susan.app-main-71:/drawable/star_favorited.xml"
+    },
+    {
         "merged": "com.example.lazy_susan.app-debug-69:/mipmap-xxhdpi_ic_launcher.webp.flat",
         "source": "com.example.lazy_susan.app-main-71:/mipmap-xxhdpi/ic_launcher.webp"
     },
@@ -42,6 +46,10 @@
     {
         "merged": "com.example.lazy_susan.app-debug-69:/mipmap-hdpi_ic_launcher.webp.flat",
         "source": "com.example.lazy_susan.app-main-71:/mipmap-hdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.lazy_susan.app-debug-69:/drawable_clock_icon.xml.flat",
+        "source": "com.example.lazy_susan.app-main-71:/drawable/clock_icon.xml"
     },
     {
         "merged": "com.example.lazy_susan.app-debug-69:/drawable_ic_launcher_background.xml.flat",
@@ -88,8 +96,16 @@
         "source": "com.example.lazy_susan.app-main-71:/drawable/filter.xml"
     },
     {
+        "merged": "com.example.lazy_susan.app-debug-69:/drawable_phone_icon.xml.flat",
+        "source": "com.example.lazy_susan.app-main-71:/drawable/phone_icon.xml"
+    },
+    {
         "merged": "com.example.lazy_susan.app-debug-69:/drawable_fire_300.png.flat",
         "source": "com.example.lazy_susan.app-main-71:/drawable/fire_300.png"
+    },
+    {
+        "merged": "com.example.lazy_susan.app-debug-69:/drawable_history_popup_icon.xml.flat",
+        "source": "com.example.lazy_susan.app-main-71:/drawable/history_popup_icon.xml"
     },
     {
         "merged": "com.example.lazy_susan.app-debug-69:/drawable_person.xml.flat",
@@ -98,6 +114,10 @@
     {
         "merged": "com.example.lazy_susan.app-debug-69:/xml_data_extraction_rules.xml.flat",
         "source": "com.example.lazy_susan.app-main-71:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "com.example.lazy_susan.app-debug-69:/drawable_star_unfavorited.xml.flat",
+        "source": "com.example.lazy_susan.app-main-71:/drawable/star_unfavorited.xml"
     },
     {
         "merged": "com.example.lazy_susan.app-debug-69:/drawable_history.xml.flat",

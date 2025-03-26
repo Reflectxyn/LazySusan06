@@ -59,6 +59,8 @@ import com.example.lazy_susan.Restaurant
 import com.example.lazy_susan.ApiHelper
 import kotlin.math.*
 import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import okhttp3.Call
@@ -70,7 +72,6 @@ import org.json.JSONObject
 import java.io.IOException
 import com.google.android.gms.location.LocationServices
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-
 
 @Composable
 fun HomeScreen(modifier: Modifier, navController: NavHostController) {
@@ -94,7 +95,7 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
         )
     )
 
-    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+    Box(contentAlignment = Alignment.Center) {
         Image(
             painter = painterResource(R.drawable.background),
             contentDescription = null,
@@ -215,7 +216,7 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
         }
     }
     if(showResult.value) {
-        Result(showResult, selectedRestaurant!!)
+        Result(showResult, selectedRestaurant)
     }
 }
 // Function to get address from coordinates
@@ -307,24 +308,21 @@ fun Wheel(navController: NavHostController, displayState: MutableState<String>) 
             strokeWidth = 10f
         )
     }
-    Box {
-        Canvas(modifier = Modifier
-            .size(140.dp)
-            .clickable {
-                if (displayState.value == "Wheel") {
-                    displayState.value = "Stats"
-                } else if (displayState.value == "Stats") {
-                    displayState.value = "Wheel"
-                }
+    Box(modifier = Modifier
+        .clip(CircleShape)
+        .size(140.dp)
+        .background(color = HoneyMustardYellow)
+        .border(shape = CircleShape, color = Color.Black, width = 4.dp)
+        .clickable {
+            if (displayState.value == "Wheel") {
+                displayState.value = "Stats"
+            } else if (displayState.value == "Stats") {
+                displayState.value = "Wheel"
             }
-        ) {
-            drawCircle(color = HoneyMustardYellow)
-            drawCircle(
-                color = Color.Black,
-                style = Stroke(width = 10f)
-            )
-            drawImage(painterFire, topLeft = Offset(x = 12.dp.toPx(), y = 12.dp.toPx()))
-        }
+        },
+        contentAlignment = Alignment.Center
+    ) {
+        Image(painterFire, contentDescription = null)
     }
     Box {
         Canvas(modifier = Modifier.size(64.dp)) {
@@ -347,7 +345,7 @@ fun Wheel(navController: NavHostController, displayState: MutableState<String>) 
 }
 
 @Composable
-fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant) {
+fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant?) {
     Dialog(onDismissRequest = { showResult.value = false }) {
         Card(
             modifier = Modifier
@@ -357,15 +355,15 @@ fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant) {
             shape = RoundedCornerShape(16.dp)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                Text(text = "Restaurant: ${restaurant.name}", style = MaterialTheme.typography.titleLarge)
+                Text(text = "Restaurant: ${restaurant?.name}", style = MaterialTheme.typography.titleLarge)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Distance: ${restaurant.distance}", style = MaterialTheme.typography.bodyMedium)
+                Text(text = "Distance: ${restaurant?.distance}", style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Address: ${restaurant.address}", style = MaterialTheme.typography.bodyMedium)
+                Text(text = "Address: ${restaurant?.address}", style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Phone: ${restaurant.phoneNumber}", style = MaterialTheme.typography.bodyMedium)
+                Text(text = "Phone: ${restaurant?.phoneNumber}", style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Hours: ${restaurant.hours}", style = MaterialTheme.typography.bodyMedium)
+                Text(text = "Hours: ${restaurant?.hours}", style = MaterialTheme.typography.bodyMedium)
 
             }
         }
