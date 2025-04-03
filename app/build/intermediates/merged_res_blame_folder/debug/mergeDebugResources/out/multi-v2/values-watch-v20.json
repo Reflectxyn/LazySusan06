@@ -4,7 +4,7 @@
             "outputFile": "com.example.lazy_susan.app-mergeDebugResources-67:/values-watch-v20/values-watch-v20.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\phung\\.gradle\\caches\\8.11.1\\transforms\\d4e3973636251c82712206ae630f8ede\\transformed\\appcompat-1.4.0\\res\\values-watch-v20\\values-watch-v20.xml",
+                    "source": "C:\\Users\\Michael\\.gradle\\caches\\8.11.1\\transforms\\575b9a671a766e4faa84fb3960bbec1e\\transformed\\appcompat-1.4.0\\res\\values-watch-v20\\values-watch-v20.xml",
                     "from": {
                         "startLines": "2,5,8",
                         "startColumns": "4,4,4",
@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\phung\\.gradle\\caches\\8.11.1\\transforms\\44e8f56673881447631e4282649fe1f5\\transformed\\play-services-auth-20.7.0\\res\\values-watch-v20\\values.xml",
+                    "source": "C:\\Users\\Michael\\.gradle\\caches\\8.11.1\\transforms\\672a35db8b8650784e44f73ddf398734\\transformed\\play-services-auth-20.7.0\\res\\values-watch-v20\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11",
                         "startColumns": "0,0,0,0,0,0,0,0",

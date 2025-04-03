@@ -1,27 +1,75 @@
 package com.example.lazy_susan
 
+import android.util.Log
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.GeoPoint
+import com.google.firebase.firestore.SetOptions
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Call
 import okhttp3.Callback
-
 import okhttp3.OkHttpClient
 import okhttp3.Request
-
 import okhttp3.Response
 import org.json.JSONObject
-import android.util.Log
 import java.io.IOException
 
 object ApiHelper {
     private const val API_KEY = "AIzaSyDtrWstvsa-DLgoSRDuWbQDySxjOskpRpk"
+    private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() } // Lazy initialization
+    private val client = OkHttpClient()  // Reuse this instead of creating new instances
+
+    // Function to get coordinates, with Firestore caching
+    fun getCachedCoordinates(address: String, callback: (Double, Double) -> Unit) {
+        checkCache(address) { cachedLocation ->
+            if (cachedLocation != null) {
+                Log.d("CACHE", "Using cached location: $cachedLocation")
+                callback(cachedLocation.latitude, cachedLocation.longitude)
+            } else {
+                Log.d("CACHE", "No cache found, fetching from API")
+                getCoordinates(address, callback)
+            }
+        }
+    }
+
+    // Function to store coordinates in Firestore
+    private fun cacheCoordinates(address: String, lat: Double, lng: Double) {
+        val geoPoint = GeoPoint(lat, lng)
+        val data = hashMapOf(
+            "location" to geoPoint,
+            "timestamp" to System.currentTimeMillis()
+        )
+
+        db.collection("cached_coordinates").document(address)
+            .set(data, SetOptions.merge())
+            .addOnSuccessListener { Log.d("Firestore", "Address cached: $address") }
+            .addOnFailureListener { e -> Log.e("Firestore", "Error caching address", e) }
+    }
+
+    // Function to check Firestore cache
+    private fun checkCache(address: String, callback: (GeoPoint?) -> Unit) {
+        db.collection("cached_coordinates").document(address)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val cachedLocation = document.getGeoPoint("location")
+                    callback(cachedLocation)
+                } else {
+                    callback(null) // No cache found
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("Firestore", "Error checking cache", e)
+                callback(null)
+            }
+    }
 
     fun getCoordinates(address: String, callback: (Double, Double) -> Unit) {
         val encodedAddress = address.replace(" ", "%20")
         val url = "https://maps.googleapis.com/maps/api/geocode/json?address=$encodedAddress&key=$API_KEY"
 
         val request = Request.Builder().url(url).build()
-        OkHttpClient().newCall(request).enqueue(object : Callback {
+        client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 Log.e("API_ERROR", "Failed to get coordinates", e)
             }
@@ -69,6 +117,8 @@ object ApiHelper {
     }
 
     fun getNearbyRestaurants(lat: Double, lng: Double, callback: (List<Restaurant>) -> Unit) {
+        // Use this to see when its called
+        Log.d("DEBUG", "Function getNearbyRestaurants() called")
         val url = "https://places.googleapis.com/v1/places:searchNearby"
         val payload = """
             {
@@ -86,8 +136,8 @@ object ApiHelper {
             }
         """.trimIndent()
 
-        val mediaType = "application/json".toMediaType()
-        val requestBody = payload.toRequestBody(mediaType)
+        //Took out media to put into parameter of toRequestBody
+        val requestBody = payload.toRequestBody("application/json".toMediaType())
 
         val request = Request.Builder()
             .url(url)
@@ -99,10 +149,9 @@ object ApiHelper {
             .addHeader("X-Goog-FieldMask","places.nationalPhoneNumber")
             .addHeader("X-Goog-FieldMask","places.regularOpeningHours.weekdayDescriptions")
             .addHeader("X-Goog-FieldMask","places.rating")
-
             .build()
 
-        OkHttpClient().newCall(request).enqueue(object : Callback {
+        client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 Log.e("API_ERROR", "Failed to fetch restaurants", e)
             }
@@ -160,4 +209,7 @@ object ApiHelper {
         })
     }
 }
+
+
+
 

@@ -72,6 +72,13 @@ import org.json.JSONObject
 import java.io.IOException
 import com.google.android.gms.location.LocationServices
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import kotlinx.coroutines.tasks.await
+import com.google.android.gms.location.FusedLocationProviderClient
+import android.location.Location
+import kotlinx.coroutines.suspendCancellableCoroutine
+
+
+
 
 @Composable
 fun HomeScreen(modifier: Modifier, navController: NavHostController) {
@@ -104,8 +111,8 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
         )
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Box(contentAlignment = Alignment.Center) {
-                Wheel(navController, displayState)
-                if (displayState.value == "Stats") {
+                if (displayState.value == "Stats") {                Wheel(navController, displayState)
+
                     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
                         Text(
                             text = stringResource(R.string.restaurant_stats, 10),
@@ -148,60 +155,48 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
             Button(
                 onClick = {
                     coroutineScope.launch {
-                        //val address = "4551 Linden Ave, Long Beach, CA"
                         if (!locationPermissions.allPermissionsGranted || locationPermissions.shouldShowRationale) {
                             locationPermissions.launchMultiplePermissionRequest()
                         } else {
-                            coroutineScope.launch {
-                                fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-                                    location?.let {
-                                        val lat = it.latitude
-                                        val lng = it.longitude
+                            // 1. Fetch location and address sequentially
+                            val location = fusedLocationProviderClient.lastLocation.await()
+                            if (location != null) {
+                                val lat = location.latitude
+                                val lng = location.longitude
 
-                                        // Fetch address from coordinates
-                                        getAddressFromCoordinates(lat, lng) { addr ->
-                                            address = addr
+                                // Fetch address from coordinates
+                                address = fetchAddress(lat, lng)  // Suspend function ensures waiting for result
+
+                                // 2. Fetch restaurants only after address is available
+                                ApiHelper.getCoordinates(address) { lat, lng ->
+                                    ApiHelper.getNearbyRestaurants(lat, lng) { fetchedRestaurants ->
+                                        if (fetchedRestaurants.isNotEmpty()) {
+                                            restaurants = fetchedRestaurants
+                                            selectedRestaurant = restaurants.random()
+
+                                            val selectedAddress = selectedRestaurant?.address ?: "No address available"
+
+                                            ApiHelper.getCoordinates(selectedAddress) { lat2, lng2 ->
+                                                val distance = calculateDistance(lat, lng, lat2, lng2)
+
+                                                selectedRestaurant?.distance = "%.2f mi away".format(distance)
+
+                                                Log.d("DISTANCE_RESULT", "Distance to ${selectedRestaurant?.name}: ${"%.2f".format(distance)} mi")
+                                                showResult.value = true
+                                            }
+                                        } else {
+                                            selectedRestaurant = null
+                                            showResult.value = false
                                         }
-                                    } ?: run {
-                                        address = "Failed to get location"
                                     }
                                 }
-                            }
-                        }
-
-                        // Fetch restaurants only when button is clicked
-                        ApiHelper.getCoordinates(address) { lat, lng ->
-                            ApiHelper.getNearbyRestaurants(lat, lng) { fetchedRestaurants ->
-                                if (fetchedRestaurants.isNotEmpty()) {
-                                    restaurants = fetchedRestaurants
-                                    selectedRestaurant = restaurants.random()  // Picks a random restaurant
-
-                                    val selectedAddress = selectedRestaurant?.address ?: "No address available"
-
-                                    //
-                                    ApiHelper.getCoordinates(selectedAddress){ lat2, lng2 ->
-                                        // Step 5: Calculate the distance between user and restaurant
-                                        val distance = calculateDistance(lat, lng, lat2, lng2)
-
-                                        selectedRestaurant?.distance = "%.2f mi away".format(distance)
-
-                                        // Log the results
-                                        Log.d("DISTANCE_RESULT", "Distance to ${selectedRestaurant?.name}: ${"%.2f".format(distance)} mi")
-
-                                        // Display the result
-                                        showResult.value = true
-
-                                    }
-                                } else {
-                                    selectedRestaurant = null
-                                    showResult.value = false
-                                }
+                            } else {
+                                address = "Failed to get location"
                             }
                         }
                     }
                 },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = HoneyMustardYellow),
+                colors = ButtonDefaults.buttonColors(containerColor = HoneyMustardYellow),
                 modifier = Modifier
                     .width(225.dp)
                     .height(65.dp)
@@ -219,6 +214,25 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
         Result(showResult, selectedRestaurant)
     }
 }
+
+// Suspend function to fetch the location
+suspend fun getLocation(fusedLocationProviderClient: FusedLocationProviderClient): Location? {
+    return try {
+        fusedLocationProviderClient.lastLocation.await()
+    } catch (e: Exception) {
+        null
+    }
+}
+
+// Suspend function to fetch address
+suspend fun fetchAddress(lat: Double, lng: Double): String {
+    return suspendCancellableCoroutine { continuation ->
+        getAddressFromCoordinates(lat, lng) { addr ->
+            continuation.resume(addr) {}
+        }
+    }
+}
+
 // Function to get address from coordinates
 private fun getAddressFromCoordinates(lat: Double, lng: Double, callback: (String) -> Unit) {
     val API_KEY = "AIzaSyDtrWstvsa-DLgoSRDuWbQDySxjOskpRpk"
