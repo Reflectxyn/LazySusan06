@@ -84,6 +84,8 @@ object ApiHelper {
                             .getJSONObject("location")
                         val lat = location.getDouble("lat")
                         val lng = location.getDouble("lng")
+                        // Cache the coordinates for future use:
+                        cacheCoordinates(address, lat, lng)
                         callback(lat, lng)
                     }
                 }

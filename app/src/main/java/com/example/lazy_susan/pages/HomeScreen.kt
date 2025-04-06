@@ -75,10 +75,11 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import kotlinx.coroutines.tasks.await
 import com.google.android.gms.location.FusedLocationProviderClient
 import android.location.Location
+import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.suspendCancellableCoroutine
-
-
-
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.SetOptions
 
 @Composable
 fun HomeScreen(modifier: Modifier, navController: NavHostController) {
@@ -168,8 +169,8 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
                                 address = fetchAddress(lat, lng)  // Suspend function ensures waiting for result
 
                                 // 2. Fetch restaurants only after address is available
-                                ApiHelper.getCoordinates(address) { lat, lng ->
-                                    ApiHelper.getNearbyRestaurants(lat, lng) { fetchedRestaurants ->
+                                ApiHelper.getCoordinates(address) { addrLat, addrLng ->
+                                    ApiHelper.getNearbyRestaurants(addrLat, addrLng) { fetchedRestaurants ->
                                         if (fetchedRestaurants.isNotEmpty()) {
                                             restaurants = fetchedRestaurants
                                             selectedRestaurant = restaurants.random()
@@ -178,6 +179,10 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
 
                                             ApiHelper.getCoordinates(selectedAddress) { lat2, lng2 ->
                                                 val distance = calculateDistance(lat, lng, lat2, lng2)
+
+                                                selectedRestaurant?.let {
+                                                    saveRestaurantToFirestore(it, lat2, lng2)
+                                                }
 
                                                 selectedRestaurant?.distance = "%.2f mi away".format(distance)
 
@@ -382,4 +387,45 @@ fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant?) {
             }
         }
     }
+}
+
+fun saveRestaurantToFirestore(restaurant: Restaurant, lat: Double, lng: Double) {
+    val db = Firebase.firestore
+    val collectionRef = db.collection("cached_restaurants")
+
+    // Generate a composite ID based on restaurant name and user coordinates
+    // You might want to sanitize the name further if needed.
+    val compositeId = "${restaurant.name.replace(" ", "_")}_${lat}_${lng}"
+
+    // 1. Try to get an existing document by the composite ID
+    collectionRef.document(compositeId).get()
+        .addOnSuccessListener { document: DocumentSnapshot ->
+            if (document.exists()) {
+                Log.d("Firestore", "Restaurant already cached with composite ID: $compositeId")
+                // Optionally, update existing data or do nothing.
+            } else {
+                // 2. If not found, save it to Firestore
+                val restaurantData = hashMapOf(
+                    "name" to restaurant.name,
+                    "address" to restaurant.address,
+                    "phoneNumber" to restaurant.phoneNumber,
+                    "hours" to restaurant.hours,
+                    "id" to compositeId, // store the composite ID
+                    "latitude" to lat,
+                    "longitude" to lng,
+                    "isFavorited" to restaurant.isFavorited
+                )
+
+                collectionRef.document(compositeId).set(restaurantData, SetOptions.merge())
+                    .addOnSuccessListener {
+                        Log.d("Firestore", "Restaurant saved: ${restaurant.name} with ID: $compositeId")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("Firestore", "Failed to save restaurant", e)
+                    }
+            }
+        }
+        .addOnFailureListener { e ->
+            Log.e("Firestore", "Failed to check if restaurant exists", e)
+        }
 }

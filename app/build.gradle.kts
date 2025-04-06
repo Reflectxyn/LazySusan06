@@ -92,5 +92,8 @@ dependencies {
 
     implementation ("com.google.android.gms:play-services-location:18.0.0")
     implementation ("com.google.accompanist:accompanist-permissions:0.28.0")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.4.4")
+    implementation("com.google.firebase:firebase-auth-ktx")
+
 
 }
