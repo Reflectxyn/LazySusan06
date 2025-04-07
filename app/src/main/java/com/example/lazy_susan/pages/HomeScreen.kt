@@ -366,6 +366,7 @@ fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant?) {
                 Text(text = "Hours: ${restaurant?.hours}", style = MaterialTheme.typography.bodyMedium)
 
             }
+
         }
     }
 }

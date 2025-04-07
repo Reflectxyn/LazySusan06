@@ -36,7 +36,7 @@ fun ProfilePage(modifier: Modifier, navController: NavController, authViewModel:
         Box(contentAlignment = Alignment.TopCenter, modifier = modifier.fillMaxSize()) {
             Column {
                 Button(
-                    onClick = {},
+                    onClick = {navController.navigate(route = AppScreen.PresetsPage.name)},
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
                     shape = RoundedCornerShape(8.dp),
                     modifier = Modifier

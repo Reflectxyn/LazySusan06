@@ -52,8 +52,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.lazy_susan.pages.HomeScreen
+import com.example.lazy_susan.pages.PresetPage
 import com.example.lazy_susan.ui.theme.HoneyMustardYellow
 import com.example.lazy_susan.ui.theme.PicnicTableRed
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 enum class AppScreen(@StringRes val title: Int, @DrawableRes val icon: Int) {
@@ -65,7 +67,8 @@ enum class AppScreen(@StringRes val title: Int, @DrawableRes val icon: Int) {
     Profile(title = R.string.accounts_page, icon = R.drawable.person),
     Signup(title = R.string.accounts_page, icon = R.drawable.person),
     ProfileHome(title = R.string.accounts_page, icon = R.drawable.person),
-    ChangePassword(title = R.string.accounts_page, icon = R.drawable.person)
+    ChangePassword(title = R.string.accounts_page, icon = R.drawable.person),
+    PresetsPage(title = R.string.accounts_page, icon = R.drawable.person)
 }
 
 enum class TabPage(@StringRes val route: Int, @DrawableRes val icon: Int) {
@@ -275,6 +278,10 @@ fun AccountNav(
         }
         composable(route = AppScreen.ProfileHome.name){
             ProfilePage(modifier, navController, authViewModel)
+        }
+        composable(route = AppScreen.PresetsPage.name) {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+            PresetPage(userId = userId, navController)
         }
     }
 }
