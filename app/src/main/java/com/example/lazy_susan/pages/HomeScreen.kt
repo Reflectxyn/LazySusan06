@@ -159,6 +159,9 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
                         if (!locationPermissions.allPermissionsGranted || locationPermissions.shouldShowRationale) {
                             locationPermissions.launchMultiplePermissionRequest()
                         } else {
+
+                            // Hardcode CSULB address in order to check here(lat and long)
+
                             // 1. Fetch location and address sequentially
                             val location = fusedLocationProviderClient.lastLocation.await()
                             if (location != null) {
@@ -170,6 +173,8 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
 
                                 // 2. Fetch restaurants only after address is available
                                 ApiHelper.getCoordinates(address) { addrLat, addrLng ->
+                                // Here is where it should be to check the firebase for the restaurants if they exist in the database already
+                                // Later on include the filters for the call unless changed into the
                                     ApiHelper.getNearbyRestaurants(addrLat, addrLng) { fetchedRestaurants ->
                                         if (fetchedRestaurants.isNotEmpty()) {
                                             restaurants = fetchedRestaurants
