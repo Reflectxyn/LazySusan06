@@ -1088,6 +1088,14 @@ string common_open_on_phone
 string common_signin_button_text
 string common_signin_button_text_long
 string copy_toast_msg
+string cuisine_american
+string cuisine_chinese
+string cuisine_greek
+string cuisine_indian
+string cuisine_italian
+string cuisine_japanese
+string cuisine_mexican
+string cuisine_thai
 string default_error_message
 string default_popup_window_title
 string distance_stats

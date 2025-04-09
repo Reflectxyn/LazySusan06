@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:2:1-32:12
-INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:2:1-32:12
-INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:2:1-32:12
-INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:2:1-32:12
+ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:2:1-32:12
+INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:2:1-32:12
+INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:2:1-32:12
+INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:2:1-32:12
 MERGED from [com.google.accompanist:accompanist-permissions:0.28.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\953ef6105eb408ab7692a90b9ee0ea93\transformed\accompanist-permissions-0.28.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.navigation:navigation-common-android:2.9.0-alpha08] C:\Users\phung\.gradle\caches\8.11.1\transforms\346d8c8d53d987ef927cbae9b5ab8830\transformed\navigation-common-release\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.navigation:navigation-compose-android:2.9.0-alpha08] C:\Users\phung\.gradle\caches\8.11.1\transforms\7dfc5c3d630902dd4dd857ed641ab515\transformed\navigation-compose-release\AndroidManifest.xml:2:1-7:12
@@ -99,17 +99,17 @@ MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\User
 MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\63c290ef3f6b4533dad6643d3068e29f\transformed\core-runtime-2.2.0\AndroidManifest.xml:17:1-22:12
 MERGED from [com.google.android.play:core-common:2.0.3] C:\Users\phung\.gradle\caches\8.11.1\transforms\070a3e63b121607901c05f038645c80e\transformed\core-common-2.0.3\AndroidManifest.xml:2:1-21:12
 	package
-		INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml
 	android:versionName
-		INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml
 	xmlns:tools
-		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:3:5-51
+		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:3:5-51
 	android:versionCode
-		INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml
 	xmlns:android
-		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:2:11-69
+		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:2:11-69
 uses-permission#android.permission.INTERNET
-ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:5:5-67
+ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:5:5-67
 MERGED from [com.google.firebase:firebase-database:21.0.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\a59850a502581ea4332d49610050fb05\transformed\firebase-database-21.0.0\AndroidManifest.xml:23:5-67
 MERGED from [com.google.firebase:firebase-database:21.0.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\a59850a502581ea4332d49610050fb05\transformed\firebase-database-21.0.0\AndroidManifest.xml:23:5-67
 MERGED from [com.google.firebase:firebase-auth:23.2.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\4a2dbe8e52c9ccfd651d4efd3a5583d7\transformed\firebase-auth-23.2.0\AndroidManifest.xml:25:5-67
@@ -117,18 +117,18 @@ MERGED from [com.google.firebase:firebase-auth:23.2.0] C:\Users\phung\.gradle\ca
 MERGED from [com.google.android.recaptcha:recaptcha:18.6.1] C:\Users\phung\.gradle\caches\8.11.1\transforms\951bf15fb64059f036e3975a85826ee5\transformed\recaptcha-18.6.1\AndroidManifest.xml:7:5-67
 MERGED from [com.google.android.recaptcha:recaptcha:18.6.1] C:\Users\phung\.gradle\caches\8.11.1\transforms\951bf15fb64059f036e3975a85826ee5\transformed\recaptcha-18.6.1\AndroidManifest.xml:7:5-67
 	android:name
-		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:5:22-64
+		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:5:22-64
 uses-permission#android.permission.ACCESS_FINE_LOCATION
-ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:6:5-79
+ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:6:5-79
 	android:name
-		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:6:22-76
+		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:6:22-76
 uses-permission#android.permission.ACCESS_COARSE_LOCATION
-ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:7:5-81
+ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:7:5-81
 	android:name
-		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:7:22-78
+		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:7:22-78
 application
-ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:9:5-30:19
-INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:9:5-30:19
+ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:9:5-30:19
+INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:9:5-30:19
 MERGED from [androidx.compose.ui:ui-tooling-android:1.7.8] C:\Users\phung\.gradle\caches\8.11.1\transforms\a969a3ea18a968dd818852558da1b109\transformed\ui-tooling-release\AndroidManifest.xml:22:5-26:19
 MERGED from [androidx.compose.ui:ui-tooling-android:1.7.8] C:\Users\phung\.gradle\caches\8.11.1\transforms\a969a3ea18a968dd818852558da1b109\transformed\ui-tooling-release\AndroidManifest.xml:22:5-26:19
 MERGED from [com.google.firebase:firebase-database:21.0.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\a59850a502581ea4332d49610050fb05\transformed\firebase-database-21.0.0\AndroidManifest.xml:25:5-36:19
@@ -178,51 +178,51 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\phung\.gradle\cach
 MERGED from [com.google.android.play:core-common:2.0.3] C:\Users\phung\.gradle\caches\8.11.1\transforms\070a3e63b121607901c05f038645c80e\transformed\core-common-2.0.3\AndroidManifest.xml:11:5-19:19
 MERGED from [com.google.android.play:core-common:2.0.3] C:\Users\phung\.gradle\caches\8.11.1\transforms\070a3e63b121607901c05f038645c80e\transformed\core-common-2.0.3\AndroidManifest.xml:11:5-19:19
 	android:extractNativeLibs
-		INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.15.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\eac5e0629e0746f2f278ad4fbb9039eb\transformed\core-1.15.0\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:16:9-35
+		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:16:9-35
 	android:label
-		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:14:9-41
+		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:14:9-41
 	android:fullBackupContent
-		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:12:9-54
+		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:12:9-54
 	android:roundIcon
-		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:15:9-54
+		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:15:9-54
 	tools:targetApi
-		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:18:9-29
+		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:18:9-29
 	android:icon
-		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:13:9-43
+		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:13:9-43
 	android:allowBackup
-		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:10:9-35
+		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:10:9-35
 	android:theme
-		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:17:9-48
+		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:17:9-48
 	android:dataExtractionRules
-		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:11:9-65
+		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:11:9-65
 activity#com.example.lazy_susan.MainActivity
-ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:19:9-29:20
+ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:19:9-29:20
 	android:label
-		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:22:13-45
+		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:22:13-45
 	android:exported
-		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:21:13-36
+		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:21:13-36
 	android:theme
-		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:23:13-52
+		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:23:13-52
 	android:name
-		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:20:13-41
+		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:20:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:24:13-28:29
+ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:24:13-28:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:25:17-69
+ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:25:17-69
 	android:name
-		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:25:25-66
+		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:25:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:27:17-77
+ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:27:17-77
 	android:name
-		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:27:27-74
+		ADDED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:27:27-74
 uses-sdk
-INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml
-INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml
 MERGED from [com.google.accompanist:accompanist-permissions:0.28.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\953ef6105eb408ab7692a90b9ee0ea93\transformed\accompanist-permissions-0.28.0\AndroidManifest.xml:20:5-22:41
 MERGED from [com.google.accompanist:accompanist-permissions:0.28.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\953ef6105eb408ab7692a90b9ee0ea93\transformed\accompanist-permissions-0.28.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.navigation:navigation-common-android:2.9.0-alpha08] C:\Users\phung\.gradle\caches\8.11.1\transforms\346d8c8d53d987ef927cbae9b5ab8830\transformed\navigation-common-release\AndroidManifest.xml:20:5-44
@@ -414,9 +414,9 @@ MERGED from [com.google.android.play:core-common:2.0.3] C:\Users\phung\.gradle\c
 	tools:overrideLibrary
 		ADDED from [com.google.firebase:firebase-auth:23.2.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\4a2dbe8e52c9ccfd651d4efd3a5583d7\transformed\firebase-auth-23.2.0\AndroidManifest.xml:23:9-148
 	android:targetSdkVersion
-		INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml
 activity#androidx.compose.ui.tooling.PreviewActivity
 ADDED from [androidx.compose.ui:ui-tooling-android:1.7.8] C:\Users\phung\.gradle\caches\8.11.1\transforms\a969a3ea18a968dd818852558da1b109\transformed\ui-tooling-release\AndroidManifest.xml:23:9-25:39
 	android:exported

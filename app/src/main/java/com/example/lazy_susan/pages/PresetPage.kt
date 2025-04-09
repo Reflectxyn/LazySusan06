@@ -33,9 +33,12 @@ import com.example.lazy_susan.PresetViewModelFactory
 import com.example.lazy_susan.R
 
 @Composable
-fun PresetPage(    userId: String, // pass from AuthViewModel when logged in
-                    navController: NavController,
-                   PresetViewModel: PresetViewModel = viewModel(factory = PresetViewModelFactory(userId))) {
+fun PresetPage(
+    userId: String, // pass from AuthViewModel when logged in
+    navController: NavController,
+    PresetViewModel: PresetViewModel =
+        viewModel(factory = PresetViewModelFactory(userId))
+) {
 
     val presets by PresetViewModel.presets.observeAsState(emptyList())
 

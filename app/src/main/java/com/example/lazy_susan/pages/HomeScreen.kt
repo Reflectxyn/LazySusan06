@@ -95,13 +95,32 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
         )
     )
 
+    Image(
+        painter = painterResource(R.drawable.background),
+        contentDescription = null,
+        contentScale = ContentScale.FillBounds,
+        modifier = Modifier.fillMaxSize()
+    )
+    Box(contentAlignment = Alignment.TopEnd, modifier = Modifier.padding(top = 80.dp, end = 20.dp)) {
+        Box(
+            modifier = Modifier
+                .clip(CircleShape)
+                .size(72.dp)
+                .background(color = HoneyMustardYellow)
+                .border(shape = CircleShape, color = Color.Black, width = 2.dp)
+                .clickable {
+                    navController.navigate(AppScreen.Filters.name)
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painterResource(R.drawable.filter),
+                contentDescription = null,
+                modifier = Modifier.size(52.dp)
+            )
+        }
+    }
     Box(contentAlignment = Alignment.Center) {
-        Image(
-            painter = painterResource(R.drawable.background),
-            contentDescription = null,
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier.fillMaxSize()
-        )
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Box(contentAlignment = Alignment.Center) {
                 Wheel(navController, displayState)
@@ -270,7 +289,6 @@ fun calculateDistance(
 @Composable
 fun Wheel(navController: NavHostController, displayState: MutableState<String>) {
     val painterFire = ImageBitmap.imageResource(R.drawable.fire_300)
-    val painterFunnel = rememberVectorPainter(ImageVector.vectorResource(R.drawable.filter))
     Canvas(modifier = Modifier.size(360.dp)) {
         val offset = size.height * (2 - sqrt(2.0)) / 4
         drawCircle(color = PicnicTableRed)
@@ -323,24 +341,6 @@ fun Wheel(navController: NavHostController, displayState: MutableState<String>) 
         contentAlignment = Alignment.Center
     ) {
         Image(painterFire, contentDescription = null)
-    }
-    Box {
-        Canvas(modifier = Modifier.size(64.dp)) {
-            translate(left = 420f, top = -504f) {
-                drawCircle(color = HoneyMustardYellow)
-                drawCircle(
-                    color = Color.Black,
-                    style = Stroke(width = 8f)
-                )
-            }
-        }
-        Canvas(modifier = Modifier.size(64.dp)) {
-            translate(left = 442f, top = -478f) {
-                with(painterFunnel) {
-                    draw(size = Size(48.dp.toPx(), 48.dp.toPx()))
-                }
-            }
-        }
     }
 }
 

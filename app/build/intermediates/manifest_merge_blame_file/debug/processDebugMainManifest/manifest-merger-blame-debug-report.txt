@@ -9,14 +9,14 @@
 9        android:targetSdkVersion="35" />
 10
 11    <uses-permission android:name="android.permission.INTERNET" />
-11-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:5:5-67
-11-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:5:22-64
+11-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:5:5-67
+11-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:5:22-64
 12    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-12-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:6:5-79
-12-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:6:22-76
+12-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:6:5-79
+12-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:6:22-76
 13    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-13-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:7:5-81
-13-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:7:22-78
+13-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:7:5-81
+13-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:7:22-78
 14
 15    <!-- Although the *SdkVersion is captured in gradle build files, this is required for non gradle builds -->
 16    <!-- <uses-sdk android:minSdkVersion="21"/> -->
@@ -39,47 +39,47 @@
 24-->[androidx.core:core:1.15.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\eac5e0629e0746f2f278ad4fbb9039eb\transformed\core-1.15.0\AndroidManifest.xml:26:22-94
 25
 26    <application
-26-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:9:5-30:19
+26-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:9:5-30:19
 27        android:allowBackup="true"
-27-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:10:9-35
+27-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:10:9-35
 28        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 28-->[androidx.core:core:1.15.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\eac5e0629e0746f2f278ad4fbb9039eb\transformed\core-1.15.0\AndroidManifest.xml:28:18-86
 29        android:dataExtractionRules="@xml/data_extraction_rules"
-29-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:11:9-65
+29-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:11:9-65
 30        android:debuggable="true"
 31        android:extractNativeLibs="false"
 32        android:fullBackupContent="@xml/backup_rules"
-32-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:12:9-54
+32-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:12:9-54
 33        android:icon="@mipmap/ic_launcher"
-33-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:13:9-43
+33-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:13:9-43
 34        android:label="@string/app_name"
-34-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:14:9-41
+34-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:14:9-41
 35        android:roundIcon="@mipmap/ic_launcher_round"
-35-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:15:9-54
+35-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:15:9-54
 36        android:supportsRtl="true"
-36-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:16:9-35
+36-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:16:9-35
 37        android:testOnly="true"
 38        android:theme="@style/Theme.Lazy_Susan" >
-38-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:17:9-48
+38-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:17:9-48
 39        <activity
-39-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:19:9-29:20
+39-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:19:9-29:20
 40            android:name="com.example.lazy_susan.MainActivity"
-40-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:20:13-41
+40-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:20:13-41
 41            android:exported="true"
-41-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:21:13-36
+41-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:21:13-36
 42            android:label="@string/app_name"
-42-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:22:13-45
+42-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:22:13-45
 43            android:theme="@style/Theme.Lazy_Susan" >
-43-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:23:13-52
+43-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:23:13-52
 44            <intent-filter>
-44-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:24:13-28:29
+44-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:24:13-28:29
 45                <action android:name="android.intent.action.MAIN" />
-45-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:25:17-69
-45-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:25:25-66
+45-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:25:17-69
+45-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:25:25-66
 46
 47                <category android:name="android.intent.category.LAUNCHER" />
-47-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:27:17-77
-47-->C:\Users\phung\AndroidStudioProjects\LazySusan06\app\src\main\AndroidManifest.xml:27:27-74
+47-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:27:17-77
+47-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:27:27-74
 48            </intent-filter>
 49        </activity>
 50        <activity

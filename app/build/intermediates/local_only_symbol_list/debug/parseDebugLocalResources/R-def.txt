@@ -40,6 +40,14 @@ string base_desc
 string blocked
 string cancel
 string change_password
+string cuisine_american
+string cuisine_chinese
+string cuisine_greek
+string cuisine_indian
+string cuisine_italian
+string cuisine_japanese
+string cuisine_mexican
+string cuisine_thai
 string distance_stats
 string email_prompt
 string featured_page
