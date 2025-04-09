@@ -17,9 +17,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Checkbox
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Icon
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.RadioButton
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
@@ -30,7 +34,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
