@@ -33,14 +33,14 @@ object ApiHelper {
     }
 
     // Function to store coordinates in Firestore
-    private fun cacheCoordinates(address: String, lat: Double, lng: Double) {
+    fun cacheCoordinates(address: String, lat: Double, lng: Double) {
         val geoPoint = GeoPoint(lat, lng)
         val data = hashMapOf(
             "location" to geoPoint,
             "timestamp" to System.currentTimeMillis()
         )
 
-        db.collection("cached_coordinates").document(address)
+        db.collection("cached_USER_coordinates").document(address)
             .set(data, SetOptions.merge())
             .addOnSuccessListener { Log.d("Firestore", "Address cached: $address") }
             .addOnFailureListener { e -> Log.e("Firestore", "Error caching address", e) }
@@ -48,7 +48,7 @@ object ApiHelper {
 
     // Function to check Firestore cache
     private fun checkCache(address: String, callback: (GeoPoint?) -> Unit) {
-        db.collection("cached_coordinates").document(address)
+        db.collection("cached_USER_coordinates").document(address)
             .get()
             .addOnSuccessListener { document ->
                 if (document.exists()) {
@@ -84,8 +84,6 @@ object ApiHelper {
                             .getJSONObject("location")
                         val lat = location.getDouble("lat")
                         val lng = location.getDouble("lng")
-                        // Cache the coordinates for future use:
-                        cacheCoordinates(address, lat, lng)
                         callback(lat, lng)
                     }
                 }
