@@ -65,6 +65,7 @@ import com.example.lazy_susan.ui.theme.PicnicTableRed
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.Call
 import okhttp3.Callback
@@ -174,6 +175,8 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
                 onClick = {
                     playingState = !playingState
                     coroutineScope.launch {
+                        delay(3000)
+                        playingState = !playingState
                         //val address = "4551 Linden Ave, Long Beach, CA"
                         if (!locationPermissions.allPermissionsGranted || locationPermissions.shouldShowRationale) {
                             locationPermissions.launchMultiplePermissionRequest()
