@@ -218,7 +218,10 @@ object ApiHelper {
     }
 
     fun getCachedNearbyRestaurants(lat: Double, lng: Double, callback: (List<Restaurant>) -> Unit) {
+        // For informational messages:
+        Log.d("MyAppTag","Used Get Cached Nearby Restaurants")
         // 5 miles in meters
+        // Make this custom tied to the inputs of the user later
         val radiusMeters = 8046.7
         // Convert meters to degrees latitude (approximation)
         val deltaLat = radiusMeters / 111000.0
@@ -248,7 +251,17 @@ object ApiHelper {
                             val address = document.getString("address") ?: "Address not available"
                             val phone = document.getString("phoneNumber") ?: "Phone not available"
                             val hours = document.getString("hours") ?: "Hours not available"
-                            restaurants.add(Restaurant(name, address, phone, hours))
+                            // Format the distance string (e.g., "3.45 mi away")
+                            val distanceStr = "%.2f mi away".format(distance)
+                            restaurants.add(
+                                Restaurant(
+                                    name = name,
+                                    address = address,
+                                    phoneNumber = phone,
+                                    hours = hours,
+                                    distance = distanceStr
+                                )
+                            )
                         }
                     }
                 }
