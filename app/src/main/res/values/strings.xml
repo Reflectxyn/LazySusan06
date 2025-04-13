@@ -12,10 +12,12 @@
     <string name="restaurant_name_default">Restaurant Name</string>
     <string name="address">Address</string>
     <string name="hours">Hours</string>
+
     <string name="awards">Awards</string>
     <string name="restaurant_stats">You discovered:\n%d new\nrestaurants!</string>
     <string name="distance_stats">Miles\ntraveled:\n%d</string>
     <string name="streak_stats">Hot\nStreak:\n%d</string>
+
     <string name="signup_prompt">Sign Up</string>
     <string name="login_prompt">Login</string>
     <string name="email_prompt">Email</string>
@@ -28,4 +30,13 @@
     <string name="send">Send</string>
     <string name="blocked">Blocked</string>
     <string name="logout">Log Out</string>
+
+    <string name="cuisine_italian">Italian</string>
+    <string name="cuisine_japanese">Japanese</string>
+    <string name="cuisine_thai">Thai</string>
+    <string name="cuisine_mexican">Mexican</string>
+    <string name="cuisine_indian">Indian</string>
+    <string name="cuisine_chinese">Chinese</string>
+    <string name="cuisine_greek">Greek</string>
+    <string name="cuisine_american">American</string>
 </resources>

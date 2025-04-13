@@ -1087,6 +1087,14 @@ int string common_open_on_phone 0x7f0e003e
 int string common_signin_button_text 0x7f0e003f
 int string common_signin_button_text_long 0x7f0e0040
 int string copy_toast_msg 0x7f0e0041
+int string cuisine_american 0x7f0e00ad
+int string cuisine_chinese 0x7f0e00ae
+int string cuisine_greek 0x7f0e00af
+int string cuisine_indian 0x7f0e00b0
+int string cuisine_italian 0x7f0e00b1
+int string cuisine_japanese 0x7f0e00b2
+int string cuisine_mexican 0x7f0e00b3
+int string cuisine_thai 0x7f0e00b4
 int string default_error_message 0x7f0e0042
 int string default_popup_window_title 0x7f0e0043
 int string distance_stats 0x7f0e0044

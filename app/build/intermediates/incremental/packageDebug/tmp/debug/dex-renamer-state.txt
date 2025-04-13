@@ -1,12 +1,12 @@
-#Sat Apr 12 23:19:39 PDT 2025
-base.0=C\:\\Users\\Michael\\Desktop\\491B\\LazySusan06\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
-base.1=C\:\\Users\\Michael\\Desktop\\491B\\LazySusan06\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
-base.2=C\:\\Users\\Michael\\Desktop\\491B\\LazySusan06\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\15\\classes.dex
-base.3=C\:\\Users\\Michael\\Desktop\\491B\\LazySusan06\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\7\\classes.dex
-base.4=C\:\\Users\\Michael\\Desktop\\491B\\LazySusan06\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\8\\classes.dex
-base.5=C\:\\Users\\Michael\\Desktop\\491B\\LazySusan06\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
-base.6=C\:\\Users\\Michael\\Desktop\\491B\\LazySusan06\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes3.dex
-base.7=C\:\\Users\\Michael\\Desktop\\491B\\LazySusan06\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes4.dex
+#Thu Apr 10 17:31:03 PDT 2025
+base.0=C\:\\Users\\phung\\AndroidStudioProjects\\LazySusan06_real\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
+base.1=C\:\\Users\\phung\\AndroidStudioProjects\\LazySusan06_real\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
+base.2=C\:\\Users\\phung\\AndroidStudioProjects\\LazySusan06_real\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\15\\classes.dex
+base.3=C\:\\Users\\phung\\AndroidStudioProjects\\LazySusan06_real\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\7\\classes.dex
+base.4=C\:\\Users\\phung\\AndroidStudioProjects\\LazySusan06_real\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\8\\classes.dex
+base.5=C\:\\Users\\phung\\AndroidStudioProjects\\LazySusan06_real\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
+base.6=C\:\\Users\\phung\\AndroidStudioProjects\\LazySusan06_real\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes3.dex
+base.7=C\:\\Users\\phung\\AndroidStudioProjects\\LazySusan06_real\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\9\\classes.dex
 path.0=classes.dex
 path.1=0/classes.dex
 path.2=15/classes.dex
@@ -14,7 +14,7 @@ path.3=7/classes.dex
 path.4=8/classes.dex
 path.5=classes2.dex
 path.6=classes3.dex
-path.7=classes4.dex
+path.7=9/classes.dex
 renamed.0=classes.dex
 renamed.1=classes2.dex
 renamed.2=classes3.dex

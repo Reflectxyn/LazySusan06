@@ -51,21 +51,26 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.lazy_susan.pages.FiltersScreen
 import com.example.lazy_susan.pages.HomeScreen
+import com.example.lazy_susan.pages.PresetPage
 import com.example.lazy_susan.ui.theme.HoneyMustardYellow
 import com.example.lazy_susan.ui.theme.PicnicTableRed
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 enum class AppScreen(@StringRes val title: Int, @DrawableRes val icon: Int) {
     Featured(title = R.string.featured_page, icon = R.drawable.star),
     Home(title = R.string.app_name, icon = R.drawable.home),
     Filters(title = R.string.filters_page, icon = R.drawable.home),
+    Maps(title = R.string.map_page, icon = R.drawable.home),
     Stats(title = R.string.app_name, icon = R.drawable.home),
     History(title = R.string.history_page, icon = R.drawable.history),
     Profile(title = R.string.accounts_page, icon = R.drawable.person),
     Signup(title = R.string.accounts_page, icon = R.drawable.person),
     ProfileHome(title = R.string.accounts_page, icon = R.drawable.person),
-    ChangePassword(title = R.string.accounts_page, icon = R.drawable.person)
+    ChangePassword(title = R.string.accounts_page, icon = R.drawable.person),
+    PresetsPage(title = R.string.accounts_page, icon = R.drawable.person)
 }
 
 enum class TabPage(@StringRes val route: Int, @DrawableRes val icon: Int) {
@@ -90,8 +95,9 @@ fun LazySusanAppBar(currentScreen: Int) {
             Text(
                 text = stringResource(subject.route),
                 style = MaterialTheme.typography.headlineLarge,
-                modifier = Modifier.padding(top = 4.dp)
-            ) },
+                modifier = Modifier.padding(top = 24.dp)
+            )
+                },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = HoneyMustardYellow
         ),
@@ -238,7 +244,10 @@ fun HomeNav(
         composable(route = AppScreen.Home.name) {
             HomeScreen(modifier, navController)
         }
-        composable(route = AppScreen.Filters.name){
+        composable(route = AppScreen.Filters.name) {
+            FiltersScreen(navController)
+        }
+        composable(route = AppScreen.Maps.name) {
 
         }
         composable(route = AppScreen.Stats.name){
@@ -275,6 +284,10 @@ fun AccountNav(
         }
         composable(route = AppScreen.ProfileHome.name){
             ProfilePage(modifier, navController, authViewModel)
+        }
+        composable(route = AppScreen.PresetsPage.name) {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+            PresetPage(userId = userId, navController)
         }
     }
 }
