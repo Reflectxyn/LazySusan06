@@ -18,14 +18,21 @@ class PresetViewModel(private val userId: String) : ViewModel() {
         fetchPresets()
     }
 
-    private fun fetchPresets() {
+     fun fetchPresets() {
         database.get().addOnSuccessListener { snapshot ->
             val list = snapshot.children.mapNotNull { it.getValue(Preset::class.java) }
             _presets.value = list
         }
     }
-    fun addPreset() {
-        val newPreset = Preset(name = "Preset ${_presets.value!!.size + 1}")
+    fun addPreset(
+        cuisines: List<Boolean>,
+        ratings: List<Boolean>,
+        distance: Int
+    ) {
+        val newPreset = Preset(
+            name = "Preset ${_presets.value!!.size + 1}",
+            filters = Filters(cuisines, ratings, distance)
+        )
         val updatedList = _presets.value!!.toMutableList().apply { add(newPreset) }
         _presets.value = updatedList
         savePreset(newPreset)
@@ -34,6 +41,12 @@ class PresetViewModel(private val userId: String) : ViewModel() {
     fun deletePreset(id: String) {
         database.child(id).removeValue()
         _presets.value = _presets.value?.filterNot { it.id == id }
+    }
+    fun updatePreset(preset: Preset) {
+        database.child(preset.id).setValue(preset)
+        _presets.value = _presets.value?.map {
+            if (it.id == preset.id) preset else it
+        }
     }
 
     fun copyPreset(id: String) {
@@ -53,6 +66,8 @@ class PresetViewModel(private val userId: String) : ViewModel() {
 
     private fun savePreset(preset: Preset) {
         database.child(preset.id).setValue(preset)
+            .addOnSuccessListener {
+                fetchPresets()}
     }
 }
 

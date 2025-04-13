@@ -30,7 +30,9 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,22 +45,39 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.room.util.copy
 import com.example.lazy_susan.AppScreen
+import com.example.lazy_susan.Filters
+import com.example.lazy_susan.PresetViewModel
+import com.example.lazy_susan.PresetViewModelFactory
 import com.example.lazy_susan.R
-import com.example.lazy_susan.data.DataSource
 import com.example.lazy_susan.ui.theme.LightGray
 import com.example.lazy_susan.ui.theme.Typography
 
+
+val cuisineLabels = listOf("Italian", "Japanese", "Thai", "Mexican", "Indian", "Chinese", "Greek", "American")
+val ratingLabels = listOf("2", "3", "4", "5")
+val distanceOptions = listOf("1", "2", "5", "10", "15")
 @Composable
-fun FiltersScreen(navController: NavController) {
-    var cuisineList = remember {
-        mutableStateListOf<Boolean>(false, false, false, false, false, false, false, false)
+fun FiltersScreen(    navController: NavController,
+                      userId: String,
+                      presetId: String = "",
+                      presetViewModel: PresetViewModel = viewModel(factory = PresetViewModelFactory(userId))) {
+    val preset = presetViewModel.presets.observeAsState(emptyList()).value.find { it.id == presetId }
+
+    val cuisineList = remember { mutableStateListOf(*Array(cuisineLabels.size) { false }) }
+    val ratingList = remember { mutableStateListOf(*Array(ratingLabels.size) { false }) }
+    val distanceDefault = remember { mutableStateOf("2") }
+
+    LaunchedEffect(preset) {
+        preset?.let {
+            it.filters.cuisines.forEachIndexed { index, value -> cuisineList[index] = value }
+            it.filters.ratings.forEachIndexed { index, value -> ratingList[index] = value }
+            distanceDefault.value = it.filters.distance.toString()
+        }
     }
-    var ratingList = remember {
-        mutableStateListOf<Boolean>(false, false, false, false)
-    }
-    var distanceDefault = remember { mutableStateOf("2") }
     Image(
         painter = painterResource(R.drawable.background),
         contentDescription = null,
@@ -231,7 +250,20 @@ fun FiltersScreen(navController: NavController) {
                             shape = RoundedCornerShape(10.dp)
                         )
                         .clickable {
-                            TODO()
+                            val cuisines = cuisineList.toList()
+                            val ratings = ratingList.toList()
+                            val distance = distanceDefault.value.toIntOrNull() ?: 2
+
+                            if (preset != null) {
+                                // Update existing preset
+                                val updated = preset.copy(filters = Filters(cuisines, ratings, distance))
+                                presetViewModel.updatePreset(updated)
+                            } else {
+                                // Add new preset
+                                presetViewModel.addPreset(cuisines, ratings, distance)
+                            }
+
+                            navController.popBackStack()
                         },
                     contentAlignment = Alignment.Center
                 ) {
@@ -269,13 +301,13 @@ fun FiltersScreen(navController: NavController) {
 @Composable
 fun CuisineFilter(checkValue: MutableList<Boolean>) {
     Column {
-        DataSource.cuisines.forEachIndexed { index, cuisine ->
+        cuisineLabels.forEachIndexed { index, cuisine ->
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(
                     checked = checkValue[index],
                     onCheckedChange = { checkValue[index] = it }
                 )
-                Text(stringResource(cuisine.name))
+                Text(cuisine)
             }
         }
     }
@@ -284,7 +316,7 @@ fun CuisineFilter(checkValue: MutableList<Boolean>) {
 @Composable
 fun RatingFilter(checkValue: MutableList<Boolean>) {
     Row {
-        DataSource.ratings.forEachIndexed { index, rating ->
+        ratingLabels.forEachIndexed { index, rating ->
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(
                     checked = checkValue[index],
@@ -293,7 +325,7 @@ fun RatingFilter(checkValue: MutableList<Boolean>) {
                 Text(rating)
                 Spacer(modifier = Modifier.width(8.dp))
                 Icon(imageVector = Icons.Default.Star, contentDescription = null)
-                if(index != (DataSource.ratings.size - 1)) {
+                if (index != (ratingLabels.size - 1)) {
                     Spacer(modifier = Modifier.width(8.dp))
                     VerticalDivider(
                         thickness = 2.dp,
@@ -309,7 +341,7 @@ fun RatingFilter(checkValue: MutableList<Boolean>) {
 @Composable
 fun DistanceFilter(selected: MutableState<String>) {
     Row(horizontalArrangement = Arrangement.spacedBy(32.dp)) {
-        DataSource.distances.forEach { distance ->
+        distanceOptions.forEach { distance ->
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 RadioButton(
                     selected = (selected.value == distance),
@@ -320,3 +352,4 @@ fun DistanceFilter(selected: MutableState<String>) {
         }
     }
 }
+
