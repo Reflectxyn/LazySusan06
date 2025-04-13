@@ -161,37 +161,50 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
 
                         // Fetch address from coordinates
                         address = fetchAddress(lat, lng)  // Suspend function ensures waiting for result
+                        ApiHelper.cacheCoordinates(address, lat, lng) // Cache the USER coordinates for future use:
 
-                        // Cache the coordinates for future use:
-                        ApiHelper.cacheCoordinates(address, lat, lng)
+                        ApiHelper.getCachedNearbyRestaurants(lat, lng) { cachedRestaurants ->
+                            Log.d("CACHE_DEBUG", "Number of cached restaurants: ${cachedRestaurants.size}")
+                            if (cachedRestaurants.size < 20) {
+                                // If there are less than 20 restaurants nearby USER, we check the getNearbyRestaurants
+                                // 2. Fetch restaurants only after address is available
+                                ApiHelper.getCoordinates(address) { addrLat, addrLng ->
+                                    // Here is where it should be to check the firebase for the restaurants if they exist in the database already
+                                    // Later on include the filters for the call unless changed into the
+                                    ApiHelper.getNearbyRestaurants(addrLat, addrLng) { fetchedRestaurants ->
+                                        if (fetchedRestaurants.isNotEmpty()) {
+                                            restaurants = fetchedRestaurants
 
-                        // 2. Fetch restaurants only after address is available
-                        ApiHelper.getCoordinates(address) { addrLat, addrLng ->
-                            // Here is where it should be to check the firebase for the restaurants if they exist in the database already
-                            // Later on include the filters for the call unless changed into the
-                            ApiHelper.getNearbyRestaurants(addrLat, addrLng) { fetchedRestaurants ->
-                                if (fetchedRestaurants.isNotEmpty()) {
-                                    restaurants = fetchedRestaurants
-                                    selectedRestaurant = restaurants.random()
+                                            //Loop through restaurants and give each one to Firebase
+                                            restaurants.forEach { restaurant ->
+                                                ApiHelper.getCoordinates(restaurant.address) { resLat, resLng ->
+                                                    saveRestaurantToFirestore(restaurant, resLat, resLng)
+                                                }
+                                            }
 
-                                    val selectedAddress = selectedRestaurant?.address ?: "No address available"
+                                            // Selected one from the many
+                                            selectedRestaurant = restaurants.random()
+                                            val selectedAddress = selectedRestaurant?.address ?: "No address available"
 
-                                    ApiHelper.getCoordinates(selectedAddress) { lat2, lng2 ->
-                                        val distance = calculateDistance(lat, lng, lat2, lng2)
-
-                                        selectedRestaurant?.let {
-                                            saveRestaurantToFirestore(it, lat2, lng2)
+                                            ApiHelper.getCoordinates(selectedAddress) { lat2, lng2 ->
+                                                val distance = calculateDistance(lat, lng, lat2, lng2)
+                                                selectedRestaurant?.distance = "%.2f mi away".format(distance)
+                                                // Log.d("DISTANCE_RESULT", "Distance to ${selectedRestaurant?.name}: ${"%.2f".format(distance)} mi")
+                                                showResult.value = true
+                                            }
+                                        } else {
+                                            selectedRestaurant = null
+                                            showResult.value = false
                                         }
-
-                                        selectedRestaurant?.distance = "%.2f mi away".format(distance)
-
-                                        // Log.d("DISTANCE_RESULT", "Distance to ${selectedRestaurant?.name}: ${"%.2f".format(distance)} mi")
-                                        showResult.value = true
                                     }
-                                } else {
-                                    selectedRestaurant = null
-                                    showResult.value = false
                                 }
+                            }
+                            else
+                            {
+                                // 3. If 20 or more restaurants are already cached (and within 5 miles), use those.
+                                restaurants = cachedRestaurants
+                                selectedRestaurant = restaurants.random()
+                                showResult.value = true
                             }
                         }
                         /*
@@ -441,7 +454,7 @@ fun saveRestaurantToFirestore(restaurant: Restaurant, lat: Double, lng: Double) 
 
     // Generate a composite ID based on restaurant name and user coordinates
     // You might want to sanitize the name further if needed.
-    val compositeId = "${restaurant.name.replace(" ", "_")}_${lat}_${lng}"
+    val compositeId = "${restaurant.name.replace(" ", "_").replace("/", "-")}_${lat}_${lng}"
 
     // 1. Try to get an existing document by the composite ID
     collectionRef.document(compositeId).get()
@@ -474,3 +487,7 @@ fun saveRestaurantToFirestore(restaurant: Restaurant, lat: Double, lng: Double) 
             Log.e("Firestore", "Failed to check if restaurant exists", e)
         }
 }
+/*
+ Notes:
+ - Vending Machines can count as restaurants? (Specific Vending machines like Farmers Fridge w/ full meals)
+*/

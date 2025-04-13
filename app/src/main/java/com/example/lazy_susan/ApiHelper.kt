@@ -13,6 +13,10 @@ import okhttp3.Request
 import okhttp3.Response
 import org.json.JSONObject
 import java.io.IOException
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 object ApiHelper {
     private const val API_KEY = "AIzaSyDtrWstvsa-DLgoSRDuWbQDySxjOskpRpk"
@@ -120,9 +124,15 @@ object ApiHelper {
         // Use this to see when its called
         Log.d("DEBUG", "Function getNearbyRestaurants() called")
         val url = "https://places.googleapis.com/v1/places:searchNearby"
+
+        // Define your included and excluded types as JSON arrays (as strings)
+        val includedTypes = """["restaurant"]"""
+        val excludedPrimaryTypes = """["shopping_mall", "casino", "amusement_center", "movie_theater", "event_venue", "convenience_store"]"""
+
         val payload = """
             {
-              "includedTypes": ["restaurant"],
+              "includedTypes": $includedTypes,
+              "excludedPrimaryTypes": $excludedPrimaryTypes,
               "maxResultCount": 20,
               "locationRestriction": {
                 "circle": {
@@ -130,7 +140,7 @@ object ApiHelper {
                     "latitude": $lat,
                     "longitude": $lng
                   },
-                  "radius": 1000.0
+                  "radius": 8046.7
                 }
               }
             }
@@ -176,8 +186,6 @@ object ApiHelper {
                         val hours = place.optJSONObject("regularOpeningHours")
                             ?.optJSONArray("weekdayDescriptions")?.let { hoursArray ->
                                 val groupedHours = mutableMapOf<String, MutableList<String>>()
-                                val days = listOf("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
-
                                 for (i in 0 until hoursArray.length()) {
                                     val entry = hoursArray.getString(i) // Example: "Monday: 10:00 AM – 11:00 PM"
                                     val parts = entry.split(": ", limit = 2)
@@ -208,6 +216,71 @@ object ApiHelper {
             }
         })
     }
+
+    fun getCachedNearbyRestaurants(lat: Double, lng: Double, callback: (List<Restaurant>) -> Unit) {
+        // 5 miles in meters
+        val radiusMeters = 8046.7
+        // Convert meters to degrees latitude (approximation)
+        val deltaLat = radiusMeters / 111000.0
+        // Calculate delta for longitude using the cosine of the latitude (in radians)
+        val deltaLng = deltaLat / cos(Math.toRadians(lat))
+
+        val minLat = lat - deltaLat
+        val maxLat = lat + deltaLat
+        val minLng = lng - deltaLng
+        val maxLng = lng + deltaLng
+
+        db.collection("cached_restaurants")
+            .whereGreaterThanOrEqualTo("latitude", minLat)
+            .whereLessThanOrEqualTo("latitude", maxLat)
+            .whereGreaterThanOrEqualTo("longitude", minLng)
+            .whereLessThanOrEqualTo("longitude", maxLng)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                val restaurants = mutableListOf<Restaurant>()
+                for (document in querySnapshot.documents) {
+                    val docLat = document.getDouble("latitude")
+                    val docLng = document.getDouble("longitude")
+                    if (docLat != null && docLng != null) {
+                        val distance = calculateDistance(lat, lng, docLat, docLng)  // distance in miles
+                        if (distance <= 5.0) {  // Only include if within 5 miles
+                            val name = document.getString("name") ?: "Unknown"
+                            val address = document.getString("address") ?: "Address not available"
+                            val phone = document.getString("phoneNumber") ?: "Phone not available"
+                            val hours = document.getString("hours") ?: "Hours not available"
+                            restaurants.add(Restaurant(name, address, phone, hours))
+                        }
+                    }
+                }
+                callback(restaurants)
+            }
+            .addOnFailureListener { e ->
+                Log.e("Firestore", "Error getting cached restaurants", e)
+                callback(emptyList())
+            }
+    }
+
+    fun calculateDistance(
+        lat1: Double, lon1: Double,
+        lat2: Double, lon2: Double
+    ): Double {
+        val R = 6371.0  // Earth's radius in km
+
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+
+        val a = sin(dLat / 2) * sin(dLat / 2) +
+                cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2)) *
+                sin(dLon / 2) * sin(dLon / 2)
+
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+        val distanceKm = R * c  // Distance in km
+        val distanceMiles = distanceKm * 0.621371  // Convert km to miles
+
+        return distanceMiles
+    }
+
 }
 
 
