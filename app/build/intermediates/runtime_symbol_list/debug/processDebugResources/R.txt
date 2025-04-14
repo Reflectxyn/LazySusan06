@@ -1050,6 +1050,7 @@ int string abc_shareactionprovider_share_with_application 0x7f0e0019
 int string abc_toolbar_collapse_description 0x7f0e001a
 int string accounts_page 0x7f0e001b
 int string address 0x7f0e001c
+int string american_cuisine 0x7f0e00b5
 int string android_credentials_TYPE_PASSWORD_CREDENTIAL 0x7f0e001d
 int string androidx_credentials_TYPE_PUBLIC_KEY_CREDENTIAL 0x7f0e001e
 int string androidx_startup 0x7f0e001f
@@ -1066,6 +1067,7 @@ int string call_notification_ongoing_text 0x7f0e0029
 int string call_notification_screening_text 0x7f0e002a
 int string cancel 0x7f0e002b
 int string change_password 0x7f0e002c
+int string chinese_cuisine 0x7f0e00b6
 int string close_drawer 0x7f0e002d
 int string close_sheet 0x7f0e002e
 int string common_google_play_services_enable_button 0x7f0e002f
@@ -1087,14 +1089,6 @@ int string common_open_on_phone 0x7f0e003e
 int string common_signin_button_text 0x7f0e003f
 int string common_signin_button_text_long 0x7f0e0040
 int string copy_toast_msg 0x7f0e0041
-int string cuisine_american 0x7f0e0042
-int string cuisine_chinese 0x7f0e0043
-int string cuisine_greek 0x7f0e0044
-int string cuisine_indian 0x7f0e0045
-int string cuisine_italian 0x7f0e0046
-int string cuisine_japanese 0x7f0e0047
-int string cuisine_mexican 0x7f0e0048
-int string cuisine_thai 0x7f0e0049
 int string default_error_message 0x7f0e004a
 int string default_popup_window_title 0x7f0e004b
 int string distance_stats 0x7f0e004c
@@ -1112,10 +1106,14 @@ int string google_api_key 0x7f0e0057
 int string google_app_id 0x7f0e0058
 int string google_crash_reporting_api_key 0x7f0e0059
 int string google_storage_bucket 0x7f0e005a
+int string greek_cuisine 0x7f0e00b7
 int string history_page 0x7f0e005b
 int string hours 0x7f0e005c
 int string in_progress 0x7f0e005d
 int string indeterminate 0x7f0e005e
+int string indian_cuisine 0x7f0e00b8
+int string italian_cuisine 0x7f0e00b9
+int string japanese_cuisine 0x7f0e00ba
 int string login_prompt 0x7f0e005f
 int string login_question 0x7f0e0060
 int string logout 0x7f0e0061
@@ -1177,6 +1175,7 @@ int string m3c_time_picker_pm 0x7f0e0098
 int string m3c_tooltip_long_press_label 0x7f0e0099
 int string m3c_tooltip_pane_description 0x7f0e009a
 int string map_page 0x7f0e009b
+int string mexican_cuisine 0x7f0e00bb
 int string navigation_menu 0x7f0e009c
 int string not_selected 0x7f0e009d
 int string password_prompt 0x7f0e009e
@@ -1199,6 +1198,7 @@ int string streak_stats 0x7f0e00ae
 int string switch_role 0x7f0e00af
 int string tab 0x7f0e00b0
 int string template_percent 0x7f0e00b1
+int string thai_cuisine 0x7f0e00bc
 int string tooltip_description 0x7f0e00b2
 int string tooltip_label 0x7f0e00b3
 int string wheel_prompt 0x7f0e00b4

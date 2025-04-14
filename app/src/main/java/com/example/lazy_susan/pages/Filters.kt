@@ -50,7 +50,6 @@ import com.example.lazy_susan.data.DataSource
 import com.example.lazy_susan.ui.theme.LightGray
 import com.example.lazy_susan.ui.theme.Typography
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.lazy_susan.pages.FilterViewModel
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.platform.LocalContext
@@ -62,9 +61,7 @@ fun FiltersScreen(
     navController: NavController,
     filterViewModel: FilterViewModel = viewModel(LocalContext.current as ComponentActivity)
 ) {
-    var cuisineList = remember {
-        mutableStateListOf<Boolean>(false, false, false, false, false, false, false, false)
-    }
+    val cuisineSelections = filterViewModel.selectedCuisineBooleans
     var distanceDefault = filterViewModel.selectedDistance
     Image(
         painter = painterResource(R.drawable.background),
@@ -117,7 +114,7 @@ fun FiltersScreen(
                     style = Typography.headlineSmall
                 )
             }
-            CuisineFilter(cuisineList)
+            CuisineFilter(cuisineSelections)
             HorizontalDivider(
                 thickness = 2.dp,
                 color = LightGray,
@@ -211,8 +208,8 @@ fun FiltersScreen(
                             shape = RoundedCornerShape(10.dp)
                         )
                         .clickable {
-                            cuisineList.forEachIndexed { index, _ ->
-                                cuisineList[index] = false
+                            cuisineSelections.forEachIndexed { index, _ ->
+                                cuisineSelections[index] = false
                             }
                             // Reset the shared rating threshold to default ("3")
                             filterViewModel.selectedRatingThreshold.value = "3"
@@ -332,3 +329,4 @@ fun DistanceFilter(selected: MutableState<String>) {
         }
     }
 }
+

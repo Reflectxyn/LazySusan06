@@ -8,5 +8,6 @@ data class Restaurant(
     val id: String = "",
     var isFavorited: Boolean = false,
     var distance: String = "",
-    var rating: Double = 0.0
+    var rating: Double = 0.0,
+    var types: List<String> = emptyList()
 )

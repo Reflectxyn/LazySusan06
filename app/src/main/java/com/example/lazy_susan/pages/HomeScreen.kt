@@ -94,12 +94,24 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.activity.ComponentActivity
 import com.example.lazy_susan.data.DataSource
+import com.example.lazy_susan.model.Cuisine
+
 
 // Helper function to map a boolean rating list to a list of acceptable rating values.
 // DataSource.ratings is assumed to be a List<String> (for example, ["1", "2", "3", "4", "5"]).
 fun getSelectedRatings(checkValues: List<Boolean>, ratingStrings: List<String>): List<Double> {
     return checkValues.mapIndexedNotNull { index, isChecked ->
         if (isChecked) ratingStrings.getOrNull(index)?.toDoubleOrNull() else null
+    }
+}
+@Composable
+fun getSelectedCuisines(
+    checkValues: List<Boolean>,
+    cuisineOptions: List<Cuisine>
+): List<String> {
+    val context = LocalContext.current
+    return checkValues.mapIndexedNotNull { index, isChecked ->
+        if (isChecked) context.getString(cuisineOptions.getOrNull(index)?.name ?: 0) else null
     }
 }
 
@@ -132,6 +144,9 @@ fun HomeScreen(
     // Get the selected rating threshold from the ViewModel.
     val ratingThresholdStr = filterViewModel.selectedRatingThreshold.value
     val minRating = ratingThresholdStr.toDoubleOrNull() ?: 3.0
+
+    val cuisineSelection: List<String> = getSelectedCuisines(filterViewModel.selectedCuisineBooleans, DataSource.cuisines)
+
 
     val locationPermissions = rememberMultiplePermissionsState(
         permissions = listOf(
@@ -236,21 +251,22 @@ fun HomeScreen(
                         address = fetchAddress(lat, lng)  // Suspend function ensures waiting for result
                         ApiHelper.cacheCoordinates(address, lat, lng) // Cache the USER coordinates for future use:
 
-                        ApiHelper.getCachedNearbyRestaurants(lat, lng, radiusMeters, minRating) { cachedRestaurants ->
+                        ApiHelper.getCachedNearbyRestaurants(lat, lng, radiusMeters, minRating, cuisineSelection) { cachedRestaurants ->
                             Log.d("CACHE_DEBUG", "Number of cached restaurants: ${cachedRestaurants.size}")
                             if (cachedRestaurants.size < 20) {
                                 // If there are less than 20 restaurants nearby USER, we check the getNearbyRestaurants
                                 // 2. Fetch restaurants only after address is available
                                 ApiHelper.getCoordinates(address) { addrLat, addrLng ->
                                     // Here is where it should be to check the firebase for the restaurants if they exist in the database already
-                                    ApiHelper.getNearbyRestaurants(addrLat, addrLng, radiusMeters, minRating) { fetchedRestaurants ->
+                                    ApiHelper.getNearbyRestaurants(addrLat, addrLng, radiusMeters, minRating, cuisineSelection) { fetchedRestaurants ->
                                         if (fetchedRestaurants.isNotEmpty()) {
                                             restaurants = fetchedRestaurants
 
                                             //Loop through restaurants and give each one to Firebase
                                             restaurants.forEach { restaurant ->
+                                                val restaurantTypes: List<String> = restaurant.types
                                                 ApiHelper.getCoordinates(restaurant.address) { resLat, resLng ->
-                                                    saveRestaurantToFirestore(restaurant, resLat, resLng)
+                                                    saveRestaurantToFirestore(restaurant, resLat, resLng, restaurantTypes)
                                                 }
                                             }
 
@@ -545,12 +561,16 @@ fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant?) {
     }
 }
 
-fun saveRestaurantToFirestore(restaurant: Restaurant, lat: Double, lng: Double) {
+fun saveRestaurantToFirestore(
+    restaurant: Restaurant,
+    lat: Double,
+    lng: Double,
+    types: List<String>
+) {
     val db = Firebase.firestore
     val collectionRef = db.collection("cached_restaurants")
 
-    // Generate a composite ID based on restaurant name and user coordinates
-    // You might want to sanitize the name further if needed.
+    // Generate a composite ID
     val compositeId = "${restaurant.name.replace(" ", "_").replace("/", "-")}_${lat}_${lng}"
 
     // 1. Try to get an existing document by the composite ID
@@ -569,7 +589,9 @@ fun saveRestaurantToFirestore(restaurant: Restaurant, lat: Double, lng: Double) 
                     "id" to compositeId, // store the composite ID
                     "latitude" to lat,
                     "longitude" to lng,
-                    "rating" to restaurant.rating
+                    "rating" to restaurant.rating,
+                    // Store all types as an array field
+                    "types" to types
                 )
 
                 collectionRef.document(compositeId).set(restaurantData, SetOptions.merge())

@@ -125,6 +125,7 @@ object ApiHelper {
         lng: Double,
         radiusMeters: Double,
         minRating: Double,
+        acceptedCuisines: List<String>,
         callback: (List<Restaurant>) -> Unit
     ) {
         // Use this to see when its called
@@ -135,11 +136,18 @@ object ApiHelper {
         val includedTypes = """["restaurant"]"""
         val excludedPrimaryTypes = """["shopping_mall", "casino", "amusement_center", "movie_theater", "event_venue", "convenience_store"]"""
 
+        // Convert the accepted cuisines into a JSON array string for primary types.
+        val acceptedPrimaryTypesJson = if (acceptedCuisines.isNotEmpty())
+            acceptedCuisines.joinToString(prefix = "[\"", separator = "\",\"", postfix = "\"]")
+        else
+            "[]"
+
         val payload = """
             {
               "includedTypes": $includedTypes,
               "excludedPrimaryTypes": $excludedPrimaryTypes,
               "minRating": $minRating,
+              "includedPrimaryTypes": $acceptedPrimaryTypesJson,
               "maxResultCount": 20,
               "locationRestriction": {
                 "circle": {
@@ -239,6 +247,7 @@ object ApiHelper {
         lng: Double,
         radiusMeters: Double,
         minRating: Double,
+        acceptedCuisines: List<String>,
         callback: (List<Restaurant>) -> Unit
     ) {
         // For informational messages:
@@ -274,25 +283,37 @@ object ApiHelper {
                             val phone = document.getString("phoneNumber") ?: "Phone not available"
                             val hours = document.getString("hours") ?: "Hours not available"
                             val rating = document.getDouble("rating") ?: 0.0
-                            val primaryType = document.getString("primaryType") ?: "unknown"
 
-                            // Exclude restaurants with unwanted primary types.
-                            if (excludedTypes.contains(primaryType)) continue
-
-                            // Only add restaurants that meet the rating threshold
-                            if (rating >= minRating) {
-                                val distanceStr = "%.2f mi away".format(distance)
-                                restaurants.add(
-                                    Restaurant(
-                                        name = name,
-                                        address = address,
-                                        phoneNumber = phone,
-                                        hours = hours,
-                                        rating = rating,
-                                        distance = distanceStr
-                                    )
-                                )
+                            // --- Extract the types array from the Firestore document ---
+                            val typesList = mutableListOf<String>()
+                            // Use the document instead of "place"
+                            val typesFromDoc = document.get("types")
+                            if (typesFromDoc != null && typesFromDoc is List<*>) {
+                                for (item in typesFromDoc) {
+                                    if (item is String) {
+                                        typesList.add(item)
+                                    }
+                                }
                             }
+                            Log.d("PARSED_DATA", "Name: $name, Types: $typesList")
+
+                            // Filter: skip if rating is below threshold
+                            if (rating < minRating) continue
+
+                            if (acceptedCuisines.isNotEmpty() && typesList.none { acceptedCuisines.contains(it) }) continue
+
+                            val distanceStr = "%.2f mi away".format(distance)
+                            restaurants.add(
+                                Restaurant(
+                                    name = name,
+                                    address = address,
+                                    phoneNumber = phone,
+                                    hours = hours,
+                                    rating = rating,
+                                    distance = distanceStr
+                                )
+                            )
+
                         }
                     }
                 }
@@ -324,7 +345,6 @@ object ApiHelper {
 
         return distanceMiles
     }
-
 }
 
 
