@@ -74,8 +74,6 @@ import okhttp3.Request
 import okhttp3.Response
 import org.json.JSONObject
 import java.io.IOException
-import com.google.android.gms.location.LocationServices
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import kotlinx.coroutines.tasks.await
 import com.google.android.gms.location.FusedLocationProviderClient
 import android.location.Location
@@ -88,9 +86,29 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
+import androidx.lifecycle.viewmodel.compose.viewModel
+
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.activity.ComponentActivity
+import com.example.lazy_susan.data.DataSource
+
+// Helper function to map a boolean rating list to a list of acceptable rating values.
+// DataSource.ratings is assumed to be a List<String> (for example, ["1", "2", "3", "4", "5"]).
+fun getSelectedRatings(checkValues: List<Boolean>, ratingStrings: List<String>): List<Double> {
+    return checkValues.mapIndexedNotNull { index, isChecked ->
+        if (isChecked) ratingStrings.getOrNull(index)?.toDoubleOrNull() else null
+    }
+}
 
 @Composable
-fun HomeScreen(modifier: Modifier, navController: NavHostController) {
+fun HomeScreen(
+    modifier: Modifier,
+    navController: NavHostController,
+    filterViewModel: FilterViewModel = viewModel(LocalContext.current as ComponentActivity)
+) {
     var displayState = remember { mutableStateOf("Wheel") }
     var playingState by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
@@ -104,6 +122,16 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
     val context = LocalContext.current
     val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
     var address by remember { mutableStateOf<String>("") }
+
+    // Retrieve the selected distance from the shared FilterViewModel.
+    val selectedDistance = filterViewModel.selectedDistance.value
+    val selectedDistanceMiles = selectedDistance.toDoubleOrNull() ?: 2.0
+    // Convert miles to meters.
+    val radiusMeters = selectedDistanceMiles * 1609.34
+
+    // Get the selected rating threshold from the ViewModel.
+    val ratingThresholdStr = filterViewModel.selectedRatingThreshold.value
+    val minRating = ratingThresholdStr.toDoubleOrNull() ?: 3.0
 
     val locationPermissions = rememberMultiplePermissionsState(
         permissions = listOf(
@@ -142,9 +170,10 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
             Box(contentAlignment = Alignment.Center) {
                 WheelAnimation(displayState, isSpinning = playingState)
                 if (displayState.value == "Stats") {
-                if (displayState.value == "Stats") {                Wheel(navController, displayState)
-
-                    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
                         Text(
                             text = stringResource(R.string.restaurant_stats, 10),
                             style = MaterialTheme.typography.titleLarge,
@@ -153,13 +182,17 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
                         Spacer(modifier = Modifier.height(32.dp))
                         Row {
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text(text = stringResource(R.string.distance_stats, 4),
+                            Text(
+                                text = stringResource(R.string.distance_stats, 4),
                                 style = MaterialTheme.typography.titleLarge,
-                                textAlign = TextAlign.Center)
+                                textAlign = TextAlign.Center
+                            )
                             Spacer(modifier = Modifier.width(168.dp))
-                            Text(text = stringResource(R.string.streak_stats, 5),
+                            Text(
+                                text = stringResource(R.string.streak_stats, 5),
                                 style = MaterialTheme.typography.titleLarge,
-                                textAlign = TextAlign.Center)
+                                textAlign = TextAlign.Center
+                            )
                             Spacer(modifier = Modifier.width(12.dp))
                         }
                         Spacer(modifier = Modifier.height(48.dp))
@@ -168,16 +201,22 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
                                 navController.navigate(AppScreen.Stats.name)
                             },
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = HoneyMustardYellow),
+                                containerColor = HoneyMustardYellow
+                            ),
                             modifier = Modifier
                                 .width(148.dp)
                                 .height(48.dp)
                                 .border(1.dp, Color.Black, CircleShape)
                         ) {
-                            Text(text = "Awards", color = Color.Black, style = MaterialTheme.typography.titleLarge)
+                            Text(
+                                text = "Awards",
+                                color = Color.Black,
+                                style = MaterialTheme.typography.titleLarge
+                            )
                         }
                         Spacer(modifier = Modifier.height(20.dp))
                     }
+
                 }
             }
             Spacer(modifier = Modifier.height(48.dp))
@@ -197,15 +236,14 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
                         address = fetchAddress(lat, lng)  // Suspend function ensures waiting for result
                         ApiHelper.cacheCoordinates(address, lat, lng) // Cache the USER coordinates for future use:
 
-                        ApiHelper.getCachedNearbyRestaurants(lat, lng) { cachedRestaurants ->
+                        ApiHelper.getCachedNearbyRestaurants(lat, lng, radiusMeters, minRating) { cachedRestaurants ->
                             Log.d("CACHE_DEBUG", "Number of cached restaurants: ${cachedRestaurants.size}")
                             if (cachedRestaurants.size < 20) {
                                 // If there are less than 20 restaurants nearby USER, we check the getNearbyRestaurants
                                 // 2. Fetch restaurants only after address is available
                                 ApiHelper.getCoordinates(address) { addrLat, addrLng ->
                                     // Here is where it should be to check the firebase for the restaurants if they exist in the database already
-                                    // Later on include the filters for the call unless changed into the
-                                    ApiHelper.getNearbyRestaurants(addrLat, addrLng) { fetchedRestaurants ->
+                                    ApiHelper.getNearbyRestaurants(addrLat, addrLng, radiusMeters, minRating) { fetchedRestaurants ->
                                         if (fetchedRestaurants.isNotEmpty()) {
                                             restaurants = fetchedRestaurants
 
@@ -530,7 +568,8 @@ fun saveRestaurantToFirestore(restaurant: Restaurant, lat: Double, lng: Double) 
                     "hours" to restaurant.hours,
                     "id" to compositeId, // store the composite ID
                     "latitude" to lat,
-                    "longitude" to lng
+                    "longitude" to lng,
+                    "rating" to restaurant.rating
                 )
 
                 collectionRef.document(compositeId).set(restaurantData, SetOptions.merge())

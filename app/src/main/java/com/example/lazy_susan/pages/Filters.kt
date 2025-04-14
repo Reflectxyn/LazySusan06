@@ -49,16 +49,23 @@ import com.example.lazy_susan.R
 import com.example.lazy_susan.data.DataSource
 import com.example.lazy_susan.ui.theme.LightGray
 import com.example.lazy_susan.ui.theme.Typography
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.lazy_susan.pages.FilterViewModel
+import android.util.Log
+import androidx.activity.ComponentActivity
+import androidx.compose.ui.platform.LocalContext
+
+
 
 @Composable
-fun FiltersScreen(navController: NavController) {
+fun FiltersScreen(
+    navController: NavController,
+    filterViewModel: FilterViewModel = viewModel(LocalContext.current as ComponentActivity)
+) {
     var cuisineList = remember {
         mutableStateListOf<Boolean>(false, false, false, false, false, false, false, false)
     }
-    var ratingList = remember {
-        mutableStateListOf<Boolean>(false, false, false, false)
-    }
-    var distanceDefault = remember { mutableStateOf("2") }
+    var distanceDefault = filterViewModel.selectedDistance
     Image(
         painter = painterResource(R.drawable.background),
         contentDescription = null,
@@ -131,7 +138,7 @@ fun FiltersScreen(navController: NavController) {
                     style = Typography.headlineSmall
                 )
             }
-            RatingFilter(ratingList)
+            RatingFilter(filterViewModel)
             HorizontalDivider(
                 thickness = 2.dp,
                 color = LightGray,
@@ -207,9 +214,8 @@ fun FiltersScreen(navController: NavController) {
                             cuisineList.forEachIndexed { index, _ ->
                                 cuisineList[index] = false
                             }
-                            ratingList.forEachIndexed { index, _ ->
-                                ratingList[index] = false
-                            }
+                            // Reset the shared rating threshold to default ("3")
+                            filterViewModel.selectedRatingThreshold.value = "3"
                             distanceDefault.value = "2"
                         },
                     contentAlignment = Alignment.Center
@@ -231,7 +237,7 @@ fun FiltersScreen(navController: NavController) {
                             shape = RoundedCornerShape(10.dp)
                         )
                         .clickable {
-                            TODO()
+                            navController.navigate(AppScreen.Home.name)
                         },
                     contentAlignment = Alignment.Center
                 ) {
@@ -282,32 +288,38 @@ fun CuisineFilter(checkValue: MutableList<Boolean>) {
 }
 
 @Composable
-fun RatingFilter(checkValue: MutableList<Boolean>) {
-    Row {
-        DataSource.ratings.forEachIndexed { index, rating ->
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(
-                    checked = checkValue[index],
-                    onCheckedChange = { checkValue[index] = it }
-                )
-                Text(rating)
-                Spacer(modifier = Modifier.width(8.dp))
-                Icon(imageVector = Icons.Default.Star, contentDescription = null)
-                if(index != (DataSource.ratings.size - 1)) {
-                    Spacer(modifier = Modifier.width(8.dp))
-                    VerticalDivider(
-                        thickness = 2.dp,
-                        color = LightGray,
-                        modifier = Modifier.height(20.dp)
+fun RatingFilter(filterViewModel: FilterViewModel) {
+    // Get the rating options from DataSource
+    val ratingOptions = DataSource.ratings // For example: ["2", "3", "4", "5"]
+    // Get the current selected rating threshold from the shared ViewModel
+    val selectedRating = filterViewModel.selectedRatingThreshold.value
+
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        // Optionally display the currently selected rating threshold
+        Text(text = "Selected Rating: $selectedRating or higher", style = Typography.bodyLarge)
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ratingOptions.forEach { rating ->
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    RadioButton(
+                        selected = (selectedRating == rating),
+                        onClick = { filterViewModel.selectedRatingThreshold.value = rating }
                     )
+                    Text(text = rating)
                 }
             }
         }
     }
 }
 
+
 @Composable
 fun DistanceFilter(selected: MutableState<String>) {
+    // Log the currently selected distance each time the composable recomposes.
+    Log.d("FILTER_DEBUG", "Currently selected distance: ${selected.value} miles")
+
     Row(horizontalArrangement = Arrangement.spacedBy(32.dp)) {
         DataSource.distances.forEach { distance ->
             Column(horizontalAlignment = Alignment.CenterHorizontally) {

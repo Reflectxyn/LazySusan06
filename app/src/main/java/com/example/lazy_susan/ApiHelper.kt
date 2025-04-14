@@ -120,7 +120,13 @@ object ApiHelper {
         })
     }
 
-    fun getNearbyRestaurants(lat: Double, lng: Double, callback: (List<Restaurant>) -> Unit) {
+    fun getNearbyRestaurants(
+        lat: Double,
+        lng: Double,
+        radiusMeters: Double,
+        minRating: Double,
+        callback: (List<Restaurant>) -> Unit
+    ) {
         // Use this to see when its called
         Log.d("DEBUG", "Function getNearbyRestaurants() called")
         val url = "https://places.googleapis.com/v1/places:searchNearby"
@@ -133,6 +139,7 @@ object ApiHelper {
             {
               "includedTypes": $includedTypes,
               "excludedPrimaryTypes": $excludedPrimaryTypes,
+              "minRating": $minRating,
               "maxResultCount": 20,
               "locationRestriction": {
                 "circle": {
@@ -140,7 +147,7 @@ object ApiHelper {
                     "latitude": $lat,
                     "longitude": $lng
                   },
-                  "radius": 8046.7
+                  "radius": $radiusMeters
                 }
               }
             }
@@ -207,9 +214,19 @@ object ApiHelper {
                                     }
                                 }.joinToString("\n") // Each formatted entry on a new line
                             } ?: "Hours not available"
+                        // Retrieve the rating value; default to 0.0 if missing.
+                        val rating = place.optDouble("rating", 0.0)
+                        restaurants.add(
+                            Restaurant(
+                                name = name,
+                                address = address,
+                                phoneNumber = phone,
+                                hours = hours,
+                                rating = rating
+                            )
+                        )
 
                         Log.d("PARSED_DATA", "Name: $name, Address: $address, Phone Number: $phone, Hours: $hours") // Print extracted data to Logcat
-                        restaurants.add(Restaurant(name, address, phone, hours))
                     }
                     callback(restaurants)
                 }
@@ -217,27 +234,31 @@ object ApiHelper {
         })
     }
 
-    fun getCachedNearbyRestaurants(lat: Double, lng: Double, callback: (List<Restaurant>) -> Unit) {
+    fun getCachedNearbyRestaurants(
+        lat: Double,
+        lng: Double,
+        radiusMeters: Double,
+        minRating: Double,
+        callback: (List<Restaurant>) -> Unit
+    ) {
         // For informational messages:
         Log.d("MyAppTag","Used Get Cached Nearby Restaurants")
-        // 5 miles in meters
-        // Make this custom tied to the inputs of the user later
-        val radiusMeters = 8046.7
-        // Convert meters to degrees latitude (approximation)
-        val deltaLat = radiusMeters / 111000.0
-        // Calculate delta for longitude using the cosine of the latitude (in radians)
-        val deltaLng = deltaLat / cos(Math.toRadians(lat))
-
+        val deltaLat = radiusMeters / 111000.0// Convert meters to degrees latitude (approximation)
+        val deltaLng = deltaLat / cos(Math.toRadians(lat)) // Calculate delta for longitude using the cosine of the latitude (in radians)
         val minLat = lat - deltaLat
         val maxLat = lat + deltaLat
         val minLng = lng - deltaLng
         val maxLng = lng + deltaLng
+
+        // Define your exclusions as a list.
+        val excludedTypes = listOf("shopping_mall", "casino", "amusement_center", "movie_theater", "event_venue", "convenience_store")
 
         db.collection("cached_restaurants")
             .whereGreaterThanOrEqualTo("latitude", minLat)
             .whereLessThanOrEqualTo("latitude", maxLat)
             .whereGreaterThanOrEqualTo("longitude", minLng)
             .whereLessThanOrEqualTo("longitude", maxLng)
+            .whereNotIn("primaryType", excludedTypes)
             .get()
             .addOnSuccessListener { querySnapshot ->
                 val restaurants = mutableListOf<Restaurant>()
@@ -245,23 +266,33 @@ object ApiHelper {
                     val docLat = document.getDouble("latitude")
                     val docLng = document.getDouble("longitude")
                     if (docLat != null && docLng != null) {
-                        val distance = calculateDistance(lat, lng, docLat, docLng)  // distance in miles
-                        if (distance <= 5.0) {  // Only include if within 5 miles
+                        val distance = calculateDistance(lat, lng, docLat, docLng)
+                        // Compare the distance (converted to miles) with the radius
+                        if (distance <= (radiusMeters / 1609.34)) {
                             val name = document.getString("name") ?: "Unknown"
                             val address = document.getString("address") ?: "Address not available"
                             val phone = document.getString("phoneNumber") ?: "Phone not available"
                             val hours = document.getString("hours") ?: "Hours not available"
-                            // Format the distance string (e.g., "3.45 mi away")
-                            val distanceStr = "%.2f mi away".format(distance)
-                            restaurants.add(
-                                Restaurant(
-                                    name = name,
-                                    address = address,
-                                    phoneNumber = phone,
-                                    hours = hours,
-                                    distance = distanceStr
+                            val rating = document.getDouble("rating") ?: 0.0
+                            val primaryType = document.getString("primaryType") ?: "unknown"
+
+                            // Exclude restaurants with unwanted primary types.
+                            if (excludedTypes.contains(primaryType)) continue
+
+                            // Only add restaurants that meet the rating threshold
+                            if (rating >= minRating) {
+                                val distanceStr = "%.2f mi away".format(distance)
+                                restaurants.add(
+                                    Restaurant(
+                                        name = name,
+                                        address = address,
+                                        phoneNumber = phone,
+                                        hours = hours,
+                                        rating = rating,
+                                        distance = distanceStr
+                                    )
                                 )
-                            )
+                            }
                         }
                     }
                 }
@@ -295,6 +326,8 @@ object ApiHelper {
     }
 
 }
+
+
 
 
 
