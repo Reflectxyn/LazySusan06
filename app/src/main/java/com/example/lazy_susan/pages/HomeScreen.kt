@@ -116,7 +116,9 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
                 .background(color = HoneyMustardYellow)
                 .border(shape = CircleShape, color = Color.Black, width = 2.dp)
                 .clickable {
-                    navController.navigate(AppScreen.Filters.name)
+                    if (!playingState) {
+                        navController.navigate(AppScreen.Filters.name)
+                    }
                 },
             contentAlignment = Alignment.Center
         ) {
@@ -160,7 +162,7 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
                             modifier = Modifier
                                 .width(148.dp)
                                 .height(48.dp)
-                                .border(1.dp, Color.Black, CircleShape)
+                                .border(1.5.dp, Color.Black, CircleShape)
                         ) {
                             Text(text = "Awards", color = Color.Black, style = MaterialTheme.typography.titleLarge)
                         }
@@ -173,57 +175,67 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
             // Modify this to receive list from the other one before
             Button(
                 onClick = {
-                    playingState = !playingState
-                    coroutineScope.launch {
-                        delay(3000)
+                    if(displayState.value == "Wheel") {
                         playingState = !playingState
-                        //val address = "4551 Linden Ave, Long Beach, CA"
-                        if (!locationPermissions.allPermissionsGranted || locationPermissions.shouldShowRationale) {
-                            locationPermissions.launchMultiplePermissionRequest()
-                        } else {
-                            coroutineScope.launch {
-                                fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-                                    location?.let {
-                                        val lat = it.latitude
-                                        val lng = it.longitude
+                        coroutineScope.launch {
+                            delay(3000)
+                            playingState = !playingState
+                            //val address = "4551 Linden Ave, Long Beach, CA"
+                            if (!locationPermissions.allPermissionsGranted || locationPermissions.shouldShowRationale) {
+                                locationPermissions.launchMultiplePermissionRequest()
+                            } else {
+                                coroutineScope.launch {
+                                    fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
+                                        location?.let {
+                                            val lat = it.latitude
+                                            val lng = it.longitude
 
-                                        // Fetch address from coordinates
-                                        getAddressFromCoordinates(lat, lng) { addr ->
-                                            address = addr
+                                            // Fetch address from coordinates
+                                            getAddressFromCoordinates(lat, lng) { addr ->
+                                                address = addr
+                                            }
+                                        } ?: run {
+                                            address = "Failed to get location"
                                         }
-                                    } ?: run {
-                                        address = "Failed to get location"
                                     }
                                 }
                             }
-                        }
 
-                        // Fetch restaurants only when button is clicked
-                        ApiHelper.getCoordinates(address) { lat, lng ->
-                            ApiHelper.getNearbyRestaurants(lat, lng) { fetchedRestaurants ->
-                                if (fetchedRestaurants.isNotEmpty()) {
-                                    restaurants = fetchedRestaurants
-                                    selectedRestaurant = restaurants.random()  // Picks a random restaurant
+                            // Fetch restaurants only when button is clicked
+                            ApiHelper.getCoordinates(address) { lat, lng ->
+                                ApiHelper.getNearbyRestaurants(lat, lng) { fetchedRestaurants ->
+                                    if (fetchedRestaurants.isNotEmpty()) {
+                                        restaurants = fetchedRestaurants
+                                        selectedRestaurant =
+                                            restaurants.random()  // Picks a random restaurant
 
-                                    val selectedAddress = selectedRestaurant?.address ?: "No address available"
+                                        val selectedAddress =
+                                            selectedRestaurant?.address ?: "No address available"
 
-                                    //
-                                    ApiHelper.getCoordinates(selectedAddress){ lat2, lng2 ->
-                                        // Step 5: Calculate the distance between user and restaurant
-                                        val distance = calculateDistance(lat, lng, lat2, lng2)
+                                        //
+                                        ApiHelper.getCoordinates(selectedAddress) { lat2, lng2 ->
+                                            // Step 5: Calculate the distance between user and restaurant
+                                            val distance = calculateDistance(lat, lng, lat2, lng2)
 
-                                        selectedRestaurant?.distance = "%.2f mi away".format(distance)
+                                            selectedRestaurant?.distance =
+                                                "%.2f mi away".format(distance)
 
-                                        // Log the results
-                                        Log.d("DISTANCE_RESULT", "Distance to ${selectedRestaurant?.name}: ${"%.2f".format(distance)} mi")
+                                            // Log the results
+                                            Log.d(
+                                                "DISTANCE_RESULT",
+                                                "Distance to ${selectedRestaurant?.name}: ${
+                                                    "%.2f".format(distance)
+                                                } mi"
+                                            )
 
-                                        // Display the result
-                                        showResult.value = true
+                                            // Display the result
+                                            showResult.value = true
 
+                                        }
+                                    } else {
+                                        selectedRestaurant = null
+                                        showResult.value = false
                                     }
-                                } else {
-                                    selectedRestaurant = null
-                                    showResult.value = false
                                 }
                             }
                         }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -60,21 +65,25 @@ import com.example.lazy_susan.ui.theme.Typography
 val cuisineLabels = listOf("Italian", "Japanese", "Thai", "Mexican", "Indian", "Chinese", "Greek", "American")
 val ratingLabels = listOf("2", "3", "4", "5")
 val distanceOptions = listOf("1", "2", "5", "10", "15")
+
 @Composable
-fun FiltersScreen(    navController: NavController,
-                      userId: String,
-                      presetId: String = "",
-                      presetViewModel: PresetViewModel = viewModel(factory = PresetViewModelFactory(userId))) {
+fun FiltersScreen(
+    navController: NavController,
+    userId: String,
+    presetId: String = "",
+    presetViewModel: PresetViewModel =
+        viewModel(factory = PresetViewModelFactory(userId))
+) {
     val preset = presetViewModel.presets.observeAsState(emptyList()).value.find { it.id == presetId }
 
     val cuisineList = remember { mutableStateListOf(*Array(cuisineLabels.size) { false }) }
-    val ratingList = remember { mutableStateListOf(*Array(ratingLabels.size) { false }) }
+    val ratingDefault = remember { mutableStateOf("3") }
     val distanceDefault = remember { mutableStateOf("2") }
 
     LaunchedEffect(preset) {
         preset?.let {
             it.filters.cuisines.forEachIndexed { index, value -> cuisineList[index] = value }
-            it.filters.ratings.forEachIndexed { index, value -> ratingList[index] = value }
+            ratingDefault.value = it.filters.rating.toString()
             distanceDefault.value = it.filters.distance.toString()
         }
     }
@@ -87,210 +96,241 @@ fun FiltersScreen(    navController: NavController,
     Box(modifier = Modifier
         .fillMaxSize()
         .padding(8.dp)) {
-        Column(
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
             modifier = Modifier
                 .fillMaxSize()
                 .clip(RoundedCornerShape(8.dp))
                 .background(brush = SolidColor(Color.White), alpha = 0.8f)
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(24.dp))
-            Box(
-                modifier = Modifier
-                    .width(348.dp)
-                    .height(60.dp)
-                    .clip(RoundedCornerShape(174.dp))
-                    .background(color = Color.LightGray),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "Custom Filter",
-                    style = Typography.headlineLarge
-                )
-            }
-            HorizontalDivider(
-                thickness = 2.dp,
-                color = LightGray,
-                modifier = Modifier
-                    .width(356.dp)
-                    .padding(24.dp)
-            )
-            Box(
-                modifier = Modifier
-                    .width(220.dp)
-                    .height(40.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(color = LightGray),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "Cuisine",
-                    style = Typography.headlineSmall
-                )
-            }
-            CuisineFilter(cuisineList)
-            HorizontalDivider(
-                thickness = 2.dp,
-                color = LightGray,
-                modifier = Modifier
-                    .width(356.dp)
-                    .padding(24.dp)
-            )
-            Box(
-                modifier = Modifier
-                    .width(220.dp)
-                    .height(40.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(color = LightGray),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "Ratings",
-                    style = Typography.headlineSmall
-                )
-            }
-            RatingFilter(ratingList)
-            HorizontalDivider(
-                thickness = 2.dp,
-                color = LightGray,
-                modifier = Modifier
-                    .width(356.dp)
-                    .padding(24.dp)
-            )
-            Box(
-                modifier = Modifier
-                    .width(220.dp)
-                    .height(40.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(color = LightGray),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "Distance (Miles)",
-                    style = Typography.headlineSmall
-                )
-            }
-            DistanceFilter(distanceDefault)
-            HorizontalDivider(
-                thickness = 2.dp,
-                color = LightGray,
-                modifier = Modifier
-                    .width(356.dp)
-                    .padding(24.dp)
-            )
-            Box(
-                modifier = Modifier
-                    .width(140.dp)
-                    .height(40.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(color = Color.White)
-                    .border(
-                        width = 2.dp,
-                        color = Color.Black,
-                        shape = RoundedCornerShape(10.dp)
-                    )
-                    .clickable {
-                        navController.navigate(AppScreen.Maps.name)
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "Map",
-                    style = Typography.titleLarge
-                )
-            }
-            HorizontalDivider(
-                thickness = 2.dp,
-                color = LightGray,
-                modifier = Modifier
-                    .width(356.dp)
-                    .padding(24.dp)
-            )
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Box(
-                    modifier = Modifier
-                        .width(100.dp)
-                        .height(40.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(color = Color.White)
-                        .border(
-                            width = 2.dp,
-                            color = Color.Black,
-                            shape = RoundedCornerShape(10.dp)
+            item(span = { GridItemSpan(2) }) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Spacer(modifier = Modifier.height(24.dp))
+                    Box(
+                        modifier = Modifier
+                            .width(348.dp)
+                            .height(60.dp)
+                            .clip(RoundedCornerShape(174.dp))
+                            .background(color = Color.LightGray),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Custom Filter",
+                            style = Typography.headlineLarge
                         )
-                        .clickable {
-                            cuisineList.forEachIndexed { index, _ ->
-                                cuisineList[index] = false
-                            }
-                            ratingList.forEachIndexed { index, _ ->
-                                ratingList[index] = false
-                            }
-                            distanceDefault.value = "2"
-                        },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "Clear",
-                        style = Typography.titleLarge
+                    }
+                    HorizontalDivider(
+                        thickness = 2.dp,
+                        color = LightGray,
+                        modifier = Modifier
+                            .width(356.dp)
+                            .padding(24.dp)
                     )
+                    Box(
+                        modifier = Modifier
+                            .width(220.dp)
+                            .height(40.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(color = LightGray),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Cuisine",
+                            style = Typography.headlineSmall
+                        )
+                    }
                 }
-                Box(
-                    modifier = Modifier
-                        .width(100.dp)
-                        .height(40.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(color = Color.White)
-                        .border(
-                            width = 2.dp,
-                            color = Color.Black,
-                            shape = RoundedCornerShape(10.dp)
-                        )
-                        .clickable {
-                            val cuisines = cuisineList.toList()
-                            val ratings = ratingList.toList()
-                            val distance = distanceDefault.value.toIntOrNull() ?: 2
-
-                            if (preset != null) {
-                                // Update existing preset
-                                val updated = preset.copy(filters = Filters(cuisines, ratings, distance))
-                                presetViewModel.updatePreset(updated)
-                            } else {
-                                // Add new preset
-                                presetViewModel.addPreset(cuisines, ratings, distance)
-                            }
-
-                            navController.popBackStack()
-                        },
-                    contentAlignment = Alignment.Center
+            }
+            itemsIndexed(cuisineLabels) { index, cuisine ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.padding(horizontal = 44.dp)
                 ) {
-                    Text(
-                        text = "Save",
-                        style = Typography.titleLarge
+                    Checkbox(
+                        checked = cuisineList[index],
+                        onCheckedChange = { cuisineList[index] = it }
                     )
+                    Text(text = cuisine, modifier = Modifier.width(100.dp))
                 }
-                Box(
-                    modifier = Modifier
-                        .width(100.dp)
-                        .height(40.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(color = Color.White)
-                        .border(
-                            width = 2.dp,
-                            color = Color.Black,
-                            shape = RoundedCornerShape(10.dp)
+            }
+            item(span = { GridItemSpan(2) }) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    HorizontalDivider(
+                        thickness = 2.dp,
+                        color = LightGray,
+                        modifier = Modifier
+                            .width(356.dp)
+                            .padding(24.dp)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .width(220.dp)
+                            .height(40.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(color = LightGray),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Ratings",
+                            style = Typography.headlineSmall
                         )
-                        .clickable {
-                            navController.navigateUp()
-                        },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "Cancel",
-                        style = Typography.titleLarge
+                    }
+                    RatingFilter(ratingDefault)
+                    HorizontalDivider(
+                        thickness = 2.dp,
+                        color = LightGray,
+                        modifier = Modifier
+                            .width(356.dp)
+                            .padding(24.dp)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .width(220.dp)
+                            .height(40.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(color = LightGray),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Distance (Miles)",
+                            style = Typography.headlineSmall
+                        )
+                    }
+                    DistanceFilter(distanceDefault)
+                    HorizontalDivider(
+                        thickness = 2.dp,
+                        color = LightGray,
+                        modifier = Modifier
+                            .width(356.dp)
+                            .padding(24.dp)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .width(140.dp)
+                            .height(40.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(color = Color.White)
+                            .border(
+                                width = 2.dp,
+                                color = Color.Black,
+                                shape = RoundedCornerShape(10.dp)
+                            )
+                            .clickable {
+                                navController.navigate(AppScreen.Maps.name)
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Map",
+                            style = Typography.titleLarge
+                        )
+                    }
+                    HorizontalDivider(
+                        thickness = 2.dp,
+                        color = LightGray,
+                        modifier = Modifier
+                            .width(356.dp)
+                            .padding(24.dp)
+                    )
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .width(100.dp)
+                                .height(40.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(color = Color.White)
+                                .border(
+                                    width = 2.dp,
+                                    color = Color.Black,
+                                    shape = RoundedCornerShape(10.dp)
+                                )
+                                .clickable {
+                                    cuisineList.forEachIndexed { index, _ ->
+                                        cuisineList[index] = false
+                                    }
+                                    ratingDefault.value = "3"
+                                    distanceDefault.value = "2"
+                                },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "Clear",
+                                style = Typography.titleLarge
+                            )
+                        }
+                        Box(
+                            modifier = Modifier
+                                .width(100.dp)
+                                .height(40.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(color = Color.White)
+                                .border(
+                                    width = 2.dp,
+                                    color = Color.Black,
+                                    shape = RoundedCornerShape(10.dp)
+                                )
+                                .clickable {
+                                    val cuisines = cuisineList.toList()
+                                    val rating = ratingDefault.value.toIntOrNull() ?: 3
+                                    val distance = distanceDefault.value.toIntOrNull() ?: 2
+
+                                    if (preset != null) {
+                                        // Update existing preset
+                                        val updated =
+                                            preset.copy(
+                                                filters = Filters(
+                                                    cuisines,
+                                                    rating,
+                                                    distance
+                                                )
+                                            )
+                                        presetViewModel.updatePreset(updated)
+                                    } else {
+                                        // Add new preset
+                                        presetViewModel.addPreset(cuisines, rating, distance)
+                                    }
+
+                                    navController.popBackStack()
+                                },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "Save",
+                                style = Typography.titleLarge
+                            )
+                        }
+                        Box(
+                            modifier = Modifier
+                                .width(100.dp)
+                                .height(40.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(color = Color.White)
+                                .border(
+                                    width = 2.dp,
+                                    color = Color.Black,
+                                    shape = RoundedCornerShape(10.dp)
+                                )
+                                .clickable {
+                                    navController.navigateUp()
+                                },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "Cancel",
+                                style = Typography.titleLarge
+                            )
+                        }
+                    }
+                    HorizontalDivider(
+                        thickness = 2.dp,
+                        color = LightGray,
+                        modifier = Modifier
+                            .width(356.dp)
+                            .padding(24.dp)
                     )
                 }
             }
@@ -299,34 +339,19 @@ fun FiltersScreen(    navController: NavController,
 }
 
 @Composable
-fun CuisineFilter(checkValue: MutableList<Boolean>) {
-    Column {
-        cuisineLabels.forEachIndexed { index, cuisine ->
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(
-                    checked = checkValue[index],
-                    onCheckedChange = { checkValue[index] = it }
-                )
-                Text(cuisine)
-            }
-        }
-    }
-}
-
-@Composable
-fun RatingFilter(checkValue: MutableList<Boolean>) {
+fun RatingFilter(selected: MutableState<String>) {
     Row {
         ratingLabels.forEachIndexed { index, rating ->
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(
-                    checked = checkValue[index],
-                    onCheckedChange = { checkValue[index] = it }
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceEvenly) {
+                RadioButton(
+                    selected = (selected.value == rating),
+                    onClick = { selected.value = rating }
                 )
-                Text(rating)
-                Spacer(modifier = Modifier.width(8.dp))
+                Text("$rating+")
+                Spacer(modifier = Modifier.width(4.dp))
                 Icon(imageVector = Icons.Default.Star, contentDescription = null)
                 if (index != (ratingLabels.size - 1)) {
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(4.dp))
                     VerticalDivider(
                         thickness = 2.dp,
                         color = LightGray,

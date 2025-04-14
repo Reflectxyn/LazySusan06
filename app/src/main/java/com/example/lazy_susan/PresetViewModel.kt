@@ -26,12 +26,12 @@ class PresetViewModel(private val userId: String) : ViewModel() {
     }
     fun addPreset(
         cuisines: List<Boolean>,
-        ratings: List<Boolean>,
+        rating: Int,
         distance: Int
     ) {
         val newPreset = Preset(
             name = "Preset ${_presets.value!!.size + 1}",
-            filters = Filters(cuisines, ratings, distance)
+            filters = Filters(cuisines, rating, distance)
         )
         val updatedList = _presets.value!!.toMutableList().apply { add(newPreset) }
         _presets.value = updatedList

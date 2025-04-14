@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
@@ -121,7 +122,15 @@ fun HistoryScreen(userId: String) {
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = 10.dp)
-                        .background(Color.White, shape = CircleShape)
+                        .background(
+                            color = Color.White,
+                            shape = RoundedCornerShape(10.dp)
+                        )
+                        .border(
+                            width = 1.5.dp,
+                            color = Color.Black,
+                            shape = RoundedCornerShape(10.dp)
+                        )
                         .padding(10.dp)
                 ) {
                     Text(

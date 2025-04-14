@@ -10,6 +10,6 @@ data class Preset(
 
 data class Filters(
     val cuisines: List<Boolean> = emptyList(),
-    val ratings: List<Boolean> = emptyList(),
+    val rating: Int = 0,
     val distance: Int = 0
 )
