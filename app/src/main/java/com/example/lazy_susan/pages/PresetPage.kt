@@ -66,10 +66,14 @@ fun PresetPage(
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Button(onClick = {},
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                    shape = RoundedCornerShape(8.dp),
-                    modifier = Modifier.width(130.dp)) { Text(text = preset.name, color = Color.Black)  }
+                TextField(
+                    value = preset.name,
+                    onValueChange = { newName ->
+                        PresetViewModel.updatePresetName(preset.id, newName)
+                    },
+                    label = { Text("Preset ${index + 1}") },
+                    modifier = Modifier.weight(1f)
+                )
 
                 Button(onClick = {navController.navigate("filters/${preset.id}")
                 },
