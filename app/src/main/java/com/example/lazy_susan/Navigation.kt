@@ -116,6 +116,7 @@ fun LazySusanApp(
     val route = backStackEntry?.destination?.route
     val pagerState = rememberPagerState(initialPage = 1) { TabPage.entries.size }
     val scope = rememberCoroutineScope()
+    val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
     var selectedTab by remember { mutableIntStateOf(pagerState.currentPage) }
 
     LaunchedEffect(pagerState.currentPage) {
@@ -161,9 +162,9 @@ fun LazySusanApp(
                     modifier = Modifier.padding(innerPadding)
             ) { currentPage ->
                 when (currentPage) {
-                    0 -> FeaturedScreen(userId = "99UfGbCweDT62RBhY4Vyuf4czYf2")
+                    0 -> FeaturedScreen(userId = userId)
                     1 -> HomeNav(modifier, navController)
-                    2 -> HistoryScreen(userId = "99UfGbCweDT62RBhY4Vyuf4czYf2")
+                    2 -> HistoryScreen(userId = userId )
                     3 -> AccountNav(modifier, navController, authViewModel)
                 }
             }
@@ -241,6 +242,13 @@ fun HomeNav(
         startDestination = AppScreen.Home.name,
         modifier = Modifier.fillMaxSize()
     ) {
+        composable(route = AppScreen.Featured.name) {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+            if (userId != null) {
+                FeaturedScreen(userId = userId)
+            }
+
+        }
         composable(route = AppScreen.Home.name) {
             HomeScreen(modifier, navController)
         }
@@ -252,6 +260,13 @@ fun HomeNav(
 
         }
         composable(route = AppScreen.Stats.name){
+
+        }
+        composable(route = AppScreen.History.name) {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+            if (userId != null) {
+                HistoryScreen(userId = userId)
+            }
 
         }
     }

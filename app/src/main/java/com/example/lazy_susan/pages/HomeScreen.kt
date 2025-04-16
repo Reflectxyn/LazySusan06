@@ -58,6 +58,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.example.lazy_susan.ApiHelper
 import com.example.lazy_susan.AppScreen
+import com.example.lazy_susan.FirebaseDatabaseHelper
 import com.example.lazy_susan.R
 import com.example.lazy_susan.Restaurant
 import com.example.lazy_susan.ui.theme.HoneyMustardYellow
@@ -65,6 +66,7 @@ import com.example.lazy_susan.ui.theme.PicnicTableRed
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.android.gms.location.LocationServices
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.Call
@@ -208,6 +210,13 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
                                         restaurants = fetchedRestaurants
                                         selectedRestaurant =
                                             restaurants.random()  // Picks a random restaurant
+
+                                        //Add random restaurant to database
+                                        val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+                                        if (userId != null) {
+                                            FirebaseDatabaseHelper.saveRestaurantToFirebase(userId, selectedRestaurant!!)
+                                        }
 
                                         val selectedAddress =
                                             selectedRestaurant?.address ?: "No address available"
