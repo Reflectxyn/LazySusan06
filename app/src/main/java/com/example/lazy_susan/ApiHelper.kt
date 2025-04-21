@@ -135,8 +135,6 @@ object ApiHelper {
         // Define your included and excluded types as JSON arrays (as strings)
         val includedTypes = """["restaurant"]"""
         val excludedPrimaryTypes = """["shopping_mall", "casino", "amusement_center", "movie_theater", "event_venue", "convenience_store"]"""
-
-        // Convert the accepted cuisines into a JSON array string for primary types.
         val acceptedPrimaryTypesJson = if (acceptedCuisines.isNotEmpty())
             acceptedCuisines.joinToString(prefix = "[\"", separator = "\",\"", postfix = "\"]")
         else
@@ -174,6 +172,7 @@ object ApiHelper {
             .addHeader("X-Goog-FieldMask","places.nationalPhoneNumber")
             .addHeader("X-Goog-FieldMask","places.regularOpeningHours.weekdayDescriptions")
             .addHeader("X-Goog-FieldMask","places.rating")
+            .addHeader("X-Goog-FieldMask", "places.types")
             .build()
 
         client.newCall(request).enqueue(object : Callback {
@@ -224,13 +223,23 @@ object ApiHelper {
                             } ?: "Hours not available"
                         // Retrieve the rating value; default to 0.0 if missing.
                         val rating = place.optDouble("rating", 0.0)
+
+                        val typesJson = place.optJSONArray("types")
+                        val typesList = mutableListOf<String>()
+                        if (typesJson != null) {
+                            for (j in 0 until typesJson.length()) {
+                                place.optJSONArray("types")?.getString(j)?.let { typesList += it }
+                            }
+                        }
+
                         restaurants.add(
                             Restaurant(
                                 name = name,
                                 address = address,
                                 phoneNumber = phone,
                                 hours = hours,
-                                rating = rating
+                                rating = rating,
+                                types = typesList
                             )
                         )
 
@@ -250,8 +259,8 @@ object ApiHelper {
         acceptedCuisines: List<String>,
         callback: (List<Restaurant>) -> Unit
     ) {
-        // For informational messages:
         Log.d("MyAppTag","Used Get Cached Nearby Restaurants")
+        // BOUNDING BOX
         val deltaLat = radiusMeters / 111000.0// Convert meters to degrees latitude (approximation)
         val deltaLng = deltaLat / cos(Math.toRadians(lat)) // Calculate delta for longitude using the cosine of the latitude (in radians)
         val minLat = lat - deltaLat
@@ -284,18 +293,10 @@ object ApiHelper {
                             val hours = document.getString("hours") ?: "Hours not available"
                             val rating = document.getDouble("rating") ?: 0.0
 
-                            // --- Extract the types array from the Firestore document ---
-                            val typesList = mutableListOf<String>()
-                            // Use the document instead of "place"
-                            val typesFromDoc = document.get("types")
-                            if (typesFromDoc != null && typesFromDoc is List<*>) {
-                                for (item in typesFromDoc) {
-                                    if (item is String) {
-                                        typesList.add(item)
-                                    }
-                                }
-                            }
-                            Log.d("PARSED_DATA", "Name: $name, Types: $typesList")
+                            // 5°: pull the FULL types array
+                            val typesList = (document.get("types") as? List<*>)
+                                ?.filterIsInstance<String>()
+                                ?: emptyList()
 
                             // Filter: skip if rating is below threshold
                             if (rating < minRating) continue
@@ -310,7 +311,8 @@ object ApiHelper {
                                     phoneNumber = phone,
                                     hours = hours,
                                     rating = rating,
-                                    distance = distanceStr
+                                    distance = distanceStr,
+                                    types = typesList      // ← new field on your Restaurant data class
                                 )
                             )
 

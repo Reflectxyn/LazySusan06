@@ -264,9 +264,12 @@ fun HomeScreen(
 
                                             //Loop through restaurants and give each one to Firebase
                                             restaurants.forEach { restaurant ->
-                                                val restaurantTypes: List<String> = restaurant.types
                                                 ApiHelper.getCoordinates(restaurant.address) { resLat, resLng ->
-                                                    saveRestaurantToFirestore(restaurant, resLat, resLng, restaurantTypes)
+                                                    saveRestaurantToFirestore(
+                                                        restaurant,
+                                                        resLat,
+                                                        resLng,
+                                                        restaurant.types)
                                                 }
                                             }
 
@@ -569,8 +572,6 @@ fun saveRestaurantToFirestore(
 ) {
     val db = Firebase.firestore
     val collectionRef = db.collection("cached_restaurants")
-
-    // Generate a composite ID
     val compositeId = "${restaurant.name.replace(" ", "_").replace("/", "-")}_${lat}_${lng}"
 
     // 1. Try to get an existing document by the composite ID
@@ -591,7 +592,7 @@ fun saveRestaurantToFirestore(
                     "longitude" to lng,
                     "rating" to restaurant.rating,
                     // Store all types as an array field
-                    "types" to types
+                    "types" to types,
                 )
 
                 collectionRef.document(compositeId).set(restaurantData, SetOptions.merge())
