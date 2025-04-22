@@ -243,7 +243,7 @@ object ApiHelper {
                             )
                         )
 
-                        Log.d("PARSED_DATA", "Name: $name, Address: $address, Phone Number: $phone, Hours: $hours") // Print extracted data to Logcat
+                        // Log.d("PARSED_DATA", "Name: $name,\nAddress: $address, Phone Number: $phone, Hours: $hours, Types: $typesList") // Print extracted data to Logcat
                     }
                     callback(restaurants)
                 }
@@ -259,9 +259,9 @@ object ApiHelper {
         acceptedCuisines: List<String>,
         callback: (List<Restaurant>) -> Unit
     ) {
-        Log.d("MyAppTag","Used Get Cached Nearby Restaurants")
+        Log.d("CACHE_DEBUG", "getcachedNearbyRestaurants has been called!")
         // BOUNDING BOX
-        val deltaLat = radiusMeters / 111000.0// Convert meters to degrees latitude (approximation)
+        val deltaLat = radiusMeters / 111_000.0 // Convert meters to degrees latitude (approximation)
         val deltaLng = deltaLat / cos(Math.toRadians(lat)) // Calculate delta for longitude using the cosine of the latitude (in radians)
         val minLat = lat - deltaLat
         val maxLat = lat + deltaLat
@@ -276,9 +276,10 @@ object ApiHelper {
             .whereLessThanOrEqualTo("latitude", maxLat)
             .whereGreaterThanOrEqualTo("longitude", minLng)
             .whereLessThanOrEqualTo("longitude", maxLng)
-            .whereNotIn("primaryType", excludedTypes)
             .get()
             .addOnSuccessListener { querySnapshot ->
+                Log.d("CACHE_DEBUG", "snapshot size = ${querySnapshot.size()}")
+
                 val restaurants = mutableListOf<Restaurant>()
                 for (document in querySnapshot.documents) {
                     val docLat = document.getDouble("latitude")
@@ -286,22 +287,32 @@ object ApiHelper {
                     if (docLat != null && docLng != null) {
                         val distance = calculateDistance(lat, lng, docLat, docLng)
                         // Compare the distance (converted to miles) with the radius
-                        if (distance <= (radiusMeters / 1609.34)) {
+                        if (distance > (radiusMeters / 1609.34)) {
                             val name = document.getString("name") ?: "Unknown"
                             val address = document.getString("address") ?: "Address not available"
                             val phone = document.getString("phoneNumber") ?: "Phone not available"
                             val hours = document.getString("hours") ?: "Hours not available"
                             val rating = document.getDouble("rating") ?: 0.0
-
-                            // 5°: pull the FULL types array
                             val typesList = (document.get("types") as? List<*>)
                                 ?.filterIsInstance<String>()
                                 ?: emptyList()
 
+                            // exclude unwanted primary types
+                            if (typesList.any { it in excludedTypes }) continue
+
+                            Log.d("CACHE_DEBUG", "Passed typesList")
+
                             // Filter: skip if rating is below threshold
                             if (rating < minRating) continue
 
-                            if (acceptedCuisines.isNotEmpty() && typesList.none { acceptedCuisines.contains(it) }) continue
+                            Log.d("CACHE_DEBUG", "Passed Ratings")
+
+                            // enforce cuisine selection if any
+                            if (acceptedCuisines.isNotEmpty() &&
+                                typesList.none { it in acceptedCuisines }
+                            ) continue
+
+                            Log.d("CACHE_DEBUG", "Passed accepted cuisines")
 
                             val distanceStr = "%.2f mi away".format(distance)
                             restaurants.add(
@@ -312,7 +323,7 @@ object ApiHelper {
                                     hours = hours,
                                     rating = rating,
                                     distance = distanceStr,
-                                    types = typesList      // ← new field on your Restaurant data class
+                                    types = typesList
                                 )
                             )
 
@@ -322,7 +333,7 @@ object ApiHelper {
                 callback(restaurants)
             }
             .addOnFailureListener { e ->
-                Log.e("Firestore", "Error getting cached restaurants", e)
+                Log.e("CACHE_DEBUG", "getCachedNearby failed:", e)
                 callback(emptyList())
             }
     }

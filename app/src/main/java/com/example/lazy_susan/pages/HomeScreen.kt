@@ -248,16 +248,18 @@ fun HomeScreen(
                         val lng = -118.1141
 
                         // Fetch address from coordinates
-                        address = fetchAddress(lat, lng)  // Suspend function ensures waiting for result
-                        ApiHelper.cacheCoordinates(address, lat, lng) // Cache the USER coordinates for future use:
+                        address = fetchAddress(lat, lng)
+                        ApiHelper.cacheCoordinates(address, lat, lng)
+
+                        Log.d("HOME_DEBUG", "cuisineSelection = $cuisineSelection")
 
                         ApiHelper.getCachedNearbyRestaurants(lat, lng, radiusMeters, minRating, cuisineSelection) { cachedRestaurants ->
                             Log.d("CACHE_DEBUG", "Number of cached restaurants: ${cachedRestaurants.size}")
                             if (cachedRestaurants.size < 20) {
                                 // If there are less than 20 restaurants nearby USER, we check the getNearbyRestaurants
-                                // 2. Fetch restaurants only after address is available
                                 ApiHelper.getCoordinates(address) { addrLat, addrLng ->
-                                    // Here is where it should be to check the firebase for the restaurants if they exist in the database already
+
+                                    // Firebase existing restaurant check
                                     ApiHelper.getNearbyRestaurants(addrLat, addrLng, radiusMeters, minRating, cuisineSelection) { fetchedRestaurants ->
                                         if (fetchedRestaurants.isNotEmpty()) {
                                             restaurants = fetchedRestaurants
@@ -280,7 +282,6 @@ fun HomeScreen(
                                             ApiHelper.getCoordinates(selectedAddress) { lat2, lng2 ->
                                                 val distance = calculateDistance(lat, lng, lat2, lng2)
                                                 selectedRestaurant?.distance = "%.2f mi away".format(distance)
-                                                // Log.d("DISTANCE_RESULT", "Distance to ${selectedRestaurant?.name}: ${"%.2f".format(distance)} mi")
                                                 showResult.value = true
                                             }
                                         } else {
@@ -578,7 +579,7 @@ fun saveRestaurantToFirestore(
     collectionRef.document(compositeId).get()
         .addOnSuccessListener { document: DocumentSnapshot ->
             if (document.exists()) {
-                Log.d("Firestore", "Restaurant already cached with composite ID: $compositeId")
+                // Log.d("Firestore", "Restaurant already cached with composite ID: $compositeId")
                 // Optionally, update existing data or do nothing.
             } else {
                 // 2. If not found, save it to Firestore
