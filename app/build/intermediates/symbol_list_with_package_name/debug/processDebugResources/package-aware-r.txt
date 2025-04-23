@@ -727,6 +727,7 @@ drawable ic_launcher_foreground
 drawable ic_other_sign_in
 drawable ic_passkey
 drawable ic_password
+drawable left_arrow
 drawable notification_action_background
 drawable notification_bg
 drawable notification_bg_low
@@ -742,6 +743,7 @@ drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
 drawable person
 drawable phone_icon
+drawable right_arrow
 drawable star
 drawable star_favorited
 drawable star_unfavorited

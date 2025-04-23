@@ -64,34 +64,46 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.platform.LocalContext
-
-
+import com.example.lazy_susan.data.DataSource
+import com.example.lazy_susan.model.Cuisine
+import android.content.Context
+import java.util.Locale
 
 
 val cuisineLabels = listOf("Italian", "Japanese", "Thai", "Mexican", "Indian", "Chinese", "Greek", "American")
 val ratingLabels = listOf("2", "3", "4", "5")
 val distanceOptions = listOf("1", "2", "5", "10", "15")
 
+
 @Composable
 fun FiltersScreen(
     navController: NavController,
-    /*
-    filterViewModel: FilterViewModel = viewModel(LocalContext.current as ComponentActivity)
-    */
+    filterVm: FilterViewModel = viewModel(LocalContext.current as ComponentActivity),
     userId: String,
     presetId: String = "",
-    presetViewModel: PresetViewModel =
-        viewModel(factory = PresetViewModelFactory(userId))
+    presetViewModel: PresetViewModel = viewModel(factory = PresetViewModelFactory(userId))
 ) {
     /*
     val cuisineSelections = filterViewModel.selectedCuisineBooleans
     var distanceDefault = filterViewModel.selectedDistance
      */
-    val preset = presetViewModel.presets.observeAsState(emptyList()).value.find { it.id == presetId }
 
+    val preset = presetViewModel
+        .presets
+        .observeAsState(emptyList())
+        .value
+        .find { it.id == presetId }
+
+    val cuisineList     = filterVm.selectedCuisines      // Boolean List
+    val ratingDefault   = filterVm.selectedRating        // String
+    val distanceDefault = filterVm.selectedDistance      // String
+
+
+    /*
     val cuisineList = remember { mutableStateListOf(*Array(cuisineLabels.size) { false }) }
     val ratingDefault = remember { mutableStateOf("3") }
     val distanceDefault = remember { mutableStateOf("2") }
+    */
 
     LaunchedEffect(preset) {
         preset?.let {
@@ -163,7 +175,10 @@ fun FiltersScreen(
                 ) {
                     Checkbox(
                         checked = cuisineList[index],
-                        onCheckedChange = { cuisineList[index] = it }
+                        onCheckedChange = { checked ->
+                            cuisineList[index] = checked
+                            Log.d("FILTER_DEBUG", "toggled $cuisine → $checked")
+                        }
                     )
                     Text(text = cuisine, modifier = Modifier.width(100.dp))
                 }
@@ -373,7 +388,7 @@ fun RatingFilter(selected: MutableState<String>) {
         ratingLabels.forEachIndexed { index, rating ->
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceEvenly) {
                 RadioButton(
-                    selected = (selected.value == rating),
+                    selected = selected.value == rating,
                     onClick = { selected.value = rating }
                 )
                 Text("$rating+")
@@ -437,3 +452,24 @@ fun DistanceFilter(selected: MutableState<String>) {
         }
     }
 }
+/*
+@Composable
+fun getSelectedCuisines(
+    selectedBooleans: List<Boolean>,
+    cuisineList: List<Cuisine>
+): List<String> {
+    val ctx: Context = LocalContext.current
+    return selectedBooleans
+        .mapIndexedNotNull { idx, isSelected ->
+            if (!isSelected) null
+            else {
+                // e.g. "Italian" → "italian_restaurant"
+                val uiLabel = ctx.getString(cuisineList[idx].name)
+                uiLabel
+                    .lowercase(Locale.getDefault())
+                    .replace(' ', '_') +
+                        "_restaurant"
+            }
+        }
+}
+*/

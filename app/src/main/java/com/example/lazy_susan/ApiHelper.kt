@@ -130,6 +130,7 @@ object ApiHelper {
     ) {
         // Use this to see when its called
         Log.d("DEBUG", "Function getNearbyRestaurants() called")
+        Log.d("DEBUG", "Rating: $minRating")
         val url = "https://places.googleapis.com/v1/places:searchNearby"
 
         // Define your included and excluded types as JSON arrays (as strings)
@@ -178,75 +179,86 @@ object ApiHelper {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 Log.e("API_ERROR", "Failed to fetch restaurants", e)
+                callback(emptyList())
             }
 
             override fun onResponse(call: Call, response: Response) {
-                response.body?.string()?.let {
-                    val jsonObject = JSONObject(it)
-                    val placesArray = jsonObject.getJSONArray("places")
-                    val restaurants = mutableListOf<Restaurant>()
+                val bodyStr = response.body?.string().orEmpty()
+                // Log.d("API_RESPONSE", bodyStr)   // ← CHANGED: log raw JSON
 
-                    for (i in 0 until placesArray.length()) {
-                        val place = placesArray.getJSONObject(i)
-                        val name = place.getJSONObject("displayName").getString("text")
+                val jsonObject = JSONObject(bodyStr)
 
-                        val address = if (place.has("formattedAddress")) {
-                            place.getString("formattedAddress")
-                        } else {
-                            "Address not available"
-                        }
-                        val phone = place.optString("nationalPhoneNumber", "Phone not available")
-                        val hoursJsonArray = place.optJSONObject("regularOpeningHours")?.optJSONArray("weekdayDescriptions")
-                        val hours = place.optJSONObject("regularOpeningHours")
-                            ?.optJSONArray("weekdayDescriptions")?.let { hoursArray ->
-                                val groupedHours = mutableMapOf<String, MutableList<String>>()
-                                for (i in 0 until hoursArray.length()) {
-                                    val entry = hoursArray.getString(i) // Example: "Monday: 10:00 AM – 11:00 PM"
-                                    val parts = entry.split(": ", limit = 2)
-                                    if (parts.size == 2) {
-                                        val day = parts[0] // "Monday"
-                                        val time = parts[1] // "10:00 AM – 11:00 PM"
-
-                                        groupedHours.putIfAbsent(time, mutableListOf())
-                                        groupedHours[time]?.add(day)
-                                    }
-                                }
-
-                                // Format the grouped hours
-                                groupedHours.map { (time, groupedDays) ->
-                                    if (groupedDays.size > 1) {
-                                        "${groupedDays.first()}-${groupedDays.last()}: $time"
-                                    } else {
-                                        "${groupedDays.first()}: $time"
-                                    }
-                                }.joinToString("\n") // Each formatted entry on a new line
-                            } ?: "Hours not available"
-                        // Retrieve the rating value; default to 0.0 if missing.
-                        val rating = place.optDouble("rating", 0.0)
-
-                        val typesJson = place.optJSONArray("types")
-                        val typesList = mutableListOf<String>()
-                        if (typesJson != null) {
-                            for (j in 0 until typesJson.length()) {
-                                place.optJSONArray("types")?.getString(j)?.let { typesList += it }
-                            }
-                        }
-
-                        restaurants.add(
-                            Restaurant(
-                                name = name,
-                                address = address,
-                                phoneNumber = phone,
-                                hours = hours,
-                                rating = rating,
-                                types = typesList
-                            )
-                        )
-
-                        // Log.d("PARSED_DATA", "Name: $name,\nAddress: $address, Phone Number: $phone, Hours: $hours, Types: $typesList") // Print extracted data to Logcat
-                    }
-                    callback(restaurants)
+                // ← CHANGED: use optJSONArray instead of getJSONArray
+                val placesArray = jsonObject.optJSONArray("places")
+                if (placesArray == null) {
+                    Log.w("API_ERROR", "No ‘places’ array in response – zero results")
+                    callback(emptyList())         // ← CHANGED: return empty list when no places
+                    return
                 }
+
+                val restaurants = mutableListOf<Restaurant>()
+
+                for (i in 0 until placesArray.length()) {
+                    val place = placesArray.getJSONObject(i)
+                    val name = place.getJSONObject("displayName").getString("text")
+
+                    val address = if (place.has("formattedAddress")) {
+                        place.getString("formattedAddress")
+                    } else {
+                        "Address not available"
+                    }
+                    val phone = place.optString("nationalPhoneNumber", "Phone not available")
+                    val hoursJsonArray = place.optJSONObject("regularOpeningHours")?.optJSONArray("weekdayDescriptions")
+                    val hours = place.optJSONObject("regularOpeningHours")
+                        ?.optJSONArray("weekdayDescriptions")?.let { hoursArray ->
+                            val groupedHours = mutableMapOf<String, MutableList<String>>()
+                            for (i in 0 until hoursArray.length()) {
+                                val entry = hoursArray.getString(i) // Example: "Monday: 10:00 AM – 11:00 PM"
+                                val parts = entry.split(": ", limit = 2)
+                                if (parts.size == 2) {
+                                    val day = parts[0] // "Monday"
+                                    val time = parts[1] // "10:00 AM – 11:00 PM"
+
+                                    groupedHours.putIfAbsent(time, mutableListOf())
+                                    groupedHours[time]?.add(day)
+                                }
+                            }
+
+                            // Format the grouped hours
+                            groupedHours.map { (time, groupedDays) ->
+                                if (groupedDays.size > 1) {
+                                    "${groupedDays.first()}-${groupedDays.last()}: $time"
+                                } else {
+                                    "${groupedDays.first()}: $time"
+                                }
+                            }.joinToString("\n") // Each formatted entry on a new line
+                        } ?: "Hours not available"
+                    // Retrieve the rating value; default to 0.0 if missing.
+                    val rating = place.optDouble("rating", 0.0)
+
+                    val typesJson = place.optJSONArray("types")
+                    val typesList = mutableListOf<String>()
+                    if (typesJson != null) {
+                        for (j in 0 until typesJson.length()) {
+                            place.optJSONArray("types")?.getString(j)?.let { typesList += it }
+                        }
+                    }
+
+                    restaurants.add(
+                        Restaurant(
+                            name = name,
+                            address = address,
+                            phoneNumber = phone,
+                            hours = hours,
+                            rating = rating,
+                            types = typesList
+                        )
+                    )
+
+                    // Log.d("PARSED_DATA", "Name: $name,\nAddress: $address, Phone Number: $phone, Hours: $hours, Types: $typesList") // Print extracted data to Logcat
+                }
+                callback(restaurants)
+
             }
         })
     }
@@ -260,8 +272,9 @@ object ApiHelper {
         callback: (List<Restaurant>) -> Unit
     ) {
         Log.d("CACHE_DEBUG", "getcachedNearbyRestaurants has been called!")
+        Log.d("DEBUG", "Rating: $minRating")
         // BOUNDING BOX
-        val deltaLat = radiusMeters / 111_000.0 // Convert meters to degrees latitude (approximation)
+        val deltaLat = radiusMeters / 111000.0 // Convert meters to degrees latitude (approximation)
         val deltaLng = deltaLat / cos(Math.toRadians(lat)) // Calculate delta for longitude using the cosine of the latitude (in radians)
         val minLat = lat - deltaLat
         val maxLat = lat + deltaLat
@@ -287,7 +300,7 @@ object ApiHelper {
                     if (docLat != null && docLng != null) {
                         val distance = calculateDistance(lat, lng, docLat, docLng)
                         // Compare the distance (converted to miles) with the radius
-                        if (distance > (radiusMeters / 1609.34)) {
+                        if (distance <= (radiusMeters / 1609.34)) {
                             val name = document.getString("name") ?: "Unknown"
                             val address = document.getString("address") ?: "Address not available"
                             val phone = document.getString("phoneNumber") ?: "Phone not available"
@@ -300,19 +313,13 @@ object ApiHelper {
                             // exclude unwanted primary types
                             if (typesList.any { it in excludedTypes }) continue
 
-                            Log.d("CACHE_DEBUG", "Passed typesList")
-
                             // Filter: skip if rating is below threshold
                             if (rating < minRating) continue
-
-                            Log.d("CACHE_DEBUG", "Passed Ratings")
 
                             // enforce cuisine selection if any
                             if (acceptedCuisines.isNotEmpty() &&
                                 typesList.none { it in acceptedCuisines }
                             ) continue
-
-                            Log.d("CACHE_DEBUG", "Passed accepted cuisines")
 
                             val distanceStr = "%.2f mi away".format(distance)
                             restaurants.add(

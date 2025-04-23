@@ -16,8 +16,10 @@ drawable history_popup_icon
 drawable home
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+drawable left_arrow
 drawable person
 drawable phone_icon
+drawable right_arrow
 drawable star
 drawable star_favorited
 drawable star_unfavorited

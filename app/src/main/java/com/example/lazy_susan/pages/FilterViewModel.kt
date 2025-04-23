@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 
 class FilterViewModel : ViewModel(){
+    /*
     // Holds the selected distance (as a String), default is "2" miles.
     val selectedDistance = mutableStateOf("2")
 
@@ -14,4 +15,9 @@ class FilterViewModel : ViewModel(){
     // NEW: Holds the boolean selection for cuisine options.
     // The list should have the same size as DataSource.cuisines.
     val selectedCuisineBooleans = mutableStateListOf(false, false, false, false, false, false, false, false)
+    */
+
+    val selectedCuisines = mutableStateListOf(false, false, false, false, false, false, false, false)
+    val selectedRating = mutableStateOf("3")
+    val selectedDistance = mutableStateOf("2")
 }

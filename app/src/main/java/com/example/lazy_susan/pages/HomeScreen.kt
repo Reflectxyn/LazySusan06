@@ -92,30 +92,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.activity.ComponentActivity
 import com.example.lazy_susan.data.DataSource
 import com.example.lazy_susan.model.Cuisine
 
-
-// Helper function to map a boolean rating list to a list of acceptable rating values.
-// DataSource.ratings is assumed to be a List<String> (for example, ["1", "2", "3", "4", "5"]).
-fun getSelectedRatings(checkValues: List<Boolean>, ratingStrings: List<String>): List<Double> {
-    return checkValues.mapIndexedNotNull { index, isChecked ->
-        if (isChecked) ratingStrings.getOrNull(index)?.toDoubleOrNull() else null
-    }
-}
-@Composable
-fun getSelectedCuisines(
-    checkValues: List<Boolean>,
-    cuisineOptions: List<Cuisine>
-): List<String> {
-    val context = LocalContext.current
-    return checkValues.mapIndexedNotNull { index, isChecked ->
-        if (isChecked) context.getString(cuisineOptions.getOrNull(index)?.name ?: 0) else null
-    }
-}
 
 @Composable
 fun HomeScreen(
@@ -131,6 +111,7 @@ fun HomeScreen(
     var restaurants by remember { mutableStateOf<List<Restaurant>>(emptyList()) }
     var selectedRestaurant by remember { mutableStateOf<Restaurant?>(null) }
     val showResult = remember { mutableStateOf(false) }
+    val showNoResults  = remember { mutableStateOf(false) }
 
     // location permissions
     val context = LocalContext.current
@@ -144,11 +125,14 @@ fun HomeScreen(
     val radiusMeters = selectedDistanceMiles * 1609.34
 
     // Get the selected rating threshold from the ViewModel.
-    val ratingThresholdStr = filterViewModel.selectedRatingThreshold.value
+    val ratingThresholdStr = filterViewModel.selectedRating.value
     val minRating = ratingThresholdStr.toDoubleOrNull() ?: 3.0
 
-    val cuisineSelection: List<String> = getSelectedCuisines(filterViewModel.selectedCuisineBooleans, DataSource.cuisines)
-
+    val cuisineSelection = getSelectedCuisines(
+        filterViewModel.selectedCuisines,
+        DataSource.cuisines
+    )
+    Log.d("FILTER_DEBUG", "cuisineSelection = $cuisineSelection")
 
     val locationPermissions = rememberMultiplePermissionsState(
         permissions = listOf(
@@ -236,35 +220,56 @@ fun HomeScreen(
                     if(displayState.value == "Wheel") {
                         playingState = !playingState
                         coroutineScope.launch {
+
                             delay(3000)
                             playingState = !playingState
                             //val address = "4551 Linden Ave, Long Beach, CA"
-                            if (!locationPermissions.allPermissionsGranted || locationPermissions.shouldShowRationale) {
-                                locationPermissions.launchMultiplePermissionRequest()
-                            } else {
-                                coroutineScope.launch {
-                                    fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-                                        location?.let {
-                                            val lat = it.latitude
-                                            val lng = it.longitude
 
-                                            // Fetch address from coordinates
-                                            getAddressFromCoordinates(lat, lng) { addr ->
-                                                address = addr
-                                            }
-                                        } ?: run {
-                                            address = "Failed to get location"
+                            // 1) Request permissions if needed, then bail out
+                            if (!locationPermissions.allPermissionsGranted) {
+                                locationPermissions.launchMultiplePermissionRequest()
+                                return@launch
+                            }
+
+                            // 2) Await a real location
+                            val location = getLocation(fusedLocationProviderClient)
+                            if (location == null) {
+                                Log.e("LOCATION", "Could not fetch location")
+                                return@launch
+                            }
+
+                            val lat = location.latitude
+                            val lng = location.longitude
+
+                            address = fetchAddress(lat, lng)
+
+                            /*
+                            coroutineScope.launch {
+                                fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
+                                    location?.let {
+                                        val usrlat = it.latitude
+                                        val usrlng = it.longitude
+
+                                        lat = usrlat
+                                        lng = usrlng
+
+                                        // Fetch address from coordinates
+                                        getAddressFromCoordinates(usrlat, usrlng) { addr ->
+                                            address = addr
                                         }
+                                    } ?: run {
+                                        address = "Failed to get location"
                                     }
                                 }
                             }
-                            /*
+                            */
+
+
                             ApiHelper.getCachedNearbyRestaurants(lat, lng, radiusMeters, minRating, cuisineSelection) { cachedRestaurants ->
                                 Log.d("CACHE_DEBUG", "Number of cached restaurants: ${cachedRestaurants.size}")
                                 if (cachedRestaurants.size < 20) {
                                     // If there are less than 20 restaurants nearby USER, we check the getNearbyRestaurants
                                     ApiHelper.getCoordinates(address) { addrLat, addrLng ->
-
                                         // Firebase existing restaurant check
                                         ApiHelper.getNearbyRestaurants(addrLat, addrLng, radiusMeters, minRating, cuisineSelection) { fetchedRestaurants ->
                                             if (fetchedRestaurants.isNotEmpty()) {
@@ -285,14 +290,23 @@ fun HomeScreen(
                                                 selectedRestaurant = restaurants.random()
                                                 val selectedAddress = selectedRestaurant?.address ?: "No address available"
 
+                                                //Add random restaurant to database
+                                                val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+                                                if (userId != null) {
+                                                    FirebaseDatabaseHelper.saveRestaurantToFirebase(userId, selectedRestaurant!!)
+                                                }
+
                                                 ApiHelper.getCoordinates(selectedAddress) { lat2, lng2 ->
                                                     val distance = calculateDistance(lat, lng, lat2, lng2)
                                                     selectedRestaurant?.distance = "%.2f mi away".format(distance)
                                                     showResult.value = true
+                                                    showNoResults.value = false
                                                 }
                                             } else {
                                                 selectedRestaurant = null
                                                 showResult.value = false
+                                                showNoResults.value = true
                                             }
                                         }
                                     }
@@ -302,54 +316,19 @@ fun HomeScreen(
                                     // 3. If 20 or more restaurants are already cached (and within 5 miles), use those.
                                     restaurants = cachedRestaurants
                                     selectedRestaurant = restaurants.random()
-                                    showResult.value = true
-                                }
-                            }
-                            */
-                            // Fetch restaurants only when button is clicked
-                            ApiHelper.getCoordinates(address) { lat, lng ->
-                                ApiHelper.getNearbyRestaurants(lat, lng) { fetchedRestaurants ->
-                                    if (fetchedRestaurants.isNotEmpty()) {
-                                        restaurants = fetchedRestaurants
-                                        selectedRestaurant =
-                                            restaurants.random()  // Picks a random restaurant
 
-                                        //Add random restaurant to database
-                                        val userId = FirebaseAuth.getInstance().currentUser?.uid
+                                    //Add random restaurant to database
+                                    val userId = FirebaseAuth.getInstance().currentUser?.uid
 
-                                        if (userId != null) {
-                                            FirebaseDatabaseHelper.saveRestaurantToFirebase(userId, selectedRestaurant!!)
-                                        }
-
-                                        val selectedAddress =
-                                            selectedRestaurant?.address ?: "No address available"
-
-                                        //
-                                        ApiHelper.getCoordinates(selectedAddress) { lat2, lng2 ->
-                                            // Step 5: Calculate the distance between user and restaurant
-                                            val distance = calculateDistance(lat, lng, lat2, lng2)
-
-                                            selectedRestaurant?.distance =
-                                                "%.2f mi away".format(distance)
-
-                                            // Log the results
-                                            Log.d(
-                                                "DISTANCE_RESULT",
-                                                "Distance to ${selectedRestaurant?.name}: ${
-                                                    "%.2f".format(distance)
-                                                } mi"
-                                            )
-
-                                            // Display the result
-                                            showResult.value = true
-
-                                        }
-                                    } else {
-                                        selectedRestaurant = null
-                                        showResult.value = false
+                                    if (userId != null) {
+                                        FirebaseDatabaseHelper.saveRestaurantToFirebase(userId, selectedRestaurant!!)
                                     }
+
+                                    showResult.value = true
+                                    showNoResults.value = false
                                 }
                             }
+
                         }
                     }
                 },
@@ -370,6 +349,10 @@ fun HomeScreen(
     }
     if(showResult.value) {
         Result(showResult, selectedRestaurant)
+    }
+    // 3) immediately after that, add your “no results” dialog:
+    if (showNoResults.value) {
+        NoResultsDialog(showNoResults)
     }
 }
 
@@ -566,6 +549,73 @@ fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant?) {
         }
     }
 }
+
+@Composable
+fun NoResultsDialog(showNoResults: MutableState<Boolean>) {
+    Dialog(onDismissRequest = { showNoResults.value = false }) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp),
+            shape = RoundedCornerShape(12.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "No restaurants found nearby.",
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Try loosening your filters or increasing the search radius.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(onClick = { showNoResults.value = false }) {
+                    Text("OK")
+                }
+            }
+        }
+    }
+}
+
+// Helper function to map a boolean rating list to a list of acceptable rating values.
+// DataSource.ratings is assumed to be a List<String> (for example, ["1", "2", "3", "4", "5"]).
+fun getSelectedRatings(checkValues: List<Boolean>, ratingStrings: List<String>): List<Double> {
+    return checkValues.mapIndexedNotNull { index, isChecked ->
+        if (isChecked) ratingStrings.getOrNull(index)?.toDoubleOrNull() else null
+    }
+}
+
+fun getSelectedCuisines(
+    selectedFlags: List<Boolean>,
+    cuisines: List<Cuisine>
+): List<String> {
+    return cuisines
+        .zip(selectedFlags)              // Pair each Cuisine with its selected-flag
+        .filter { it.second }            // Keep only those pairs where flag == true
+        .map { it.first.apiType }        // Extract the Cuisine.apiType from each pair
+}
+
+
+/*
+@Composable
+fun getSelectedCuisines(
+    checkValues: List<Boolean>,
+    cuisineOptions: List<Cuisine>
+): List<String> {
+    val context = LocalContext.current
+    return checkValues.mapIndexedNotNull { index, isChecked ->
+        if (isChecked) context.getString(cuisineOptions.getOrNull(index)?.name ?: 0) else null
+    }
+}
+*/
 
 fun saveRestaurantToFirestore(
     restaurant: Restaurant,
