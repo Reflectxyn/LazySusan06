@@ -51,6 +51,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.lazy_susan.pages.FiltersScreen
 import com.example.lazy_susan.pages.HomeScreen
 import com.example.lazy_susan.pages.PresetPage
@@ -112,22 +113,22 @@ fun LazySusanApp(
     navController: NavHostController = rememberNavController()
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
-    var currentScreen = AppScreen.valueOf(
-        backStackEntry?.destination?.route ?: AppScreen.Home.name
-    )
+    val route = backStackEntry?.destination?.route
     val pagerState = rememberPagerState(initialPage = 1) { TabPage.entries.size }
     val scope = rememberCoroutineScope()
+    val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
     var selectedTab by remember { mutableIntStateOf(pagerState.currentPage) }
 
     LaunchedEffect(pagerState.currentPage) {
         selectedTab = pagerState.currentPage
     }
 
-    when(selectedTab) {
-        0 -> currentScreen = AppScreen.valueOf(AppScreen.Featured.name)
-        1 -> currentScreen = AppScreen.valueOf(AppScreen.Home.name)
-        2 -> currentScreen = AppScreen.valueOf(AppScreen.History.name)
-        3 -> currentScreen = AppScreen.valueOf(AppScreen.Profile.name)
+    val currentScreen = when (pagerState.currentPage) {
+        0 -> AppScreen.Featured
+        1 -> AppScreen.Home
+        2 -> AppScreen.History
+        3 -> AppScreen.Profile
+        else -> AppScreen.Home
     }
 
     Scaffold(
@@ -161,9 +162,9 @@ fun LazySusanApp(
                     modifier = Modifier.padding(innerPadding)
             ) { currentPage ->
                 when (currentPage) {
-                    0 -> FeaturedScreen(userId = "99UfGbCweDT62RBhY4Vyuf4czYf2")
+                    0 -> FeaturedScreen(userId = userId)
                     1 -> HomeNav(modifier, navController)
-                    2 -> HistoryScreen(userId = "99UfGbCweDT62RBhY4Vyuf4czYf2")
+                    2 -> HistoryScreen(userId = userId )
                     3 -> AccountNav(modifier, navController, authViewModel)
                 }
             }
@@ -241,16 +242,31 @@ fun HomeNav(
         startDestination = AppScreen.Home.name,
         modifier = Modifier.fillMaxSize()
     ) {
+        composable(route = AppScreen.Featured.name) {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+            if (userId != null) {
+                FeaturedScreen(userId = userId)
+            }
+
+        }
         composable(route = AppScreen.Home.name) {
             HomeScreen(modifier, navController)
         }
         composable(route = AppScreen.Filters.name) {
-            FiltersScreen(navController)
+            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+            FiltersScreen(navController, userId = userId)
         }
         composable(route = AppScreen.Maps.name) {
 
         }
         composable(route = AppScreen.Stats.name){
+
+        }
+        composable(route = AppScreen.History.name) {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+            if (userId != null) {
+                HistoryScreen(userId = userId)
+            }
 
         }
     }
@@ -288,6 +304,18 @@ fun AccountNav(
         composable(route = AppScreen.PresetsPage.name) {
             val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
             PresetPage(userId = userId, navController)
+        }
+        composable(route = AppScreen.Filters.name) {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+            FiltersScreen(navController, userId = userId)
+        }
+        composable(
+            route = "filters/{presetId}",
+            arguments = listOf(navArgument("presetId") { defaultValue = "" })
+        ) { backStackEntry ->
+            val presetId = backStackEntry.arguments?.getString("presetId") ?: ""
+            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+            FiltersScreen(navController = navController, userId = userId, presetId = presetId)
         }
     }
 }

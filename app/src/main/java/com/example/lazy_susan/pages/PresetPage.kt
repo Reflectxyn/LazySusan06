@@ -16,6 +16,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -42,6 +43,10 @@ fun PresetPage(
 
     val presets by PresetViewModel.presets.observeAsState(emptyList())
 
+    LaunchedEffect(Unit) {
+        PresetViewModel.fetchPresets()
+    }
+
     Image(
         painter = painterResource(R.drawable.background),
         contentDescription = null,
@@ -61,12 +66,16 @@ fun PresetPage(
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Button(onClick = {},
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                    shape = RoundedCornerShape(8.dp),
-                    modifier = Modifier.width(130.dp)) { Text(text = preset.name, color = Color.Black)  }
+                TextField(
+                    value = preset.name,
+                    onValueChange = { newName ->
+                        PresetViewModel.updatePresetName(preset.id, newName)
+                    },
+                    label = { Text("Preset ${index + 1}") },
+                    modifier = Modifier.weight(1f)
+                )
 
-                Button(onClick = { /* Implement optional content edit dialog */
+                Button(onClick = {navController.navigate("filters/${preset.id}")
                 },
 
                 ) {
@@ -86,7 +95,7 @@ fun PresetPage(
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { PresetViewModel.addPreset() },
+            onClick = { navController.navigate(AppScreen.Filters.name) },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
             Text("Add +")

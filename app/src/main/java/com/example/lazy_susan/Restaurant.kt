@@ -9,5 +9,6 @@ data class Restaurant(
     var isFavorited: Boolean = false,
     var distance: String = "",
     var rating: Double = 0.0,
-    var types: List<String> = emptyList()
+    var types: List<String> = emptyList(),
+    val timestamp: Long = 0L
 )

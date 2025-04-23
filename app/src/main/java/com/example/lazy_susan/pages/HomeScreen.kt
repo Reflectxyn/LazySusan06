@@ -58,6 +58,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.example.lazy_susan.ApiHelper
 import com.example.lazy_susan.AppScreen
+import com.example.lazy_susan.FirebaseDatabaseHelper
 import com.example.lazy_susan.R
 import com.example.lazy_susan.Restaurant
 import com.example.lazy_susan.ui.theme.HoneyMustardYellow
@@ -65,6 +66,7 @@ import com.example.lazy_susan.ui.theme.PicnicTableRed
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.android.gms.location.LocationServices
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.Call
@@ -169,7 +171,9 @@ fun HomeScreen(
                 .background(color = HoneyMustardYellow)
                 .border(shape = CircleShape, color = Color.Black, width = 2.dp)
                 .clickable {
-                    navController.navigate(AppScreen.Filters.name)
+                    if (!playingState) {
+                        navController.navigate(AppScreen.Filters.name)
+                    }
                 },
             contentAlignment = Alignment.Center
         ) {
@@ -197,17 +201,13 @@ fun HomeScreen(
                         Spacer(modifier = Modifier.height(32.dp))
                         Row {
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text(
-                                text = stringResource(R.string.distance_stats, 4),
+                            Text(text = stringResource(R.string.distance_stats, 4),
                                 style = MaterialTheme.typography.titleLarge,
-                                textAlign = TextAlign.Center
-                            )
+                                textAlign = TextAlign.Center)
                             Spacer(modifier = Modifier.width(168.dp))
-                            Text(
-                                text = stringResource(R.string.streak_stats, 5),
+                            Text(text = stringResource(R.string.streak_stats, 5),
                                 style = MaterialTheme.typography.titleLarge,
-                                textAlign = TextAlign.Center
-                            )
+                                textAlign = TextAlign.Center)
                             Spacer(modifier = Modifier.width(12.dp))
                         }
                         Spacer(modifier = Modifier.height(48.dp))
@@ -216,22 +216,16 @@ fun HomeScreen(
                                 navController.navigate(AppScreen.Stats.name)
                             },
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = HoneyMustardYellow
-                            ),
+                                containerColor = HoneyMustardYellow),
                             modifier = Modifier
                                 .width(148.dp)
                                 .height(48.dp)
-                                .border(1.dp, Color.Black, CircleShape)
+                                .border(1.5.dp, Color.Black, CircleShape)
                         ) {
-                            Text(
-                                text = "Awards",
-                                color = Color.Black,
-                                style = MaterialTheme.typography.titleLarge
-                            )
+                            Text(text = "Awards", color = Color.Black, style = MaterialTheme.typography.titleLarge)
                         }
                         Spacer(modifier = Modifier.height(20.dp))
                     }
-
                 }
             }
             Spacer(modifier = Modifier.height(48.dp))
@@ -239,120 +233,128 @@ fun HomeScreen(
             // Modify this to receive list from the other one before
             Button(
                 onClick = {
-                    playingState = !playingState
-                    coroutineScope.launch {
-                        delay(3000)
+                    if(displayState.value == "Wheel") {
                         playingState = !playingState
-                        //val address = "4551 Linden Ave, Long Beach, CA"
-                        val lat = 33.7838
-                        val lng = -118.1141
-
-                        // Fetch address from coordinates
-                        address = fetchAddress(lat, lng)
-                        ApiHelper.cacheCoordinates(address, lat, lng)
-
-                        Log.d("HOME_DEBUG", "cuisineSelection = $cuisineSelection")
-
-                        ApiHelper.getCachedNearbyRestaurants(lat, lng, radiusMeters, minRating, cuisineSelection) { cachedRestaurants ->
-                            Log.d("CACHE_DEBUG", "Number of cached restaurants: ${cachedRestaurants.size}")
-                            if (cachedRestaurants.size < 20) {
-                                // If there are less than 20 restaurants nearby USER, we check the getNearbyRestaurants
-                                ApiHelper.getCoordinates(address) { addrLat, addrLng ->
-
-                                    // Firebase existing restaurant check
-                                    ApiHelper.getNearbyRestaurants(addrLat, addrLng, radiusMeters, minRating, cuisineSelection) { fetchedRestaurants ->
-                                        if (fetchedRestaurants.isNotEmpty()) {
-                                            restaurants = fetchedRestaurants
-
-                                            //Loop through restaurants and give each one to Firebase
-                                            restaurants.forEach { restaurant ->
-                                                ApiHelper.getCoordinates(restaurant.address) { resLat, resLng ->
-                                                    saveRestaurantToFirestore(
-                                                        restaurant,
-                                                        resLat,
-                                                        resLng,
-                                                        restaurant.types)
-                                                }
-                                            }
-
-                                            // Selected one from the many
-                                            selectedRestaurant = restaurants.random()
-                                            val selectedAddress = selectedRestaurant?.address ?: "No address available"
-
-                                            ApiHelper.getCoordinates(selectedAddress) { lat2, lng2 ->
-                                                val distance = calculateDistance(lat, lng, lat2, lng2)
-                                                selectedRestaurant?.distance = "%.2f mi away".format(distance)
-                                                showResult.value = true
-                                            }
-                                        } else {
-                                            selectedRestaurant = null
-                                            showResult.value = false
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                // 3. If 20 or more restaurants are already cached (and within 5 miles), use those.
-                                restaurants = cachedRestaurants
-                                selectedRestaurant = restaurants.random()
-                                showResult.value = true
-                            }
-                        }
-                        /*
-                        if (!locationPermissions.allPermissionsGranted || locationPermissions.shouldShowRationale) {
-                            locationPermissions.launchMultiplePermissionRequest()
-                        } else {
-
-                            // Hardcode CSULB address in order to check here(lat and long)
-
-                            // 1. Fetch location and address sequentially
-                            val location = fusedLocationProviderClient.lastLocation.await()
-                            if (location != null) {
-                                val lat = location.latitude
-                                val lng = location.longitude
-
-                                // Fetch address from coordinates
-                                address = fetchAddress(lat, lng)  // Suspend function ensures waiting for result
-
-                                // 2. Fetch restaurants only after address is available
-                                ApiHelper.getCoordinates(address) { addrLat, addrLng ->
-                                // Here is where it should be to check the firebase for the restaurants if they exist in the database already
-                                // Later on include the filters for the call unless changed into the
-                                    ApiHelper.getNearbyRestaurants(addrLat, addrLng) { fetchedRestaurants ->
-                                        if (fetchedRestaurants.isNotEmpty()) {
-                                            restaurants = fetchedRestaurants
-                                            selectedRestaurant = restaurants.random()
-
-                                            val selectedAddress = selectedRestaurant?.address ?: "No address available"
-
-                                            ApiHelper.getCoordinates(selectedAddress) { lat2, lng2 ->
-                                                val distance = calculateDistance(lat, lng, lat2, lng2)
-
-                                                selectedRestaurant?.let {
-                                                    saveRestaurantToFirestore(it, lat2, lng2)
-                                                }
-
-                                                selectedRestaurant?.distance = "%.2f mi away".format(distance)
-
-                                                Log.d("DISTANCE_RESULT", "Distance to ${selectedRestaurant?.name}: ${"%.2f".format(distance)} mi")
-                                                showResult.value = true
-                                            }
-                                        } else {
-                                            selectedRestaurant = null
-                                            showResult.value = false
-                                        }
-                                    }
-                                }
+                        coroutineScope.launch {
+                            delay(3000)
+                            playingState = !playingState
+                            //val address = "4551 Linden Ave, Long Beach, CA"
+                            if (!locationPermissions.allPermissionsGranted || locationPermissions.shouldShowRationale) {
+                                locationPermissions.launchMultiplePermissionRequest()
                             } else {
-                                address = "Failed to get location"
-                            }
+                                coroutineScope.launch {
+                                    fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
+                                        location?.let {
+                                            val lat = it.latitude
+                                            val lng = it.longitude
 
+                                            // Fetch address from coordinates
+                                            getAddressFromCoordinates(lat, lng) { addr ->
+                                                address = addr
+                                            }
+                                        } ?: run {
+                                            address = "Failed to get location"
+                                        }
+                                    }
+                                }
+                            }
+                            /*
+                            ApiHelper.getCachedNearbyRestaurants(lat, lng, radiusMeters, minRating, cuisineSelection) { cachedRestaurants ->
+                                Log.d("CACHE_DEBUG", "Number of cached restaurants: ${cachedRestaurants.size}")
+                                if (cachedRestaurants.size < 20) {
+                                    // If there are less than 20 restaurants nearby USER, we check the getNearbyRestaurants
+                                    ApiHelper.getCoordinates(address) { addrLat, addrLng ->
+
+                                        // Firebase existing restaurant check
+                                        ApiHelper.getNearbyRestaurants(addrLat, addrLng, radiusMeters, minRating, cuisineSelection) { fetchedRestaurants ->
+                                            if (fetchedRestaurants.isNotEmpty()) {
+                                                restaurants = fetchedRestaurants
+
+                                                //Loop through restaurants and give each one to Firebase
+                                                restaurants.forEach { restaurant ->
+                                                    ApiHelper.getCoordinates(restaurant.address) { resLat, resLng ->
+                                                        saveRestaurantToFirestore(
+                                                            restaurant,
+                                                            resLat,
+                                                            resLng,
+                                                            restaurant.types)
+                                                    }
+                                                }
+
+                                                // Selected one from the many
+                                                selectedRestaurant = restaurants.random()
+                                                val selectedAddress = selectedRestaurant?.address ?: "No address available"
+
+                                                ApiHelper.getCoordinates(selectedAddress) { lat2, lng2 ->
+                                                    val distance = calculateDistance(lat, lng, lat2, lng2)
+                                                    selectedRestaurant?.distance = "%.2f mi away".format(distance)
+                                                    showResult.value = true
+                                                }
+                                            } else {
+                                                selectedRestaurant = null
+                                                showResult.value = false
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    // 3. If 20 or more restaurants are already cached (and within 5 miles), use those.
+                                    restaurants = cachedRestaurants
+                                    selectedRestaurant = restaurants.random()
+                                    showResult.value = true
+                                }
+                            }
+                            */
+                            // Fetch restaurants only when button is clicked
+                            ApiHelper.getCoordinates(address) { lat, lng ->
+                                ApiHelper.getNearbyRestaurants(lat, lng) { fetchedRestaurants ->
+                                    if (fetchedRestaurants.isNotEmpty()) {
+                                        restaurants = fetchedRestaurants
+                                        selectedRestaurant =
+                                            restaurants.random()  // Picks a random restaurant
+
+                                        //Add random restaurant to database
+                                        val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+                                        if (userId != null) {
+                                            FirebaseDatabaseHelper.saveRestaurantToFirebase(userId, selectedRestaurant!!)
+                                        }
+
+                                        val selectedAddress =
+                                            selectedRestaurant?.address ?: "No address available"
+
+                                        //
+                                        ApiHelper.getCoordinates(selectedAddress) { lat2, lng2 ->
+                                            // Step 5: Calculate the distance between user and restaurant
+                                            val distance = calculateDistance(lat, lng, lat2, lng2)
+
+                                            selectedRestaurant?.distance =
+                                                "%.2f mi away".format(distance)
+
+                                            // Log the results
+                                            Log.d(
+                                                "DISTANCE_RESULT",
+                                                "Distance to ${selectedRestaurant?.name}: ${
+                                                    "%.2f".format(distance)
+                                                } mi"
+                                            )
+
+                                            // Display the result
+                                            showResult.value = true
+
+                                        }
+                                    } else {
+                                        selectedRestaurant = null
+                                        showResult.value = false
+                                    }
+                                }
+                            }
                         }
-                        */
                     }
                 },
-                colors = ButtonDefaults.buttonColors(containerColor = HoneyMustardYellow),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = HoneyMustardYellow),
                 modifier = Modifier
                     .width(225.dp)
                     .height(65.dp)
