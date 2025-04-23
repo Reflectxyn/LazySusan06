@@ -7,6 +7,7 @@ color purple_700
 color teal_200
 color teal_700
 color white
+drawable award_star
 drawable background
 drawable clock_icon
 drawable filter
@@ -16,11 +17,13 @@ drawable history_popup_icon
 drawable home
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+drawable lock
 drawable person
 drawable phone_icon
 drawable star
 drawable star_favorited
 drawable star_unfavorited
+drawable thumb_down
 drawable wheel_base
 drawable wheel_center
 id restaurantAddress
@@ -58,6 +61,7 @@ string gcm_defaultSenderId
 string google_api_key
 string google_app_id
 string google_crash_reporting_api_key
+string google_maps_api_key
 string google_storage_bucket
 string history_page
 string hours

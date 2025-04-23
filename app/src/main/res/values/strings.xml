@@ -39,4 +39,6 @@
     <string name="cuisine_chinese">Chinese</string>
     <string name="cuisine_greek">Greek</string>
     <string name="cuisine_american">American</string>
+    
+    <string name="google_maps_api_key">AIzaSyDtrWstvsa-DLgoSRDuWbQDySxjOskpRpk</string>
 </resources>

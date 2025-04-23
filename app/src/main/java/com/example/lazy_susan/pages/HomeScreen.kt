@@ -80,7 +80,7 @@ import kotlin.math.sin
 import kotlin.math.sqrt
 
 @Composable
-fun HomeScreen(modifier: Modifier, navController: NavHostController) {
+fun HomeScreen(navController: NavHostController) {
     var displayState = remember { mutableStateOf("Wheel") }
     var playingState by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
@@ -155,7 +155,7 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
                         Spacer(modifier = Modifier.height(48.dp))
                         Button(
                             onClick = {
-                                navController.navigate(AppScreen.Stats.name)
+                                navController.navigate(AppScreen.Awards.name)
                             },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = HoneyMustardYellow),

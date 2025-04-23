@@ -73,24 +73,28 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
 
-    implementation("androidx.appcompat:appcompat:1.4.0")
+    implementation(libs.androidx.appcompat)
     // Networking (OkHttp + Retrofit)
-    implementation("com.squareup.okhttp3:okhttp:4.9.0")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0") // For JSON parsing
+    implementation(libs.okhttp)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson) // For JSON parsing
 
     // JSON Parsing (Gson)
-    implementation("com.google.code.gson:gson:2.8.9")
+    implementation(libs.gson)
 
     // Jetpack Compose for Lists (LazyColumn)
-    implementation("androidx.compose.foundation:foundation:1.5.0")
+    implementation(libs.androidx.foundation)
 
     // RecyclerView (if not using Compose)
-    implementation("androidx.recyclerview:recyclerview:1.2.1")
+    implementation(libs.androidx.recyclerview)
 
-    implementation ("com.google.code.gson:gson:2.8.8")   // To parse JSON
+    implementation (libs.gson.v288)   // To parse JSON
 
-    implementation ("com.google.android.gms:play-services-location:18.0.0")
-    implementation ("com.google.accompanist:accompanist-permissions:0.28.0")
+    implementation (libs.play.services.location)
+    implementation (libs.accompanist.permissions)
 
+    implementation (libs.maps.compose.v2115)
+    implementation (libs.play.services.maps)
+    implementation (libs.play.services.location)
+    implementation (libs.android.maps.utils)
 }
