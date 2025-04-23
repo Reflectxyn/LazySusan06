@@ -58,6 +58,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.example.lazy_susan.ApiHelper
 import com.example.lazy_susan.AppScreen
+import com.example.lazy_susan.FirebaseDatabaseHelper
 import com.example.lazy_susan.R
 import com.example.lazy_susan.Restaurant
 import com.example.lazy_susan.ui.theme.HoneyMustardYellow
@@ -65,6 +66,7 @@ import com.example.lazy_susan.ui.theme.PicnicTableRed
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.android.gms.location.LocationServices
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.Call
@@ -74,13 +76,33 @@ import okhttp3.Request
 import okhttp3.Response
 import org.json.JSONObject
 import java.io.IOException
+import kotlinx.coroutines.tasks.await
+import com.google.android.gms.location.FusedLocationProviderClient
+import android.location.Location
+import com.google.firebase.firestore.DocumentSnapshot
+import kotlinx.coroutines.suspendCancellableCoroutine
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.SetOptions
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
+import androidx.lifecycle.viewmodel.compose.viewModel
+
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+import androidx.activity.ComponentActivity
+import com.example.lazy_susan.data.DataSource
+import com.example.lazy_susan.model.Cuisine
+
 
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen(
+    modifier: Modifier,
+    navController: NavHostController,
+    filterViewModel: FilterViewModel = viewModel(LocalContext.current as ComponentActivity)
+) {
     var displayState = remember { mutableStateOf("Wheel") }
     var playingState by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
@@ -89,11 +111,28 @@ fun HomeScreen(navController: NavHostController) {
     var restaurants by remember { mutableStateOf<List<Restaurant>>(emptyList()) }
     var selectedRestaurant by remember { mutableStateOf<Restaurant?>(null) }
     val showResult = remember { mutableStateOf(false) }
+    val showNoResults  = remember { mutableStateOf(false) }
 
     // location permissions
     val context = LocalContext.current
     val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
     var address by remember { mutableStateOf<String>("") }
+
+    // Retrieve the selected distance from the shared FilterViewModel.
+    val selectedDistance = filterViewModel.selectedDistance.value
+    val selectedDistanceMiles = selectedDistance.toDoubleOrNull() ?: 2.0
+    // Convert miles to meters.
+    val radiusMeters = selectedDistanceMiles * 1609.34
+
+    // Get the selected rating threshold from the ViewModel.
+    val ratingThresholdStr = filterViewModel.selectedRating.value
+    val minRating = ratingThresholdStr.toDoubleOrNull() ?: 3.0
+
+    val cuisineSelection = getSelectedCuisines(
+        filterViewModel.selectedCuisines,
+        DataSource.cuisines
+    )
+    Log.d("FILTER_DEBUG", "cuisineSelection = $cuisineSelection")
 
     val locationPermissions = rememberMultiplePermissionsState(
         permissions = listOf(
@@ -134,7 +173,10 @@ fun HomeScreen(navController: NavHostController) {
             Box(contentAlignment = Alignment.Center) {
                 WheelAnimation(displayState, isSpinning = playingState)
                 if (displayState.value == "Stats") {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
                         Text(
                             text = stringResource(R.string.restaurant_stats, 10),
                             style = MaterialTheme.typography.titleLarge,
@@ -155,7 +197,7 @@ fun HomeScreen(navController: NavHostController) {
                         Spacer(modifier = Modifier.height(48.dp))
                         Button(
                             onClick = {
-                                navController.navigate(AppScreen.Awards.name)
+                                navController.navigate(AppScreen.Stats.name)
                             },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = HoneyMustardYellow),
@@ -178,66 +220,115 @@ fun HomeScreen(navController: NavHostController) {
                     if(displayState.value == "Wheel") {
                         playingState = !playingState
                         coroutineScope.launch {
+
                             delay(3000)
                             playingState = !playingState
                             //val address = "4551 Linden Ave, Long Beach, CA"
-                            if (!locationPermissions.allPermissionsGranted || locationPermissions.shouldShowRationale) {
+
+                            // 1) Request permissions if needed, then bail out
+                            if (!locationPermissions.allPermissionsGranted) {
                                 locationPermissions.launchMultiplePermissionRequest()
-                            } else {
-                                coroutineScope.launch {
-                                    fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-                                        location?.let {
-                                            val lat = it.latitude
-                                            val lng = it.longitude
+                                return@launch
+                            }
 
-                                            // Fetch address from coordinates
-                                            getAddressFromCoordinates(lat, lng) { addr ->
-                                                address = addr
+                            // 2) Await a real location
+                            val location = getLocation(fusedLocationProviderClient)
+                            if (location == null) {
+                                Log.e("LOCATION", "Could not fetch location")
+                                return@launch
+                            }
+
+                            val lat = location.latitude
+                            val lng = location.longitude
+
+                            address = fetchAddress(lat, lng)
+
+                            /*
+                            coroutineScope.launch {
+                                fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
+                                    location?.let {
+                                        val usrlat = it.latitude
+                                        val usrlng = it.longitude
+
+                                        lat = usrlat
+                                        lng = usrlng
+
+                                        // Fetch address from coordinates
+                                        getAddressFromCoordinates(usrlat, usrlng) { addr ->
+                                            address = addr
+                                        }
+                                    } ?: run {
+                                        address = "Failed to get location"
+                                    }
+                                }
+                            }
+                            */
+
+
+                            ApiHelper.getCachedNearbyRestaurants(lat, lng, radiusMeters, minRating, cuisineSelection) { cachedRestaurants ->
+                                Log.d("CACHE_DEBUG", "Number of cached restaurants: ${cachedRestaurants.size}")
+                                if (cachedRestaurants.size < 20) {
+                                    // If there are less than 20 restaurants nearby USER, we check the getNearbyRestaurants
+                                    ApiHelper.getCoordinates(address) { addrLat, addrLng ->
+                                        // Firebase existing restaurant check
+                                        ApiHelper.getNearbyRestaurants(addrLat, addrLng, radiusMeters, minRating, cuisineSelection) { fetchedRestaurants ->
+                                            if (fetchedRestaurants.isNotEmpty()) {
+                                                restaurants = fetchedRestaurants
+
+                                                //Loop through restaurants and give each one to Firebase
+                                                restaurants.forEach { restaurant ->
+                                                    ApiHelper.getCoordinates(restaurant.address) { resLat, resLng ->
+                                                        saveRestaurantToFirestore(
+                                                            restaurant,
+                                                            resLat,
+                                                            resLng,
+                                                            restaurant.types)
+                                                    }
+                                                }
+
+                                                // Selected one from the many
+                                                selectedRestaurant = restaurants.random()
+                                                val selectedAddress = selectedRestaurant?.address ?: "No address available"
+
+                                                //Add random restaurant to database
+                                                val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+                                                if (userId != null) {
+                                                    FirebaseDatabaseHelper.saveRestaurantToFirebase(userId, selectedRestaurant!!)
+                                                }
+
+                                                ApiHelper.getCoordinates(selectedAddress) { lat2, lng2 ->
+                                                    val distance = calculateDistance(lat, lng, lat2, lng2)
+                                                    selectedRestaurant?.distance = "%.2f mi away".format(distance)
+                                                    showResult.value = true
+                                                    showNoResults.value = false
+                                                }
+                                            } else {
+                                                selectedRestaurant = null
+                                                showResult.value = false
+                                                showNoResults.value = true
                                             }
-                                        } ?: run {
-                                            address = "Failed to get location"
                                         }
                                     }
                                 }
-                            }
+                                else
+                                {
+                                    // 3. If 20 or more restaurants are already cached (and within 5 miles), use those.
+                                    restaurants = cachedRestaurants
+                                    selectedRestaurant = restaurants.random()
 
-                            // Fetch restaurants only when button is clicked
-                            ApiHelper.getCoordinates(address) { lat, lng ->
-                                ApiHelper.getNearbyRestaurants(lat, lng) { fetchedRestaurants ->
-                                    if (fetchedRestaurants.isNotEmpty()) {
-                                        restaurants = fetchedRestaurants
-                                        selectedRestaurant =
-                                            restaurants.random()  // Picks a random restaurant
+                                    //Add random restaurant to database
+                                    val userId = FirebaseAuth.getInstance().currentUser?.uid
 
-                                        val selectedAddress =
-                                            selectedRestaurant?.address ?: "No address available"
-
-                                        //
-                                        ApiHelper.getCoordinates(selectedAddress) { lat2, lng2 ->
-                                            // Step 5: Calculate the distance between user and restaurant
-                                            val distance = calculateDistance(lat, lng, lat2, lng2)
-
-                                            selectedRestaurant?.distance =
-                                                "%.2f mi away".format(distance)
-
-                                            // Log the results
-                                            Log.d(
-                                                "DISTANCE_RESULT",
-                                                "Distance to ${selectedRestaurant?.name}: ${
-                                                    "%.2f".format(distance)
-                                                } mi"
-                                            )
-
-                                            // Display the result
-                                            showResult.value = true
-
-                                        }
-                                    } else {
-                                        selectedRestaurant = null
-                                        showResult.value = false
+                                    if (userId != null) {
+                                        FirebaseDatabaseHelper.saveRestaurantToFirebase(userId, selectedRestaurant!!)
                                     }
+
+                                    showResult.value = true
+                                    showNoResults.value = false
                                 }
                             }
+
                         }
                     }
                 },
@@ -259,7 +350,30 @@ fun HomeScreen(navController: NavHostController) {
     if(showResult.value) {
         Result(showResult, selectedRestaurant)
     }
+    // 3) immediately after that, add your “no results” dialog:
+    if (showNoResults.value) {
+        NoResultsDialog(showNoResults)
+    }
 }
+
+// Suspend function to fetch the location
+suspend fun getLocation(fusedLocationProviderClient: FusedLocationProviderClient): Location? {
+    return try {
+        fusedLocationProviderClient.lastLocation.await()
+    } catch (e: Exception) {
+        null
+    }
+}
+
+// Suspend function to fetch address
+suspend fun fetchAddress(lat: Double, lng: Double): String {
+    return suspendCancellableCoroutine { continuation ->
+        getAddressFromCoordinates(lat, lng) { addr ->
+            continuation.resume(addr) {}
+        }
+    }
+}
+
 // Function to get address from coordinates
 private fun getAddressFromCoordinates(lat: Double, lng: Double, callback: (String) -> Unit) {
     val API_KEY = "AIzaSyDtrWstvsa-DLgoSRDuWbQDySxjOskpRpk"
@@ -429,9 +543,151 @@ fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant?) {
                 Text(text = "Phone: ${restaurant?.phoneNumber}", style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = "Hours: ${restaurant?.hours}", style = MaterialTheme.typography.bodyMedium)
-
+                Button(
+                    onClick = {},
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(40.dp)
+                ){Text(text = "Accept")}
             }
+            Row(modifier = Modifier.padding(16.dp)) {
 
+                Button(
+                    onClick = {},
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier
+                        .width(130.dp)
+                        .height(40.dp)
+
+                ) { Text(text = "Reject") }
+                Button(
+                    onClick = {},
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier
+                        .width(130.dp)
+                        .height(40.dp)
+                ) { Text(text = "Block") }
+            }
         }
     }
 }
+
+@Composable
+fun NoResultsDialog(showNoResults: MutableState<Boolean>) {
+    Dialog(onDismissRequest = { showNoResults.value = false }) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp),
+            shape = RoundedCornerShape(12.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "No restaurants found nearby.",
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Try loosening your filters or increasing the search radius.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(onClick = { showNoResults.value = false }) {
+                    Text("OK")
+                }
+            }
+        }
+    }
+}
+
+// Helper function to map a boolean rating list to a list of acceptable rating values.
+// DataSource.ratings is assumed to be a List<String> (for example, ["1", "2", "3", "4", "5"]).
+fun getSelectedRatings(checkValues: List<Boolean>, ratingStrings: List<String>): List<Double> {
+    return checkValues.mapIndexedNotNull { index, isChecked ->
+        if (isChecked) ratingStrings.getOrNull(index)?.toDoubleOrNull() else null
+    }
+}
+
+fun getSelectedCuisines(
+    selectedFlags: List<Boolean>,
+    cuisines: List<Cuisine>
+): List<String> {
+    return cuisines
+        .zip(selectedFlags)              // Pair each Cuisine with its selected-flag
+        .filter { it.second }            // Keep only those pairs where flag == true
+        .map { it.first.apiType }        // Extract the Cuisine.apiType from each pair
+}
+
+
+/*
+@Composable
+fun getSelectedCuisines(
+    checkValues: List<Boolean>,
+    cuisineOptions: List<Cuisine>
+): List<String> {
+    val context = LocalContext.current
+    return checkValues.mapIndexedNotNull { index, isChecked ->
+        if (isChecked) context.getString(cuisineOptions.getOrNull(index)?.name ?: 0) else null
+    }
+}
+*/
+
+fun saveRestaurantToFirestore(
+    restaurant: Restaurant,
+    lat: Double,
+    lng: Double,
+    types: List<String>
+) {
+    val db = Firebase.firestore
+    val collectionRef = db.collection("cached_restaurants")
+    val compositeId = "${restaurant.name.replace(" ", "_").replace("/", "-")}_${lat}_${lng}"
+
+    // 1. Try to get an existing document by the composite ID
+    collectionRef.document(compositeId).get()
+        .addOnSuccessListener { document: DocumentSnapshot ->
+            if (document.exists()) {
+                // Log.d("Firestore", "Restaurant already cached with composite ID: $compositeId")
+                // Optionally, update existing data or do nothing.
+            } else {
+                // 2. If not found, save it to Firestore
+                val restaurantData = hashMapOf(
+                    "name" to restaurant.name,
+                    "address" to restaurant.address,
+                    "phoneNumber" to restaurant.phoneNumber,
+                    "hours" to restaurant.hours,
+                    "id" to compositeId, // store the composite ID
+                    "latitude" to lat,
+                    "longitude" to lng,
+                    "rating" to restaurant.rating,
+                    // Store all types as an array field
+                    "types" to types,
+                )
+
+                collectionRef.document(compositeId).set(restaurantData, SetOptions.merge())
+                    .addOnSuccessListener {
+                        Log.d("Firestore", "Restaurant saved: ${restaurant.name} with ID: $compositeId")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("Firestore", "Failed to save restaurant", e)
+                    }
+            }
+        }
+        .addOnFailureListener { e ->
+            Log.e("Firestore", "Failed to check if restaurant exists", e)
+        }
+}
+/*
+ Notes:
+ - Vending Machines can count as restaurants? (Specific Vending machines like Farmers Fridge w/ full meals)
+*/

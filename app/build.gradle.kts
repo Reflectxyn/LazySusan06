@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.firebase.database)
+    implementation(libs.firebase.firestore.ktx)
     implementation(libs.androidx.room.runtime.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -73,28 +74,27 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
 
-    implementation(libs.androidx.appcompat)
+    implementation("androidx.appcompat:appcompat:1.4.0")
     // Networking (OkHttp + Retrofit)
-    implementation(libs.okhttp)
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson) // For JSON parsing
+    implementation("com.squareup.okhttp3:okhttp:4.9.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0") // For JSON parsing
 
     // JSON Parsing (Gson)
-    implementation(libs.gson)
+    implementation("com.google.code.gson:gson:2.8.9")
 
     // Jetpack Compose for Lists (LazyColumn)
-    implementation(libs.androidx.foundation)
+    implementation("androidx.compose.foundation:foundation:1.5.0")
 
     // RecyclerView (if not using Compose)
-    implementation(libs.androidx.recyclerview)
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
 
-    implementation (libs.gson.v288)   // To parse JSON
+    implementation ("com.google.code.gson:gson:2.8.8")   // To parse JSON
 
-    implementation (libs.play.services.location)
-    implementation (libs.accompanist.permissions)
+    implementation ("com.google.android.gms:play-services-location:18.0.0")
+    implementation ("com.google.accompanist:accompanist-permissions:0.28.0")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.4.4")
+    implementation("com.google.firebase:firebase-auth-ktx")
 
-    implementation (libs.maps.compose.v2115)
-    implementation (libs.play.services.maps)
-    implementation (libs.play.services.location)
-    implementation (libs.android.maps.utils)
+
 }
