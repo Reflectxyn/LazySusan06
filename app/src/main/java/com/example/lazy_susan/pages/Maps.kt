@@ -35,7 +35,7 @@ fun MapsScreen(radiusInMiles: Int) {
         )
         Marker(
             state = MarkerState(position = atasehir),
-            title = "Your Location"
+            title = radiusInMiles.toString()
         )
     }
 }

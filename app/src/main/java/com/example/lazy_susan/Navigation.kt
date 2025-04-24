@@ -47,6 +47,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -152,7 +153,7 @@ fun LazySusanApp(
         Column {
             HorizontalPager(
                     state = pagerState,
-                    userScrollEnabled = route != AppScreen.Maps.name,
+                    userScrollEnabled = route?.contains(AppScreen.Maps.name) == false,
                     modifier = Modifier.padding(innerPadding)
             ) { currentPage ->
                 when (currentPage) {
@@ -244,7 +245,7 @@ fun HomeNav(
         }
         composable(
             route = "${AppScreen.Maps.name}/{radiusInMiles}",
-            arguments = listOf(navArgument("radiusInMiles") { defaultValue = 2 })
+            arguments = listOf(navArgument("radiusInMiles") { type = NavType.IntType })
         ) { backStackEntry ->
             val radiusInMiles = backStackEntry.arguments?.getInt("radiusInMiles") ?: 2
             MapsScreen(radiusInMiles)
@@ -302,7 +303,7 @@ fun AccountNav(
         }
         composable(
             route = "${AppScreen.Maps.name}/{radiusInMiles}",
-            arguments = listOf(navArgument("radiusInMiles") { defaultValue = 2 })
+            arguments = listOf(navArgument("radiusInMiles") { type = NavType.IntType })
         ) { backStackEntry ->
             val radiusInMiles = backStackEntry.arguments?.getInt("radiusInMiles") ?: 2
             MapsScreen(radiusInMiles)

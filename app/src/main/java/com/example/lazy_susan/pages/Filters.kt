@@ -217,12 +217,12 @@ fun FiltersScreen(
                                 shape = RoundedCornerShape(10.dp)
                             )
                             .clickable {
-                                navController.navigate(AppScreen.Maps.name)
+                                navController.navigate("${AppScreen.Maps.name}/${distanceDefault.value}")
                             },
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "Map",
+                            text = "Maps",
                             style = Typography.titleLarge
                         )
                     }
