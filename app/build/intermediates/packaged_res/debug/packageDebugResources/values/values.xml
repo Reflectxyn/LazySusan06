@@ -9,14 +9,20 @@
     <color name="white">#FFFFFFFF</color>
     <string name="accounts_page">Accounts</string>
     <string name="address">Address</string>
-    <string name="american_cuisine">american_restaurant</string>
     <string name="app_name">Lazy Susan</string>
     <string name="awards">Awards</string>
     <string name="base_desc">Wheel Base</string>
     <string name="blocked">Blocked</string>
     <string name="cancel">Cancel</string>
     <string name="change_password">Change Password</string>
-    <string name="chinese_cuisine">chinese_restaurant</string>
+    <string name="cuisine_american">American</string>
+    <string name="cuisine_chinese">Chinese</string>
+    <string name="cuisine_greek">Greek</string>
+    <string name="cuisine_indian">Indian</string>
+    <string name="cuisine_italian">Italian</string>
+    <string name="cuisine_japanese">Japanese</string>
+    <string name="cuisine_mexican">Mexican</string>
+    <string name="cuisine_thai">Thai</string>
     <string name="distance_stats">Miles\ntraveled:\n%d</string>
     <string name="email_prompt">Email</string>
     <string name="featured_page">Featured</string>
@@ -29,17 +35,12 @@
     <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAC31XUNlNnUCiCdJWJuHGjJdfpy9k6EcU</string>
     <string name="google_maps_api_key">AIzaSyDtrWstvsa-DLgoSRDuWbQDySxjOskpRpk</string>
     <string name="google_storage_bucket" translatable="false">lazysusan-ad87c.firebasestorage.app</string>
-    <string name="greek_cuisine">greek_restaurant</string>
     <string name="history_page">History</string>
     <string name="hours">Hours</string>
-    <string name="indian_cuisine">indian_restaurant</string>
-    <string name="italian_cuisine">italian_restaurant</string>
-    <string name="japanese_cuisine">japanese_restaurant</string>
     <string name="login_prompt">Login</string>
     <string name="login_question">Have an account?</string>
     <string name="logout">Log Out</string>
     <string name="map_page">Map</string>
-    <string name="mexican_cuisine">mexican_restaurant</string>
     <string name="password_prompt">Password</string>
     <string name="presets_page">Presets</string>
     <string name="project_id" translatable="false">lazysusan-ad87c</string>
@@ -49,7 +50,6 @@
     <string name="signup_prompt">Sign Up</string>
     <string name="signup_question">Don\'t have an account?</string>
     <string name="streak_stats">Hot\nStreak:\n%d</string>
-    <string name="thai_cuisine">thai_restaurant</string>
     <string name="wheel_prompt">Spin</string>
     <style name="Theme.Lazy_Susan" parent="android:Theme.Material.Light.NoActionBar"/>
 </resources>

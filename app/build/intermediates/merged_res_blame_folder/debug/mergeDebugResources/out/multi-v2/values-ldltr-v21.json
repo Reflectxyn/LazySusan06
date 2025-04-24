@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.lazy_susan.app-mergeDebugResources-70:/values-ldltr-v21/values-ldltr-v21.xml",
+            "outputFile": "com.example.lazy_susan.app-mergeDebugResources-73:/values-ldltr-v21/values-ldltr-v21.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\pekso\\.gradle\\caches\\8.11.1\\transforms\\31618e059dfbb7dfec695ef35fdc9e03\\transformed\\appcompat-1.4.0\\res\\values-ldltr-v21\\values-ldltr-v21.xml",
+                    "source": "C:\\Users\\phung\\.gradle\\caches\\8.11.1\\transforms\\a875f0ae2a74101d90c6a058cfbe0ad9\\transformed\\appcompat-1.7.0\\res\\values-ldltr-v21\\values-ldltr-v21.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
