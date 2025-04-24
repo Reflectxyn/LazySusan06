@@ -544,11 +544,40 @@ fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant?) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = "Hours: ${restaurant?.hours}", style = MaterialTheme.typography.bodyMedium)
 
+                Button(
+                    onClick = {},
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(40.dp)
+                ){Text(text = "Accept")}
+            }
+            Row(modifier = Modifier.padding(16.dp)) {
+
+                Button(
+                    onClick = {},
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier
+                        .width(130.dp)
+                        .height(40.dp)
+
+                ) { Text(text = "Reject") }
+                Button(
+                    onClick = {},
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier
+                        .width(130.dp)
+                        .height(40.dp)
+                ) { Text(text = "Block") }
             }
 
         }
     }
 }
+
 
 @Composable
 fun NoResultsDialog(showNoResults: MutableState<Boolean>) {
