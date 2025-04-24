@@ -17,14 +17,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.Icon
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.Tab
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.TabPosition
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.TabRow
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabPosition
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -274,7 +270,7 @@ fun AccountNav(
         modifier = Modifier.fillMaxSize()
     ) {
         composable(route = AppScreen.Profile.name) {
-            LoginPage(modifier, navController, authViewModel)
+            LoginPage(navController, authViewModel)
         }
         composable(route = AppScreen.Signup.name){
             SignupPage(modifier, navController, authViewModel)
