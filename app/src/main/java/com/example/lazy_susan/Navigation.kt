@@ -273,7 +273,7 @@ fun AccountNav(
             LoginPage(navController, authViewModel)
         }
         composable(route = AppScreen.Signup.name){
-            SignupPage(modifier, navController, authViewModel)
+            SignupPage(navController, authViewModel)
         }
         composable(route = AppScreen.ChangePassword.name){
             ChangePassword(modifier, navController, authViewModel)

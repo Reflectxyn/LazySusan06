@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun SignupPage(modifier: Modifier, navController: NavController, authViewModel: AuthViewModel) {
+fun SignupPage(navController: NavController, authViewModel: AuthViewModel) {
 
     var email by remember {
         mutableStateOf("")
