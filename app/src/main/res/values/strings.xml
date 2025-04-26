@@ -39,4 +39,6 @@
     <string name="chinese_cuisine">chinese_restaurant</string>
     <string name="greek_cuisine">greek_restaurant</string>
     <string name="american_cuisine">american_restaurant</string>
+
+    <string name="google_maps_api_key">AIzaSyDtrWstvsa-DLgoSRDuWbQDySxjOskpRpk</string>
 </resources>

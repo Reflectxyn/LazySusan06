@@ -59,13 +59,16 @@ import com.example.lazy_susan.ui.theme.HoneyMustardYellow
 import com.example.lazy_susan.ui.theme.PicnicTableRed
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
+import com.example.lazy_susan.pages.AwardsScreen
+import com.example.lazy_susan.pages.MapsScreen
 
 enum class AppScreen(@StringRes val title: Int, @DrawableRes val icon: Int) {
     Featured(title = R.string.featured_page, icon = R.drawable.star),
     Home(title = R.string.app_name, icon = R.drawable.home),
     Filters(title = R.string.filters_page, icon = R.drawable.home),
     Maps(title = R.string.map_page, icon = R.drawable.home),
-    Stats(title = R.string.app_name, icon = R.drawable.home),
+    // Stats(title = R.string.app_name, icon = R.drawable.home),
+    Awards(title = R.string.app_name, icon = R.drawable.home),
     History(title = R.string.history_page, icon = R.drawable.history),
     Profile(title = R.string.accounts_page, icon = R.drawable.person),
     Signup(title = R.string.accounts_page, icon = R.drawable.person),
@@ -122,7 +125,7 @@ fun LazySusanApp(
     LaunchedEffect(pagerState.currentPage) {
         selectedTab = pagerState.currentPage
     }
-
+    /*
     val currentScreen = when (pagerState.currentPage) {
         0 -> AppScreen.Featured
         1 -> AppScreen.Home
@@ -130,6 +133,7 @@ fun LazySusanApp(
         3 -> AppScreen.Profile
         else -> AppScreen.Home
     }
+    */
 
     Scaffold(
         topBar = {
@@ -159,11 +163,12 @@ fun LazySusanApp(
         Column {
             HorizontalPager(
                     state = pagerState,
+                    userScrollEnabled = route != AppScreen.Maps.name,
                     modifier = Modifier.padding(innerPadding)
             ) { currentPage ->
                 when (currentPage) {
                     0 -> FeaturedScreen(userId = userId)
-                    1 -> HomeNav(modifier, navController)
+                    1 -> HomeNav(navController)
                     2 -> HistoryScreen(userId = userId )
                     3 -> AccountNav(modifier, navController, authViewModel)
                 }
@@ -234,7 +239,6 @@ fun TabIndicator(tabPosition: List<TabPosition>, index: Int) {
 
 @Composable
 fun HomeNav(
-    modifier: Modifier = Modifier,
     navController: NavHostController
 ) {
     NavHost(
@@ -250,17 +254,17 @@ fun HomeNav(
 
         }
         composable(route = AppScreen.Home.name) {
-            HomeScreen(modifier, navController)
+            HomeScreen(navController)
         }
         composable(route = AppScreen.Filters.name) {
             val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
             FiltersScreen(navController, userId = userId)
         }
         composable(route = AppScreen.Maps.name) {
-
+            MapsScreen()
         }
-        composable(route = AppScreen.Stats.name){
-
+        composable(route = AppScreen.Awards.name){
+            AwardsScreen()
         }
         composable(route = AppScreen.History.name) {
             val userId = FirebaseAuth.getInstance().currentUser?.uid

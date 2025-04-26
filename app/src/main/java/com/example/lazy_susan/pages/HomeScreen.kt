@@ -99,7 +99,6 @@ import com.example.lazy_susan.model.Cuisine
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier,
     navController: NavHostController,
     filterViewModel: FilterViewModel = viewModel(LocalContext.current as ComponentActivity)
 ) {
@@ -197,7 +196,7 @@ fun HomeScreen(
                         Spacer(modifier = Modifier.height(48.dp))
                         Button(
                             onClick = {
-                                navController.navigate(AppScreen.Stats.name)
+                                navController.navigate(AppScreen.Awards.name)
                             },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = HoneyMustardYellow),

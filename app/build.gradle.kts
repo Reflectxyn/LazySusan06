@@ -74,11 +74,11 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
 
-    implementation("androidx.appcompat:appcompat:1.4.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
     // Networking (OkHttp + Retrofit)
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0") // For JSON parsing
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // JSON Parsing (Gson)
     implementation("com.google.code.gson:gson:2.8.9")
@@ -91,10 +91,20 @@ dependencies {
 
     implementation ("com.google.code.gson:gson:2.8.8")   // To parse JSON
 
-    implementation ("com.google.android.gms:play-services-location:18.0.0")
-    implementation ("com.google.accompanist:accompanist-permissions:0.28.0")
+    /*
+    implementation (libs.play.services.location)
+    implementation (libs.accompanist.permissions)
+    implementation (libs.maps.compose.v2115)
+    implementation (libs.play.services.maps)
+    implementation (libs.play.services.location)
+    implementation (libs.android.maps.utils)
+    */
     implementation("com.google.firebase:firebase-firestore-ktx:24.4.4")
     implementation("com.google.firebase:firebase-auth-ktx")
 
-
+    implementation("com.google.accompanist:accompanist-permissions:0.31.5-beta")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("com.google.android.gms:play-services-maps:18.1.0")
+    // Jetpack Compose utilities for Maps
+    implementation("com.google.maps.android:maps-compose:2.11.5")
 }

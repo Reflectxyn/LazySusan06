@@ -27,6 +27,7 @@
     <string name="google_api_key" translatable="false">AIzaSyAC31XUNlNnUCiCdJWJuHGjJdfpy9k6EcU</string>
     <string name="google_app_id" translatable="false">1:658292802853:android:c924810de98856ada006cc</string>
     <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAC31XUNlNnUCiCdJWJuHGjJdfpy9k6EcU</string>
+    <string name="google_maps_api_key">AIzaSyDtrWstvsa-DLgoSRDuWbQDySxjOskpRpk</string>
     <string name="google_storage_bucket" translatable="false">lazysusan-ad87c.firebasestorage.app</string>
     <string name="greek_cuisine">greek_restaurant</string>
     <string name="history_page">History</string>
