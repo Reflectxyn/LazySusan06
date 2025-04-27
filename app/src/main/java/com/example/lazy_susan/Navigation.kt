@@ -101,7 +101,7 @@ fun LazySusanAppBar(currentScreen: Int) {
                 style = MaterialTheme.typography.headlineLarge,
                 modifier = Modifier.padding(top = 24.dp)
             )
-                },
+        },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = HoneyMustardYellow
         ),
@@ -162,9 +162,9 @@ fun LazySusanApp(
     ) { innerPadding ->
         Column {
             HorizontalPager(
-                    state = pagerState,
-                    userScrollEnabled = route != AppScreen.Maps.name,
-                    modifier = Modifier.padding(innerPadding)
+                state = pagerState,
+                userScrollEnabled = route != AppScreen.Maps.name,
+                modifier = Modifier.padding(innerPadding)
             ) { currentPage ->
                 when (currentPage) {
                     0 -> FeaturedScreen(userId = userId)

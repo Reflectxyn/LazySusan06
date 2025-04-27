@@ -39,7 +39,7 @@ import androidx.navigation.NavController
 import com.example.lazy_susan.ui.theme.Typography
 
 @Composable
-fun LoginPage(navController: NavController, authViewModel: AuthViewModel){
+fun LoginPage(modifier: Modifier, navController: NavController, authViewModel: AuthViewModel){
 
     var email by remember {
         mutableStateOf("")

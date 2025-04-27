@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
@@ -44,12 +43,14 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import androidx.compose.foundation.layout.Arrangement
 
 
 @Composable
 fun HistoryScreen(userId: String) {
     val db = FirebaseDatabase.getInstance().reference
     val restaurantListFlow = remember { MutableStateFlow<List<Restaurant>>(emptyList()) }
+    val currentPopupIndex = remember { mutableStateOf(-1) }
 
     DisposableEffect(userId) {
         val restaurantRef = db.child("users").child(userId).child("userRestaurants")
@@ -59,12 +60,12 @@ fun HistoryScreen(userId: String) {
                 val thirtyDays = 30L * 24 * 60 * 60 * 1000
 
                 val restaurants = snapshot.children.mapNotNull { child ->
-                    val restaurantName = child.child("restaurant_name").getValue(String::class.java)
+                    val restaurantName = child.child("name").getValue(String::class.java)
                     val address = child.child("address").getValue(String::class.java) ?: "Address not found"
                     val phoneNumber = child.child("phoneNumber").getValue(String::class.java) ?: "Phone number not found"
                     val hours = child.child("hours").getValue(String::class.java) ?: "Hours not found"
                     val isFavorited = child.child("isFavorited").getValue(Boolean::class.java) ?: false
-                    val restaurantId = child.child("restaurantId").getValue(String::class.java) ?: "No id"
+                    val restaurantId = child.child("id").getValue(String::class.java) ?: "No id"
                     val timestamp = child.child("timestamp").getValue(Long::class.java)
 
                     if (restaurantName != null && timestamp != null){
@@ -82,13 +83,10 @@ fun HistoryScreen(userId: String) {
         }
         restaurantRef.addValueEventListener(listener)
 
-
         onDispose {
             restaurantRef.removeEventListener(listener)
         }
     }
-
-
 
     val restaurantList by restaurantListFlow.collectAsState()
 
@@ -101,7 +99,6 @@ fun HistoryScreen(userId: String) {
         )
 
         Column(modifier = Modifier.fillMaxSize()) {
-
             Column(
                 modifier = Modifier
                     .padding(16.dp)
@@ -113,8 +110,22 @@ fun HistoryScreen(userId: String) {
                         style = MaterialTheme.typography.bodyLarge
                     )
                 } else {
-                    restaurantList.forEach { restaurant ->
-                        RestaurantItem(restaurant, userId)
+                    restaurantList.forEachIndexed { index, restaurant ->
+                        RestaurantItem(
+                            restaurant = restaurant,
+                            userId = userId,
+                            showDialog = currentPopupIndex.value == index,
+                            onShowDialog = { currentPopupIndex.value = index },
+                            onDismissDialog = { currentPopupIndex.value = -1 },
+                            onNavigate = { direction ->
+                                val newIndex = when (direction) {
+                                    "left" -> (currentPopupIndex.value - 1 + restaurantList.size) % restaurantList.size
+                                    "right" -> (currentPopupIndex.value + 1) % restaurantList.size
+                                    else -> currentPopupIndex.value
+                                }
+                                currentPopupIndex.value = newIndex
+                            }
+                        )
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
@@ -122,15 +133,7 @@ fun HistoryScreen(userId: String) {
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = 10.dp)
-                        .background(
-                            color = Color.White,
-                            shape = RoundedCornerShape(10.dp)
-                        )
-                        .border(
-                            width = 1.5.dp,
-                            color = Color.Black,
-                            shape = RoundedCornerShape(10.dp)
-                        )
+                        .background(Color.White, shape = CircleShape)
                         .padding(10.dp)
                 ) {
                     Text(
@@ -146,9 +149,15 @@ fun HistoryScreen(userId: String) {
 }
 
 @Composable
-fun RestaurantItem(restaurant: Restaurant, userId: String) {
+fun RestaurantItem(
+    restaurant: Restaurant,
+    userId: String,
+    showDialog: Boolean = false,
+    onShowDialog: () -> Unit = {},
+    onDismissDialog: () -> Unit = {},
+    onNavigate: (String) -> Unit = {}
+) {
     val db = FirebaseDatabase.getInstance().reference
-    var showDialog by remember { mutableStateOf(false) }
     var isFavorited by remember { mutableStateOf(restaurant.isFavorited) }
 
     DisposableEffect(userId, restaurant.id) {
@@ -159,9 +168,7 @@ fun RestaurantItem(restaurant: Restaurant, userId: String) {
                 isFavorited = updatedIsFavorited
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                // Handle error
-            }
+            override fun onCancelled(error: DatabaseError) {}
         }
         restaurantRef.addValueEventListener(listener)
 
@@ -183,18 +190,14 @@ fun RestaurantItem(restaurant: Restaurant, userId: String) {
             .padding(16.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-
             IconButton(onClick = { toggleFavorite() }) {
                 Icon(
                     painter = painterResource(if (isFavorited) R.drawable.star_favorited else R.drawable.star_unfavorited),
                     contentDescription = if (isFavorited) "Unfavorite" else "Favorite",
-                    tint = if (isFavorited) Color.Black else Color.Black
+                    tint = Color.Black
                 )
             }
             Spacer(modifier = Modifier.width(8.dp))
-
-
-
             Text(
                 text = restaurant.name,
                 style = MaterialTheme.typography.bodyLarge,
@@ -202,8 +205,7 @@ fun RestaurantItem(restaurant: Restaurant, userId: String) {
                 fontSize = 24.sp,
                 modifier = Modifier.weight(1f)
             )
-
-            IconButton(onClick = { showDialog = true }) {
+            IconButton(onClick = { onShowDialog() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.history_popup_icon),
                     contentDescription = "More Info"
@@ -211,9 +213,10 @@ fun RestaurantItem(restaurant: Restaurant, userId: String) {
             }
         }
     }
+
     if (showDialog) {
         AlertDialog(
-            onDismissRequest = { showDialog = false },
+            onDismissRequest = { onDismissDialog() },
             title = {
                 Box(
                     modifier = Modifier
@@ -233,30 +236,19 @@ fun RestaurantItem(restaurant: Restaurant, userId: String) {
             },
             text = {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
-                    InfoBoxWithIcon(
-                        iconRes = R.drawable.history_popup_icon,
-                        infoText = restaurant.address
-                    )
-
-                    InfoBoxWithIcon(
-                        iconRes = R.drawable.clock_icon,
-                        infoText = restaurant.hours
-                    )
-
-                    InfoBoxWithIcon(
-                        iconRes = R.drawable.phone_icon,
-                        infoText = restaurant.phoneNumber
-                    )
+                    InfoBoxWithIcon(R.drawable.history_popup_icon, restaurant.address)
+                    InfoBoxWithIcon(R.drawable.clock_icon, restaurant.hours)
+                    InfoBoxWithIcon(R.drawable.phone_icon, restaurant.phoneNumber)
                 }
             },
             confirmButton = {
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    TextButton(onClick = { showDialog = false }) {
+                    TextButton(onClick = { onDismissDialog() }) {
                         Box(
                             modifier = Modifier
                                 .width(100.dp)
@@ -269,6 +261,19 @@ fun RestaurantItem(restaurant: Restaurant, userId: String) {
                         ) {
                             Text("Done", fontSize = 24.sp, color = Color.Black)
                         }
+                    }
+                }
+            },
+            dismissButton = {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    IconButton(onClick = { onNavigate("left") }) {
+                        Icon(painter = painterResource(R.drawable.left_arrow), contentDescription = "Previous", modifier = Modifier.size(60.dp))
+                    }
+                    IconButton(onClick = { onNavigate("right") }) {
+                        Icon(painter = painterResource(R.drawable.right_arrow), contentDescription = "Next", modifier = Modifier.size(60.dp))
                     }
                 }
             },
@@ -301,11 +306,3 @@ fun InfoBoxWithIcon(iconRes: Int, infoText: String) {
         )
     }
 }
-
-
-
-
-
-
-
-

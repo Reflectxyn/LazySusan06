@@ -82,4 +82,3 @@ fun ProfilePage(modifier: Modifier, navController: NavController, authViewModel:
         }
     }
 }
-

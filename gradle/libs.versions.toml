@@ -43,6 +43,7 @@ androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-firestore-ktx = { module = "com.google.firebase:firebase-firestore-ktx", version = "24.4.4" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 gson-v288 = { module = "com.google.code.gson:gson", version.ref = "gsonVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

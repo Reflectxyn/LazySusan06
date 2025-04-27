@@ -1,5 +1,4 @@
 package com.example.lazy_susan
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +23,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 
 @Composable
 fun FeaturedScreen(userId: String) {
@@ -35,12 +36,12 @@ fun FeaturedScreen(userId: String) {
         val listener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val favorites = snapshot.children.mapNotNull { child ->
-                    val restaurantName = child.child("restaurant_name").getValue(String::class.java)
+                    val restaurantName = child.child("name").getValue(String::class.java)
                     val address = child.child("address").getValue(String::class.java) ?: "Address not found"
                     val phoneNumber = child.child("phoneNumber").getValue(String::class.java) ?: "Phone number not found"
                     val hours = child.child("hours").getValue(String::class.java) ?: "Hours not found"
                     val isFavorited = child.child("isFavorited").getValue(Boolean::class.java) ?: false
-                    val restaurantId = child.child("restaurantId").getValue(String::class.java) ?: "No id"
+                    val restaurantId = child.child("id").getValue(String::class.java) ?: "No id"
 
                     if (restaurantName != null && isFavorited) {
                         Restaurant(restaurantName, address, phoneNumber, hours, restaurantId, isFavorited)
@@ -61,6 +62,7 @@ fun FeaturedScreen(userId: String) {
     }
 
     val favoriteList by favoriteListFlow.collectAsState()
+    val currentPopupIndex = remember { mutableStateOf(-1) }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -71,7 +73,6 @@ fun FeaturedScreen(userId: String) {
         )
 
         Column(modifier = Modifier.fillMaxSize()) {
-
             Column(
                 modifier = Modifier
                     .padding(16.dp)
@@ -83,15 +84,25 @@ fun FeaturedScreen(userId: String) {
                         style = MaterialTheme.typography.bodyLarge
                     )
                 } else {
-                    favoriteList.forEach { restaurant ->
-                        RestaurantItem(restaurant, userId)
+                    favoriteList.forEachIndexed { index, restaurant ->
+                        RestaurantItem(
+                            restaurant = restaurant,
+                            userId = userId,
+                            showDialog = currentPopupIndex.value == index,
+                            onShowDialog = { currentPopupIndex.value = index },
+                            onDismissDialog = { currentPopupIndex.value = -1 },
+                            onNavigate = { direction ->
+                                val newIndex = when (direction) {
+                                    "left" -> (currentPopupIndex.value - 1 + favoriteList.size) % favoriteList.size
+                                    "right" -> (currentPopupIndex.value + 1) % favoriteList.size
+                                    else -> currentPopupIndex.value
+                                }
+                                currentPopupIndex.value = newIndex
+                            }
+                        )
                     }
                 }
             }
         }
     }
 }
-
-
-
-
