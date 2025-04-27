@@ -17,10 +17,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabPosition
-import androidx.compose.material3.TabRow
+//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.material.Icon
+//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.material.Tab
+//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.material.TabPosition
+//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.material.TabRow
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -43,27 +47,27 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.lazy_susan.pages.AwardsScreen
 import com.example.lazy_susan.pages.FiltersScreen
 import com.example.lazy_susan.pages.HomeScreen
-import com.example.lazy_susan.pages.MapsScreen
 import com.example.lazy_susan.pages.PresetPage
 import com.example.lazy_susan.ui.theme.HoneyMustardYellow
 import com.example.lazy_susan.ui.theme.PicnicTableRed
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
+import com.example.lazy_susan.pages.AwardsScreen
+import com.example.lazy_susan.pages.MapsScreen
 
 enum class AppScreen(@StringRes val title: Int, @DrawableRes val icon: Int) {
     Featured(title = R.string.featured_page, icon = R.drawable.star),
     Home(title = R.string.app_name, icon = R.drawable.home),
     Filters(title = R.string.filters_page, icon = R.drawable.home),
     Maps(title = R.string.map_page, icon = R.drawable.home),
+    // Stats(title = R.string.app_name, icon = R.drawable.home),
     Awards(title = R.string.app_name, icon = R.drawable.home),
     History(title = R.string.history_page, icon = R.drawable.history),
     Profile(title = R.string.accounts_page, icon = R.drawable.person),
@@ -115,11 +119,21 @@ fun LazySusanApp(
     val route = backStackEntry?.destination?.route
     val pagerState = rememberPagerState(initialPage = 1) { TabPage.entries.size }
     val scope = rememberCoroutineScope()
+    val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
     var selectedTab by remember { mutableIntStateOf(pagerState.currentPage) }
 
     LaunchedEffect(pagerState.currentPage) {
         selectedTab = pagerState.currentPage
     }
+    /*
+    val currentScreen = when (pagerState.currentPage) {
+        0 -> AppScreen.Featured
+        1 -> AppScreen.Home
+        2 -> AppScreen.History
+        3 -> AppScreen.Profile
+        else -> AppScreen.Home
+    }
+    */
 
     Scaffold(
         topBar = {
@@ -149,13 +163,13 @@ fun LazySusanApp(
         Column {
             HorizontalPager(
                     state = pagerState,
-                    userScrollEnabled = route?.contains(AppScreen.Maps.name) == false,
+                    userScrollEnabled = route != AppScreen.Maps.name,
                     modifier = Modifier.padding(innerPadding)
             ) { currentPage ->
                 when (currentPage) {
-                    0 -> FeaturedScreen(userId = "99UfGbCweDT62RBhY4Vyuf4czYf2")
+                    0 -> FeaturedScreen(userId = userId)
                     1 -> HomeNav(navController)
-                    2 -> HistoryScreen(userId = "99UfGbCweDT62RBhY4Vyuf4czYf2")
+                    2 -> HistoryScreen(userId = userId )
                     3 -> AccountNav(modifier, navController, authViewModel)
                 }
             }
@@ -232,6 +246,13 @@ fun HomeNav(
         startDestination = AppScreen.Home.name,
         modifier = Modifier.fillMaxSize()
     ) {
+        composable(route = AppScreen.Featured.name) {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+            if (userId != null) {
+                FeaturedScreen(userId = userId)
+            }
+
+        }
         composable(route = AppScreen.Home.name) {
             HomeScreen(navController)
         }
@@ -239,15 +260,18 @@ fun HomeNav(
             val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
             FiltersScreen(navController, userId = userId)
         }
-        composable(
-            route = "${AppScreen.Maps.name}/{radiusInMiles}",
-            arguments = listOf(navArgument("radiusInMiles") { type = NavType.IntType })
-        ) { backStackEntry ->
-            val radiusInMiles = backStackEntry.arguments?.getInt("radiusInMiles") ?: 2
-            MapsScreen(radiusInMiles)
+        composable(route = AppScreen.Maps.name) {
+            MapsScreen()
         }
         composable(route = AppScreen.Awards.name){
             AwardsScreen()
+        }
+        composable(route = AppScreen.History.name) {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+            if (userId != null) {
+                HistoryScreen(userId = userId)
+            }
+
         }
     }
 }
@@ -270,10 +294,10 @@ fun AccountNav(
         modifier = Modifier.fillMaxSize()
     ) {
         composable(route = AppScreen.Profile.name) {
-            LoginPage(navController, authViewModel)
+            LoginPage(modifier, navController, authViewModel)
         }
         composable(route = AppScreen.Signup.name){
-            SignupPage(navController, authViewModel)
+            SignupPage(modifier, navController, authViewModel)
         }
         composable(route = AppScreen.ChangePassword.name){
             ChangePassword(modifier, navController, authViewModel)
@@ -290,19 +314,12 @@ fun AccountNav(
             FiltersScreen(navController, userId = userId)
         }
         composable(
-            route = "${AppScreen.Filters.name}/{presetId}",
+            route = "filters/{presetId}",
             arguments = listOf(navArgument("presetId") { defaultValue = "" })
         ) { backStackEntry ->
             val presetId = backStackEntry.arguments?.getString("presetId") ?: ""
             val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
             FiltersScreen(navController = navController, userId = userId, presetId = presetId)
-        }
-        composable(
-            route = "${AppScreen.Maps.name}/{radiusInMiles}",
-            arguments = listOf(navArgument("radiusInMiles") { type = NavType.IntType })
-        ) { backStackEntry ->
-            val radiusInMiles = backStackEntry.arguments?.getInt("radiusInMiles") ?: 2
-            MapsScreen(radiusInMiles)
         }
     }
 }

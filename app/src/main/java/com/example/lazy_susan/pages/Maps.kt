@@ -14,7 +14,7 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
-fun MapsScreen(radiusInMiles: Int) {
+fun MapsScreen() {
     val atasehir = LatLng(34.0549, -118.2426)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(atasehir, 15f)
@@ -28,14 +28,14 @@ fun MapsScreen(radiusInMiles: Int) {
         )
         Circle(
             center = atasehir,
-            radius = radiusInMiles * 1609.34,
+            radius = 15 * 1609.34,
             strokeColor = PicnicTableRed,
             strokeWidth = 1.5f,
             fillColor = _root_ide_package_.androidx.compose.ui.graphics.Color(1f, 0f, 0f, 0.25f)
         )
         Marker(
             state = MarkerState(position = atasehir),
-            title = radiusInMiles.toString()
+            title = "Your Location"
         )
     }
 }

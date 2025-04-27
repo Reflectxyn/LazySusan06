@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.lazy_susan.app-mergeDebugResources-73:/values-v18/values-v18.xml",
+            "outputFile": "com.example.lazy_susan.app-mergeDebugResources-72:/values-v18/values-v18.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\phung\\.gradle\\caches\\8.11.1\\transforms\\a875f0ae2a74101d90c6a058cfbe0ad9\\transformed\\appcompat-1.7.0\\res\\values-v18\\values-v18.xml",
+                    "source": "C:\\Users\\Michael\\.gradle\\caches\\8.11.1\\transforms\\1701b9afd95dd234140dc5a812d02e59\\transformed\\appcompat-1.6.1\\res\\values-v18\\values-v18.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

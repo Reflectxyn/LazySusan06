@@ -31,14 +31,14 @@
     <string name="blocked">Blocked</string>
     <string name="logout">Log Out</string>
 
-    <string name="cuisine_italian">Italian</string>
-    <string name="cuisine_japanese">Japanese</string>
-    <string name="cuisine_thai">Thai</string>
-    <string name="cuisine_mexican">Mexican</string>
-    <string name="cuisine_indian">Indian</string>
-    <string name="cuisine_chinese">Chinese</string>
-    <string name="cuisine_greek">Greek</string>
-    <string name="cuisine_american">American</string>
-    
+    <string name="italian_cuisine">italian_restaurant</string>
+    <string name="japanese_cuisine">japanese_restaurant</string>
+    <string name="thai_cuisine">thai_restaurant</string>
+    <string name="mexican_cuisine">mexican_restaurant</string>
+    <string name="indian_cuisine">indian_restaurant</string>
+    <string name="chinese_cuisine">chinese_restaurant</string>
+    <string name="greek_cuisine">greek_restaurant</string>
+    <string name="american_cuisine">american_restaurant</string>
+
     <string name="google_maps_api_key">AIzaSyDtrWstvsa-DLgoSRDuWbQDySxjOskpRpk</string>
 </resources>
