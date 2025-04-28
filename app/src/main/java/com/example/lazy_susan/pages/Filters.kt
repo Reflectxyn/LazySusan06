@@ -1,5 +1,7 @@
 package com.example.lazy_susan.pages
 
+import android.Manifest
+import android.content.pm.PackageManager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -67,7 +69,13 @@ import androidx.compose.ui.platform.LocalContext
 import com.example.lazy_susan.data.DataSource
 import com.example.lazy_susan.model.Cuisine
 import android.content.Context
+import androidx.compose.runtime.setValue
 import java.util.Locale
+import com.google.android.gms.location.LocationServices
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 
 
 val cuisineLabels = listOf("Italian", "Japanese", "Thai", "Mexican", "Indian", "Chinese", "Greek", "American")
@@ -98,18 +106,29 @@ fun FiltersScreen(
     val ratingDefault   = filterVm.selectedRating        // String
     val distanceDefault = filterVm.selectedDistance      // String
 
-
-    /*
-    val cuisineList = remember { mutableStateListOf(*Array(cuisineLabels.size) { false }) }
-    val ratingDefault = remember { mutableStateOf("3") }
-    val distanceDefault = remember { mutableStateOf("2") }
-    */
-
     LaunchedEffect(preset) {
         preset?.let {
             it.filters.cuisines.forEachIndexed { index, value -> cuisineList[index] = value }
             ratingDefault.value = it.filters.rating.toString()
             distanceDefault.value = it.filters.distance.toString()
+        }
+    }
+    // ← CHANGED: fetch the user’s last‐known location ONCE
+    val context = LocalContext.current
+    val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+    var userLat by remember { mutableStateOf<Double?>(null) }
+    var userLng by remember { mutableStateOf<Double?>(null) }
+
+    LaunchedEffect(Unit) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED
+        ) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { loc ->
+                loc?.let {
+                    userLat = it.latitude
+                    userLng = it.longitude
+                }
+            }
         }
     }
     Image(
@@ -183,6 +202,7 @@ fun FiltersScreen(
                     Text(text = cuisine, modifier = Modifier.width(100.dp))
                 }
             }
+            //Ratings
             item(span = { GridItemSpan(2) }) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     HorizontalDivider(
@@ -205,6 +225,7 @@ fun FiltersScreen(
                             style = Typography.headlineSmall
                         )
                     }
+                    //Distance
                     RatingFilter(ratingDefault)
                     HorizontalDivider(
                         thickness = 2.dp,
@@ -240,13 +261,14 @@ fun FiltersScreen(
                             .height(40.dp)
                             .clip(RoundedCornerShape(10.dp))
                             .background(color = Color.White)
-                            .border(
-                                width = 2.dp,
-                                color = Color.Black,
-                                shape = RoundedCornerShape(10.dp)
-                            )
+                            .border( width = 2.dp, color = Color.Black, shape = RoundedCornerShape(10.dp))
                             .clickable {
-                                navController.navigate(AppScreen.Maps.name)
+                                // only navigate once we have a real location:
+                                val lat = userLat
+                                val lng = userLng
+                                if (lat != null && lng != null) {
+                                    navController.navigate("${AppScreen.Maps.name}/$lat/$lng")
+                                }
                             },
                         contentAlignment = Alignment.Center
                     ) {
