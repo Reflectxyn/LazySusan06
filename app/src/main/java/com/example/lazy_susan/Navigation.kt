@@ -61,6 +61,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 import com.example.lazy_susan.pages.AwardsScreen
 import com.example.lazy_susan.pages.MapsScreen
+import androidx.navigation.NavType
 
 enum class AppScreen(@StringRes val title: Int, @DrawableRes val icon: Int) {
     Featured(title = R.string.featured_page, icon = R.drawable.star),
@@ -260,8 +261,16 @@ fun HomeNav(
             val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
             FiltersScreen(navController, userId = userId)
         }
-        composable(route = AppScreen.Maps.name) {
-            MapsScreen()
+        composable(
+            route = "${AppScreen.Maps.name}/{lat}/{lng}",
+            arguments = listOf(
+                navArgument("lat") { type = NavType.FloatType },
+                navArgument("lng") { type = NavType.FloatType }
+            )
+        ) { backStackEntry ->
+        val lat = backStackEntry.arguments!!.getFloat("lat")
+        val lng = backStackEntry.arguments!!.getFloat("lng")
+        MapsScreen(lat = lat, lng = lng)
         }
         composable(route = AppScreen.Awards.name){
             AwardsScreen()
