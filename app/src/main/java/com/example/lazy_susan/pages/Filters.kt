@@ -1,5 +1,7 @@
 package com.example.lazy_susan.pages
 
+import android.Manifest
+import android.content.pm.PackageManager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -7,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,14 +21,20 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
+import androidx.compose.foundation.verticalScroll
+//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.material.Checkbox
+//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.material.Icon
+//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.material.RadioButton
+//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -41,9 +50,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.room.util.copy
 import com.example.lazy_susan.AppScreen
 import com.example.lazy_susan.Filters
 import com.example.lazy_susan.PresetViewModel
@@ -51,31 +62,73 @@ import com.example.lazy_susan.PresetViewModelFactory
 import com.example.lazy_susan.R
 import com.example.lazy_susan.ui.theme.LightGray
 import com.example.lazy_susan.ui.theme.Typography
+import androidx.lifecycle.viewmodel.compose.viewModel
+import android.util.Log
+import androidx.activity.ComponentActivity
+import androidx.compose.ui.platform.LocalContext
+import com.example.lazy_susan.data.DataSource
+import com.example.lazy_susan.model.Cuisine
+import android.content.Context
+import androidx.compose.runtime.setValue
+import java.util.Locale
+import com.google.android.gms.location.LocationServices
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 
 
 val cuisineLabels = listOf("Italian", "Japanese", "Thai", "Mexican", "Indian", "Chinese", "Greek", "American")
 val ratingLabels = listOf("2", "3", "4", "5")
 val distanceOptions = listOf("1", "2", "5", "10", "15")
 
+
 @Composable
 fun FiltersScreen(
     navController: NavController,
+    filterVm: FilterViewModel = viewModel(LocalContext.current as ComponentActivity),
     userId: String,
     presetId: String = "",
-    presetViewModel: PresetViewModel =
-        viewModel(factory = PresetViewModelFactory(userId))
+    presetViewModel: PresetViewModel = viewModel(factory = PresetViewModelFactory(userId))
 ) {
-    val preset = presetViewModel.presets.observeAsState(emptyList()).value.find { it.id == presetId }
+    /*
+    val cuisineSelections = filterViewModel.selectedCuisineBooleans
+    var distanceDefault = filterViewModel.selectedDistance
+     */
 
-    val cuisineList = remember { mutableStateListOf(*Array(cuisineLabels.size) { false }) }
-    val ratingDefault = remember { mutableStateOf("3") }
-    val distanceDefault = remember { mutableStateOf("2") }
+    val preset = presetViewModel
+        .presets
+        .observeAsState(emptyList())
+        .value
+        .find { it.id == presetId }
+
+    val cuisineList     = filterVm.selectedCuisines      // Boolean List
+    val ratingDefault   = filterVm.selectedRating        // String
+    val distanceDefault = filterVm.selectedDistance      // String
 
     LaunchedEffect(preset) {
         preset?.let {
             it.filters.cuisines.forEachIndexed { index, value -> cuisineList[index] = value }
             ratingDefault.value = it.filters.rating.toString()
             distanceDefault.value = it.filters.distance.toString()
+        }
+    }
+    // ← CHANGED: fetch the user’s last‐known location ONCE
+    val context = LocalContext.current
+    val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+    var userLat by remember { mutableStateOf<Double?>(null) }
+    var userLng by remember { mutableStateOf<Double?>(null) }
+
+    LaunchedEffect(Unit) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED
+        ) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { loc ->
+                loc?.let {
+                    userLat = it.latitude
+                    userLng = it.longitude
+                }
+            }
         }
     }
     Image(
@@ -132,6 +185,7 @@ fun FiltersScreen(
                     }
                 }
             }
+            // CuisineFilter(cuisineList)
             itemsIndexed(cuisineLabels) { index, cuisine ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -140,11 +194,15 @@ fun FiltersScreen(
                 ) {
                     Checkbox(
                         checked = cuisineList[index],
-                        onCheckedChange = { cuisineList[index] = it }
+                        onCheckedChange = { checked ->
+                            cuisineList[index] = checked
+                            Log.d("FILTER_DEBUG", "toggled $cuisine → $checked")
+                        }
                     )
                     Text(text = cuisine, modifier = Modifier.width(100.dp))
                 }
             }
+            //Ratings
             item(span = { GridItemSpan(2) }) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     HorizontalDivider(
@@ -167,6 +225,7 @@ fun FiltersScreen(
                             style = Typography.headlineSmall
                         )
                     }
+                    //Distance
                     RatingFilter(ratingDefault)
                     HorizontalDivider(
                         thickness = 2.dp,
@@ -202,18 +261,19 @@ fun FiltersScreen(
                             .height(40.dp)
                             .clip(RoundedCornerShape(10.dp))
                             .background(color = Color.White)
-                            .border(
-                                width = 2.dp,
-                                color = Color.Black,
-                                shape = RoundedCornerShape(10.dp)
-                            )
+                            .border( width = 2.dp, color = Color.Black, shape = RoundedCornerShape(10.dp))
                             .clickable {
-                                navController.navigate("${AppScreen.Maps.name}/${distanceDefault.value}")
+                                // only navigate once we have a real location:
+                                val lat = userLat
+                                val lng = userLng
+                                if (lat != null && lng != null) {
+                                    navController.navigate("${AppScreen.Maps.name}/$lat/$lng")
+                                }
                             },
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "Maps",
+                            text = "Map",
                             style = Typography.titleLarge
                         )
                     }
@@ -330,12 +390,27 @@ fun FiltersScreen(
 }
 
 @Composable
+fun CuisineFilter(checkValue: MutableList<Boolean>) {
+    Column {
+        DataSource.cuisines.forEachIndexed { index, cuisine ->
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Checkbox(
+                    checked = checkValue[index],
+                    onCheckedChange = { checkValue[index] = it }
+                )
+                Text(stringResource(cuisine.name))
+            }
+        }
+    }
+}
+
+@Composable
 fun RatingFilter(selected: MutableState<String>) {
     Row {
         ratingLabels.forEachIndexed { index, rating ->
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceEvenly) {
                 RadioButton(
-                    selected = (selected.value == rating),
+                    selected = selected.value == rating,
                     onClick = { selected.value = rating }
                 )
                 Text("$rating+")
@@ -353,9 +428,40 @@ fun RatingFilter(selected: MutableState<String>) {
         }
     }
 }
+/*
+@Composable
+fun RatingFilter(filterViewModel: FilterViewModel) {
+    // Get the rating options from DataSource
+    val ratingOptions = DataSource.ratings // For example: ["2", "3", "4", "5"]
+    // Get the current selected rating threshold from the shared ViewModel
+    val selectedRating = filterViewModel.selectedRatingThreshold.value
+
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        // Optionally display the currently selected rating threshold
+        Text(text = "Selected Rating: $selectedRating or higher", style = Typography.bodyLarge)
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ratingOptions.forEach { rating ->
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    RadioButton(
+                        selected = (selectedRating == rating),
+                        onClick = { filterViewModel.selectedRatingThreshold.value = rating }
+                    )
+                    Text(text = rating)
+                }
+            }
+        }
+    }
+}
+ */
 
 @Composable
 fun DistanceFilter(selected: MutableState<String>) {
+    // Log the currently selected distance each time the composable recomposes.
+    Log.d("FILTER_DEBUG", "Currently selected distance: ${selected.value} miles")
+
     Row(horizontalArrangement = Arrangement.spacedBy(32.dp)) {
         distanceOptions.forEach { distance ->
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -368,4 +474,24 @@ fun DistanceFilter(selected: MutableState<String>) {
         }
     }
 }
-
+/*
+@Composable
+fun getSelectedCuisines(
+    selectedBooleans: List<Boolean>,
+    cuisineList: List<Cuisine>
+): List<String> {
+    val ctx: Context = LocalContext.current
+    return selectedBooleans
+        .mapIndexedNotNull { idx, isSelected ->
+            if (!isSelected) null
+            else {
+                // e.g. "Italian" → "italian_restaurant"
+                val uiLabel = ctx.getString(cuisineList[idx].name)
+                uiLabel
+                    .lowercase(Locale.getDefault())
+                    .replace(' ', '_') +
+                        "_restaurant"
+            }
+        }
+}
+*/

@@ -36,5 +36,3 @@ class RestaurantAdapter(private val restaurants: List<Restaurant>) : RecyclerVie
         return restaurants.size
     }
 }
-
-
