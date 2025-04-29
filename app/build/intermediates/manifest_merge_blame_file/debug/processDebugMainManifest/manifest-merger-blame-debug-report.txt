@@ -61,7 +61,7 @@
 36        android:allowBackup="true"
 36-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:37:9-35
 37        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-37-->[androidx.core:core:1.15.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\1a2837282de7d2b8849431ba58eadd93\transformed\core-1.15.0\AndroidManifest.xml:28:18-86
+37-->[androidx.core:core:1.15.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\8d65154f7eb2386c327b57197c158dc1\transformed\core-1.15.0\AndroidManifest.xml:28:18-86
 38        android:dataExtractionRules="@xml/data_extraction_rules"
 38-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:38:9-65
 39        android:debuggable="true"
@@ -233,29 +233,29 @@
 125                android:value="com.google.firebase.components.ComponentRegistrar" />
 125-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:124:17-82
 126            <meta-data
-126-->[com.google.firebase:firebase-auth-ktx:23.2.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\25c0749f2e579b34e43b3498b28bf626\transformed\firebase-auth-ktx-23.2.0\AndroidManifest.xml:11:13-13:85
+126-->[com.google.firebase:firebase-auth-ktx:23.2.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\99af79f069e758077cb9b440bd58ecf6\transformed\firebase-auth-ktx-23.2.0\AndroidManifest.xml:11:13-13:85
 127                android:name="com.google.firebase.components:com.google.firebase.auth.ktx.FirebaseAuthLegacyRegistrar"
-127-->[com.google.firebase:firebase-auth-ktx:23.2.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\25c0749f2e579b34e43b3498b28bf626\transformed\firebase-auth-ktx-23.2.0\AndroidManifest.xml:12:17-119
+127-->[com.google.firebase:firebase-auth-ktx:23.2.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\99af79f069e758077cb9b440bd58ecf6\transformed\firebase-auth-ktx-23.2.0\AndroidManifest.xml:12:17-119
 128                android:value="com.google.firebase.components.ComponentRegistrar" />
-128-->[com.google.firebase:firebase-auth-ktx:23.2.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\25c0749f2e579b34e43b3498b28bf626\transformed\firebase-auth-ktx-23.2.0\AndroidManifest.xml:13:17-82
+128-->[com.google.firebase:firebase-auth-ktx:23.2.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\99af79f069e758077cb9b440bd58ecf6\transformed\firebase-auth-ktx-23.2.0\AndroidManifest.xml:13:17-82
 129            <meta-data
-129-->[com.google.firebase:firebase-firestore-ktx:25.1.2] C:\Users\phung\.gradle\caches\8.11.1\transforms\8ef31de52243cc559d6c9a47fdbb62cc\transformed\firebase-firestore-ktx-25.1.2\AndroidManifest.xml:12:13-14:85
+129-->[com.google.firebase:firebase-firestore-ktx:25.1.4] C:\Users\phung\.gradle\caches\8.11.1\transforms\07e56244d06ba9b87035f416db4c281f\transformed\firebase-firestore-ktx-25.1.4\AndroidManifest.xml:12:13-14:85
 130                android:name="com.google.firebase.components:com.google.firebase.firestore.ktx.FirebaseFirestoreLegacyRegistrar"
-130-->[com.google.firebase:firebase-firestore-ktx:25.1.2] C:\Users\phung\.gradle\caches\8.11.1\transforms\8ef31de52243cc559d6c9a47fdbb62cc\transformed\firebase-firestore-ktx-25.1.2\AndroidManifest.xml:13:17-129
+130-->[com.google.firebase:firebase-firestore-ktx:25.1.4] C:\Users\phung\.gradle\caches\8.11.1\transforms\07e56244d06ba9b87035f416db4c281f\transformed\firebase-firestore-ktx-25.1.4\AndroidManifest.xml:13:17-129
 131                android:value="com.google.firebase.components.ComponentRegistrar" />
-131-->[com.google.firebase:firebase-firestore-ktx:25.1.2] C:\Users\phung\.gradle\caches\8.11.1\transforms\8ef31de52243cc559d6c9a47fdbb62cc\transformed\firebase-firestore-ktx-25.1.2\AndroidManifest.xml:14:17-82
+131-->[com.google.firebase:firebase-firestore-ktx:25.1.4] C:\Users\phung\.gradle\caches\8.11.1\transforms\07e56244d06ba9b87035f416db4c281f\transformed\firebase-firestore-ktx-25.1.4\AndroidManifest.xml:14:17-82
 132            <meta-data
-132-->[com.google.firebase:firebase-firestore:25.1.2] C:\Users\phung\.gradle\caches\8.11.1\transforms\bc52f5f1272050c96a30cc47fedde741\transformed\firebase-firestore-25.1.2\AndroidManifest.xml:17:13-19:85
+132-->[com.google.firebase:firebase-firestore:25.1.4] C:\Users\phung\.gradle\caches\8.11.1\transforms\efb93790e94f49619d4b39dbc456a6d4\transformed\firebase-firestore-25.1.4\AndroidManifest.xml:17:13-19:85
 133                android:name="com.google.firebase.components:com.google.firebase.firestore.FirebaseFirestoreKtxRegistrar"
-133-->[com.google.firebase:firebase-firestore:25.1.2] C:\Users\phung\.gradle\caches\8.11.1\transforms\bc52f5f1272050c96a30cc47fedde741\transformed\firebase-firestore-25.1.2\AndroidManifest.xml:18:17-122
+133-->[com.google.firebase:firebase-firestore:25.1.4] C:\Users\phung\.gradle\caches\8.11.1\transforms\efb93790e94f49619d4b39dbc456a6d4\transformed\firebase-firestore-25.1.4\AndroidManifest.xml:18:17-122
 134                android:value="com.google.firebase.components.ComponentRegistrar" />
-134-->[com.google.firebase:firebase-firestore:25.1.2] C:\Users\phung\.gradle\caches\8.11.1\transforms\bc52f5f1272050c96a30cc47fedde741\transformed\firebase-firestore-25.1.2\AndroidManifest.xml:19:17-82
+134-->[com.google.firebase:firebase-firestore:25.1.4] C:\Users\phung\.gradle\caches\8.11.1\transforms\efb93790e94f49619d4b39dbc456a6d4\transformed\firebase-firestore-25.1.4\AndroidManifest.xml:19:17-82
 135            <meta-data
-135-->[com.google.firebase:firebase-firestore:25.1.2] C:\Users\phung\.gradle\caches\8.11.1\transforms\bc52f5f1272050c96a30cc47fedde741\transformed\firebase-firestore-25.1.2\AndroidManifest.xml:20:13-22:85
+135-->[com.google.firebase:firebase-firestore:25.1.4] C:\Users\phung\.gradle\caches\8.11.1\transforms\efb93790e94f49619d4b39dbc456a6d4\transformed\firebase-firestore-25.1.4\AndroidManifest.xml:20:13-22:85
 136                android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
-136-->[com.google.firebase:firebase-firestore:25.1.2] C:\Users\phung\.gradle\caches\8.11.1\transforms\bc52f5f1272050c96a30cc47fedde741\transformed\firebase-firestore-25.1.2\AndroidManifest.xml:21:17-111
+136-->[com.google.firebase:firebase-firestore:25.1.4] C:\Users\phung\.gradle\caches\8.11.1\transforms\efb93790e94f49619d4b39dbc456a6d4\transformed\firebase-firestore-25.1.4\AndroidManifest.xml:21:17-111
 137                android:value="com.google.firebase.components.ComponentRegistrar" />
-137-->[com.google.firebase:firebase-firestore:25.1.2] C:\Users\phung\.gradle\caches\8.11.1\transforms\bc52f5f1272050c96a30cc47fedde741\transformed\firebase-firestore-25.1.2\AndroidManifest.xml:22:17-82
+137-->[com.google.firebase:firebase-firestore:25.1.4] C:\Users\phung\.gradle\caches\8.11.1\transforms\efb93790e94f49619d4b39dbc456a6d4\transformed\firebase-firestore-25.1.4\AndroidManifest.xml:22:17-82
 138        </service>
 139        <service
 139-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:126:9-133:19

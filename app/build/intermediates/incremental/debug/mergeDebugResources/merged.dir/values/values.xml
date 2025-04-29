@@ -3006,6 +3006,14 @@
 <attr format="color" name="backgroundColor"/>
 
 <attr format="string" name="mapId"/>
+<attr name="mapColorScheme">
+<enum name="light" value="0"/>
+
+<enum name="dark" value="1"/>
+
+<enum name="follow_system" value="2"/>
+
+</attr>
 </declare-styleable>
     <declare-styleable name="MenuGroup">
 
