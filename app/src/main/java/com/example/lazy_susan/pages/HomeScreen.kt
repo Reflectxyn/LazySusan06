@@ -241,29 +241,6 @@ fun HomeScreen(
                             val lng = location.longitude
 
                             address = fetchAddress(lat, lng)
-
-                            /*
-                            coroutineScope.launch {
-                                fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-                                    location?.let {
-                                        val usrlat = it.latitude
-                                        val usrlng = it.longitude
-
-                                        lat = usrlat
-                                        lng = usrlng
-
-                                        // Fetch address from coordinates
-                                        getAddressFromCoordinates(usrlat, usrlng) { addr ->
-                                            address = addr
-                                        }
-                                    } ?: run {
-                                        address = "Failed to get location"
-                                    }
-                                }
-                            }
-                            */
-
-
                             ApiHelper.getCachedNearbyRestaurants(lat, lng, radiusMeters, minRating, cuisineSelection) { cachedRestaurants ->
                                 Log.d("CACHE_DEBUG", "Number of cached restaurants: ${cachedRestaurants.size}")
                                 if (cachedRestaurants.size < 20) {
@@ -284,18 +261,13 @@ fun HomeScreen(
                                                             restaurant.types)
                                                     }
                                                 }
-
                                                 // Selected one from the many
                                                 selectedRestaurant = restaurants.random()
                                                 val selectedAddress = selectedRestaurant?.address ?: "No address available"
-
-                                                //Add random restaurant to database
-                                                val userId = FirebaseAuth.getInstance().currentUser?.uid
-
+                                                val userId = FirebaseAuth.getInstance().currentUser?.uid //Add random restaurant to database
                                                 if (userId != null) {
                                                     FirebaseDatabaseHelper.saveRestaurantToFirebase(userId, selectedRestaurant!!)
                                                 }
-
                                                 ApiHelper.getCoordinates(selectedAddress) { lat2, lng2 ->
                                                     val distance = calculateDistance(lat, lng, lat2, lng2)
                                                     selectedRestaurant?.distance = "%.2f mi away".format(distance)

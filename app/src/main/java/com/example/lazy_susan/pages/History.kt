@@ -258,14 +258,15 @@ fun RestaurantItem(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 8.dp),
+                        .padding(top = 50.dp, bottom = 8.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    TextButton(onClick = { onDismissDialog() }) {
+                    TextButton(onClick = { onDismissDialog() }
+                    ) {
                         Box(
                             modifier = Modifier
-                                .width(100.dp)
-                                .height(65.dp)
+                                .width(150.dp)
+                                .height(45.dp)
                                 .border(1.dp, Color.Black, CircleShape)
                                 .shadow(4.dp, shape = CircleShape)
                                 .background(Color.White, shape = CircleShape)
@@ -302,7 +303,7 @@ fun InfoBoxWithIcon(iconRes: Int, infoText: String) {
             .fillMaxWidth()
             .padding(vertical = 8.dp)
             .background(Color(0xFFD3D3D3), shape = CircleShape)
-            .padding(16.dp),
+            .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
