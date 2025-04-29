@@ -36,6 +36,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.LaunchedEffect
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
 import androidx.compose.runtime.*
@@ -49,7 +50,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 
 @Composable
-fun MapsScreen(lat: Float, lng: Float, filterViewModel: FilterViewModel = viewModel(LocalContext.current as ComponentActivity)) {
+fun MapsScreen(lat: Float, lng: Float, @SuppressLint("ContextCastToActivity") filterViewModel: FilterViewModel = viewModel(LocalContext.current as ComponentActivity)) {
     val context = LocalContext.current
     val fusedClient = LocationServices.getFusedLocationProviderClient(context)
 

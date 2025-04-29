@@ -1,5 +1,6 @@
 package com.example.lazy_susan
 
+import android.R.string
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Canvas
@@ -25,8 +26,11 @@ import androidx.compose.material.Tab
 import androidx.compose.material.TabPosition
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.TabRow
+import androidx.compose.material.icons.Icons.Filled
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -68,7 +72,6 @@ enum class AppScreen(@StringRes val title: Int, @DrawableRes val icon: Int) {
     Home(title = R.string.app_name, icon = R.drawable.home),
     Filters(title = R.string.filters_page, icon = R.drawable.home),
     Maps(title = R.string.map_page, icon = R.drawable.home),
-    // Stats(title = R.string.app_name, icon = R.drawable.home),
     Awards(title = R.string.app_name, icon = R.drawable.home),
     History(title = R.string.history_page, icon = R.drawable.history),
     Profile(title = R.string.accounts_page, icon = R.drawable.person),
@@ -87,7 +90,11 @@ enum class TabPage(@StringRes val route: Int, @DrawableRes val icon: Int) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LazySusanAppBar(currentScreen: Int) {
+fun LazySusanAppBar(
+    currentScreen: Int,
+    canNavigateBack: Boolean,
+    navigateUp: () -> Unit = {}
+) {
     val subject = when(currentScreen) {
         0 -> TabPage.Featured
         1 -> TabPage.Home
@@ -100,8 +107,18 @@ fun LazySusanAppBar(currentScreen: Int) {
             Text(
                 text = stringResource(subject.route),
                 style = MaterialTheme.typography.headlineLarge,
-                modifier = Modifier.padding(top = 24.dp)
+                modifier = Modifier.padding(top = 8.dp)
             )
+        },
+        navigationIcon = {
+            if(canNavigateBack) {
+                IconButton(onClick = navigateUp) {
+                    Icon(
+                        imageVector = Filled.ArrowBack,
+                        contentDescription = "Back Button"
+                    )
+                }
+            }
         },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = HoneyMustardYellow
@@ -126,21 +143,14 @@ fun LazySusanApp(
     LaunchedEffect(pagerState.currentPage) {
         selectedTab = pagerState.currentPage
     }
-    /*
-    val currentScreen = when (pagerState.currentPage) {
-        0 -> AppScreen.Featured
-        1 -> AppScreen.Home
-        2 -> AppScreen.History
-        3 -> AppScreen.Profile
-        else -> AppScreen.Home
-    }
-    */
 
     Scaffold(
         topBar = {
             Column {
                 LazySusanAppBar(
-                    currentScreen = pagerState.currentPage
+                    currentScreen = pagerState.currentPage,
+                    canNavigateBack = route?.contains(AppScreen.Maps.name) == true,
+                    navigateUp = { navController.navigateUp() }
                 )
                 Canvas(modifier = Modifier.fillMaxWidth()) {
                     drawLine(
@@ -164,7 +174,7 @@ fun LazySusanApp(
         Column {
             HorizontalPager(
                 state = pagerState,
-                userScrollEnabled = route != AppScreen.Maps.name,
+                userScrollEnabled = route?.contains(AppScreen.Maps.name) == false,
                 modifier = Modifier.padding(innerPadding)
             ) { currentPage ->
                 when (currentPage) {
@@ -273,7 +283,7 @@ fun HomeNav(
         MapsScreen(lat = lat, lng = lng)
         }
         composable(route = AppScreen.Awards.name){
-            AwardsScreen()
+            AwardsScreen(navController)
         }
         composable(route = AppScreen.History.name) {
             val userId = FirebaseAuth.getInstance().currentUser?.uid
