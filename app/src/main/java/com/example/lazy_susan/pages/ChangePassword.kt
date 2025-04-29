@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun ChangePassword(modifier: Modifier, navController: NavController, authViewModel: AuthViewModel){
+fun ChangePassword(navController: NavController, authViewModel: AuthViewModel){
 
     var email by remember {
         mutableStateOf("")

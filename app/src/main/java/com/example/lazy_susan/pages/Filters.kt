@@ -2,6 +2,8 @@ package com.example.lazy_susan.pages
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -9,7 +11,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,17 +22,11 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.Checkbox
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.Icon
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.RadioButton
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.Text
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.Icon
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.HorizontalDivider
@@ -39,43 +34,33 @@ import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.room.util.copy
 import com.example.lazy_susan.AppScreen
 import com.example.lazy_susan.Filters
 import com.example.lazy_susan.PresetViewModel
 import com.example.lazy_susan.PresetViewModelFactory
 import com.example.lazy_susan.R
+import com.example.lazy_susan.data.DataSource
 import com.example.lazy_susan.ui.theme.LightGray
 import com.example.lazy_susan.ui.theme.Typography
-import androidx.lifecycle.viewmodel.compose.viewModel
-import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.compose.ui.platform.LocalContext
-import com.example.lazy_susan.data.DataSource
-import com.example.lazy_susan.model.Cuisine
-import android.content.Context
-import androidx.compose.runtime.setValue
-import java.util.Locale
 import com.google.android.gms.location.LocationServices
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 
 
 val cuisineLabels = listOf("Italian", "Japanese", "Thai", "Mexican", "Indian", "Chinese", "Greek", "American")

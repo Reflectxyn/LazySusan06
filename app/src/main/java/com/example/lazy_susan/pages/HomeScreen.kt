@@ -4,7 +4,9 @@
 package com.example.lazy_susan.pages
 
 import android.Manifest
+import android.location.Location
 import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -55,20 +57,30 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.lazy_susan.ApiHelper
 import com.example.lazy_susan.AppScreen
 import com.example.lazy_susan.FirebaseDatabaseHelper
 import com.example.lazy_susan.R
 import com.example.lazy_susan.Restaurant
+import com.example.lazy_susan.data.DataSource
+import com.example.lazy_susan.model.Cuisine
 import com.example.lazy_susan.ui.theme.HoneyMustardYellow
 import com.example.lazy_susan.ui.theme.PicnicTableRed
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.tasks.await
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
@@ -76,25 +88,10 @@ import okhttp3.Request
 import okhttp3.Response
 import org.json.JSONObject
 import java.io.IOException
-import kotlinx.coroutines.tasks.await
-import com.google.android.gms.location.FusedLocationProviderClient
-import android.location.Location
-import com.google.firebase.firestore.DocumentSnapshot
-import kotlinx.coroutines.suspendCancellableCoroutine
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.firestore.SetOptions
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
-import androidx.lifecycle.viewmodel.compose.viewModel
-
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import androidx.activity.ComponentActivity
-import com.example.lazy_susan.data.DataSource
-import com.example.lazy_susan.model.Cuisine
 
 
 @Composable

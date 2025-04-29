@@ -1,6 +1,5 @@
 package com.example.lazy_susan
 
-import android.R.string
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Canvas
@@ -18,21 +17,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.Icon
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.Tab
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.TabPosition
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.TabRow
-import androidx.compose.material.icons.Icons.Filled
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabPosition
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -51,21 +46,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.lazy_susan.pages.AwardsScreen
 import com.example.lazy_susan.pages.FiltersScreen
 import com.example.lazy_susan.pages.HomeScreen
+import com.example.lazy_susan.pages.MapsScreen
 import com.example.lazy_susan.pages.PresetPage
 import com.example.lazy_susan.ui.theme.HoneyMustardYellow
 import com.example.lazy_susan.ui.theme.PicnicTableRed
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
-import com.example.lazy_susan.pages.AwardsScreen
-import com.example.lazy_susan.pages.MapsScreen
-import androidx.navigation.NavType
 
 enum class AppScreen(@StringRes val title: Int, @DrawableRes val icon: Int) {
     Featured(title = R.string.featured_page, icon = R.drawable.star),
@@ -114,7 +109,7 @@ fun LazySusanAppBar(
             if(canNavigateBack) {
                 IconButton(onClick = navigateUp) {
                     Icon(
-                        imageVector = Filled.ArrowBack,
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Back Button"
                     )
                 }
@@ -313,13 +308,13 @@ fun AccountNav(
         modifier = Modifier.fillMaxSize()
     ) {
         composable(route = AppScreen.Profile.name) {
-            LoginPage(modifier, navController, authViewModel)
+            LoginPage(navController, authViewModel)
         }
         composable(route = AppScreen.Signup.name){
-            SignupPage(modifier, navController, authViewModel)
+            SignupPage(navController, authViewModel)
         }
         composable(route = AppScreen.ChangePassword.name){
-            ChangePassword(modifier, navController, authViewModel)
+            ChangePassword(navController, authViewModel)
         }
         composable(route = AppScreen.ProfileHome.name){
             ProfilePage(modifier, navController, authViewModel)
