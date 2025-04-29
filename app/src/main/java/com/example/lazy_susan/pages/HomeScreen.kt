@@ -93,8 +93,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.activity.ComponentActivity
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import com.example.lazy_susan.data.DataSource
 import com.example.lazy_susan.model.Cuisine
+import com.google.firebase.database.FirebaseDatabase
 
 
 @Composable
@@ -272,59 +278,80 @@ fun HomeScreen(
                                         // Firebase existing restaurant check
                                         ApiHelper.getNearbyRestaurants(addrLat, addrLng, radiusMeters, minRating, cuisineSelection) { fetchedRestaurants ->
                                             if (fetchedRestaurants.isNotEmpty()) {
-                                                restaurants = fetchedRestaurants
-
-                                                //Loop through restaurants and give each one to Firebase
-                                                restaurants.forEach { restaurant ->
-                                                    ApiHelper.getCoordinates(restaurant.address) { resLat, resLng ->
-                                                        saveRestaurantToFirestore(
-                                                            restaurant,
-                                                            resLat,
-                                                            resLng,
-                                                            restaurant.types)
-                                                    }
-                                                }
-
-                                                // Selected one from the many
-                                                selectedRestaurant = restaurants.random()
-                                                val selectedAddress = selectedRestaurant?.address ?: "No address available"
-
-                                                //Add random restaurant to database
                                                 val userId = FirebaseAuth.getInstance().currentUser?.uid
-
                                                 if (userId != null) {
-                                                    FirebaseDatabaseHelper.saveRestaurantToFirebase(userId, selectedRestaurant!!)
-                                                }
+                                                    FirebaseDatabase.getInstance().getReference("users/$userId/userRestaurants")
+                                                        .get()
+                                                        .addOnSuccessListener { snapshot ->
+                                                            val blockedNames = snapshot.children
+                                                                .filter { it.child("blocked").getValue(Boolean::class.java) == true }
+                                                                .mapNotNull { it.child("name").getValue(String::class.java) }
 
-                                                ApiHelper.getCoordinates(selectedAddress) { lat2, lng2 ->
-                                                    val distance = calculateDistance(lat, lng, lat2, lng2)
-                                                    selectedRestaurant?.distance = "%.2f mi away".format(distance)
-                                                    showResult.value = true
-                                                    showNoResults.value = false
+                                                            val unblockedCached = fetchedRestaurants.filter { it.name !in blockedNames }
+
+                                                            if (unblockedCached.isNotEmpty()) {
+                                                                restaurants = unblockedCached
+                                                                selectedRestaurant = unblockedCached.random()
+                                                                val selectedAddress = selectedRestaurant?.address ?: "No address available"
+
+                                                                ApiHelper.getCoordinates(selectedAddress) { lat2, lng2 ->
+                                                                    if (selectedRestaurant?.latitude != null && selectedRestaurant?.longitude != null) {
+                                                                        val distance = calculateDistance(
+                                                                            lat,
+                                                                            lng,
+                                                                            selectedRestaurant!!.latitude!!,
+                                                                            selectedRestaurant!!.longitude!!
+                                                                        )
+                                                                        selectedRestaurant?.distance = "%.2f mi away".format(distance)
+                                                                    } else {
+                                                                        selectedRestaurant?.distance = "Location unavailable"
+                                                                    }
+                                                                    showResult.value = true
+                                                                    showNoResults.value = false
+
+                                                                }
+                                                            } else {
+                                                                selectedRestaurant = null
+                                                                showResult.value = false
+                                                                showNoResults.value = true
+                                                            }
+                                                        }
                                                 }
-                                            } else {
-                                                selectedRestaurant = null
-                                                showResult.value = false
-                                                showNoResults.value = true
                                             }
                                         }
-                                    }
-                                }
+                                    }}
                                 else
                                 {
                                     // 3. If 20 or more restaurants are already cached (and within 5 miles), use those.
-                                    restaurants = cachedRestaurants
-                                    selectedRestaurant = restaurants.random()
-
-                                    //Add random restaurant to database
                                     val userId = FirebaseAuth.getInstance().currentUser?.uid
-
                                     if (userId != null) {
-                                        FirebaseDatabaseHelper.saveRestaurantToFirebase(userId, selectedRestaurant!!)
-                                    }
+                                        FirebaseDatabase.getInstance().getReference("users/$userId/userRestaurants")
+                                            .get()
+                                            .addOnSuccessListener { snapshot ->
+                                                val blockedNames = snapshot.children
+                                                    .filter { it.child("blocked").getValue(Boolean::class.java) == true }
+                                                    .mapNotNull { it.child("name").getValue(String::class.java) }
 
-                                    showResult.value = true
-                                    showNoResults.value = false
+                                                val unblockedCached = cachedRestaurants.filter { it.name !in blockedNames }
+
+                                                if (unblockedCached.isNotEmpty()) {
+                                                    restaurants = unblockedCached
+                                                    selectedRestaurant = unblockedCached.random()
+                                                    val selectedAddress = selectedRestaurant?.address ?: "No address available"
+
+                                                    ApiHelper.getCoordinates(selectedAddress) { lat2, lng2 ->
+                                                        val distance = calculateDistance(lat, lng, lat2, lng2)
+                                                        selectedRestaurant?.distance = "%.2f mi away".format(distance)
+                                                        showResult.value = true
+                                                        showNoResults.value = false
+                                                    }
+                                                } else {
+                                                    selectedRestaurant = null
+                                                    showResult.value = false
+                                                    showNoResults.value = true
+                                                }
+                                            }
+                                    }
                                 }
                             }
 
@@ -524,55 +551,100 @@ fun WheelAnimation(
 
 @Composable
 fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant?) {
+    var accepted by remember { mutableStateOf(false) }  // Track if accepted
+
     Dialog(onDismissRequest = { showResult.value = false }) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(400.dp)
-                .padding(16.dp),
+                .wrapContentHeight()
+                .padding(16.dp)
+                .then(Modifier.heightIn(max = 600.dp)), // limit max height
             shape = RoundedCornerShape(16.dp)
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(text = "Restaurant: ${restaurant?.name}", style = MaterialTheme.typography.titleLarge)
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .verticalScroll(rememberScrollState()) // enable scrolling if needed
+            ) {
+                Text(
+                    text = "Restaurant: ${restaurant?.name}",
+                    style = MaterialTheme.typography.titleLarge
+                )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Distance: ${restaurant?.distance}", style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = "Distance: ${restaurant?.distance}",
+                    style = MaterialTheme.typography.bodyMedium
+                )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Address: ${restaurant?.address}", style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = "Address: ${restaurant?.address}",
+                    style = MaterialTheme.typography.bodyMedium
+                )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Phone: ${restaurant?.phoneNumber}", style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = "Phone: ${restaurant?.phoneNumber}",
+                    style = MaterialTheme.typography.bodyMedium
+                )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Hours: ${restaurant?.hours}", style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = "Hours: ${restaurant?.hours}",
+                    style = MaterialTheme.typography.bodyMedium
+                )
 
-                Button(
-                    onClick = {},
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
-                    shape = RoundedCornerShape(8.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(40.dp)
-                ){Text(text = "Accept")}
+                if (!accepted) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(
+                        onClick = {
+                            val userId = FirebaseAuth.getInstance().currentUser?.uid
+                            if (userId != null) {
+                                FirebaseDatabaseHelper.saveRestaurantToFirebase(userId, restaurant!!)
+                            }
+                            accepted = true  // Hide buttons after accepting
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
+                        shape = RoundedCornerShape(8.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(40.dp)
+                    ) {
+                        Text(text = "Accept")
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Button(
+                            onClick = { showResult.value = false },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(40.dp)
+                        ) {
+                            Text(text = "Reject")
+                        }
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Button(
+                            onClick = {
+                                val userId = FirebaseAuth.getInstance().currentUser?.uid
+                                if (userId != null && restaurant != null) {
+                                    FirebaseDatabaseHelper.saveAndBlockRestaurant(userId, restaurant)
+                                }
+                                showResult.value = false},
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(40.dp)
+                        ) {
+                            Text(text = "Block")
+                        }
+                    }
+                }
             }
-            Row(modifier = Modifier.padding(16.dp)) {
-
-                Button(
-                    onClick = {},
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
-                    shape = RoundedCornerShape(8.dp),
-                    modifier = Modifier
-                        .width(130.dp)
-                        .height(40.dp)
-
-                ) { Text(text = "Reject") }
-                Button(
-                    onClick = {},
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
-                    shape = RoundedCornerShape(8.dp),
-                    modifier = Modifier
-                        .width(130.dp)
-                        .height(40.dp)
-                ) { Text(text = "Block") }
-            }
-
         }
     }
 }

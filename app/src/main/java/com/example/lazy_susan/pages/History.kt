@@ -65,27 +65,29 @@ fun HistoryScreen(userId: String) {
                     val phoneNumber = child.child("phoneNumber").getValue(String::class.java) ?: "Phone number not found"
                     val hours = child.child("hours").getValue(String::class.java) ?: "Hours not found"
                     val isFavorited = child.child("isFavorited").getValue(Boolean::class.java) ?: false
+                    val isBlocked = child.child("blocked").getValue(Boolean::class.java) ?: false
                     val restaurantId = child.child("id").getValue(String::class.java) ?: "No id"
                     val timestamp = child.child("timestamp").getValue(Long::class.java)
 
-                    // ← CHANGED: pull latitude & longitude from your DB
                     val lat = child.child("latitude").getValue(Double::class.java) ?: 0.0
                     val lng = child.child("longitude").getValue(Double::class.java) ?: 0.0
 
-                    if (restaurantName != null && timestamp != null){
-                        if (timestamp >= (currentTime - thirtyDays)){
+                    if (restaurantName != null && timestamp != null && !isBlocked) {
+                        if (timestamp >= (currentTime - thirtyDays)) {
                             Restaurant(
-                                name        = restaurantName,
-                                address     = address,
+                                name = restaurantName,
+                                address = address,
                                 phoneNumber = phoneNumber,
-                                hours       = hours,
-                                id          = restaurantId,
+                                hours = hours,
+                                id = restaurantId,
                                 isFavorited = isFavorited,
+                                isBlocked = isBlocked,
                                 latitude    = lat,      // ← CHANGED: pass latitude
                                 longitude   = lng       // ← CHANGED: pass longitude
+
                             )
-                        }else null
-                    }else null
+                        } else null
+                    } else null
                 }
                 restaurantListFlow.update { restaurants }
             }
