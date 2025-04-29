@@ -248,6 +248,7 @@ object ApiHelper {
                     val placeLng = geom?.optDouble("lng")
 
 
+
                     restaurants.add(
                         Restaurant(
                             name = name,

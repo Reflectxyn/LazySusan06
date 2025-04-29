@@ -295,7 +295,11 @@ fun HomeScreen(
                                                                 val selectedAddress = selectedRestaurant?.address ?: "No address available"
 
                                                                 ApiHelper.getCoordinates(selectedAddress) { lat2, lng2 ->
-                                                                    if (selectedRestaurant?.latitude != null && selectedRestaurant?.longitude != null) {
+                                                                    if (
+                                                                        selectedRestaurant?.latitude != null &&
+                                                                        selectedRestaurant?.longitude != null &&
+                                                                        lat != null && lng != null // user's current location
+                                                                    ) {
                                                                         val distance = calculateDistance(
                                                                             lat,
                                                                             lng,
