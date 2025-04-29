@@ -68,9 +68,22 @@ fun HistoryScreen(userId: String) {
                     val restaurantId = child.child("id").getValue(String::class.java) ?: "No id"
                     val timestamp = child.child("timestamp").getValue(Long::class.java)
 
+                    // ← CHANGED: pull latitude & longitude from your DB
+                    val lat = child.child("latitude").getValue(Double::class.java) ?: 0.0
+                    val lng = child.child("longitude").getValue(Double::class.java) ?: 0.0
+
                     if (restaurantName != null && timestamp != null){
                         if (timestamp >= (currentTime - thirtyDays)){
-                            Restaurant(restaurantName, address, phoneNumber, hours, restaurantId, isFavorited)
+                            Restaurant(
+                                name        = restaurantName,
+                                address     = address,
+                                phoneNumber = phoneNumber,
+                                hours       = hours,
+                                id          = restaurantId,
+                                isFavorited = isFavorited,
+                                latitude    = lat,      // ← CHANGED: pass latitude
+                                longitude   = lng       // ← CHANGED: pass longitude
+                            )
                         }else null
                     }else null
                 }

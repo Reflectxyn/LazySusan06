@@ -40,30 +40,20 @@ import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
 import androidx.compose.runtime.*
 import com.example.lazy_susan.Restaurant
+import androidx.compose.ui.window.Dialog
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.unit.dp
+import androidx.compose.material3.Card
+import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 
 @Composable
-fun MapsScreen(filterViewModel: FilterViewModel = viewModel(LocalContext.current as ComponentActivity)) {
+fun MapsScreen(lat: Float, lng: Float, filterViewModel: FilterViewModel = viewModel(LocalContext.current as ComponentActivity)) {
     val context = LocalContext.current
     val fusedClient = LocationServices.getFusedLocationProviderClient(context)
 
-    // 1) grab user’s last‐known location once
-    var userLat by remember { mutableStateOf<Double?>(null) }
-    var userLng by remember { mutableStateOf<Double?>(null) }
-    LaunchedEffect(Unit) {
-        if (ContextCompat.checkSelfPermission(
-                context, Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            fusedClient.lastLocation.addOnSuccessListener { loc ->
-                if (loc != null) {
-                    userLat = loc.latitude
-                    userLng = loc.longitude
-                }
-            }
-        }
-    }
-
-    // 2) pull your filters
+    // pulled your filters
     val radiusMiles = filterViewModel.selectedDistance.value.toDoubleOrNull() ?: 2.0
     val radiusMeters = radiusMiles * 1609.34
     val minRating   = filterViewModel.selectedRating.value.toDoubleOrNull() ?: 3.0
@@ -72,12 +62,15 @@ fun MapsScreen(filterViewModel: FilterViewModel = viewModel(LocalContext.current
         DataSource.cuisines
     )
 
-    // 3) fetch cached restaurants whenever location or filters change
+    /*
+    var userLat by remember { mutableStateOf<Double?>(null) }
+    var userLng by remember { mutableStateOf<Double?>(null) }
+     */
+
+    // 3) fetch cached restaurants whenever filters or location change
     var restaurants by remember { mutableStateOf<List<Restaurant>>(emptyList()) }
-    LaunchedEffect(userLat, userLng, radiusMeters, minRating, cuisines) {
-        val lat = userLat ?: return@LaunchedEffect
-        val lng = userLng ?: return@LaunchedEffect
-        ApiHelper.getCachedNearbyRestaurants(lat, lng, radiusMeters, minRating, cuisines) {
+    LaunchedEffect(lat, lng, radiusMeters, minRating, cuisines) {
+        ApiHelper.getCachedNearbyRestaurants(lat.toDouble(), lng.toDouble(), radiusMeters, minRating, cuisines) {
             restaurants = it
             Log.d("MAPS","Loaded ${it.size} cached restaurants")
         }
@@ -85,10 +78,10 @@ fun MapsScreen(filterViewModel: FilterViewModel = viewModel(LocalContext.current
 
     // 4) state for which marker was tapped
     var selected by remember { mutableStateOf<Restaurant?>(null) }
-    val showInfo = remember { mutableStateOf(false) }
+    var showInfo by remember { mutableStateOf(false) }
 
     // 5) map camera
-    val start = LatLng(userLat ?: 0.0, userLng ?: 0.0)
+    val start = LatLng(lat.toDouble(), lng.toDouble())
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(start, 12f)
     }
@@ -119,9 +112,10 @@ fun MapsScreen(filterViewModel: FilterViewModel = viewModel(LocalContext.current
                 state = MarkerState(position = pos),
                 title = r.name,
                 snippet = r.distance,
+                icon    = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED),
                 onClick = {
                     selected = r
-                    showInfo.value = true
+                    showInfo = true
                     true
                 }
             )
@@ -137,7 +131,7 @@ fun MapsScreen(filterViewModel: FilterViewModel = viewModel(LocalContext.current
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text("Restaurant: ${selected!!.name}", style = MaterialTheme.typography.h6)
+                    Text("Restaurant: ${selected!!.name}", style = MaterialTheme.typography.titleLarge)
                     Spacer(Modifier.height(8.dp))
                     Text("Address: ${selected!!.address}")
                     Spacer(Modifier.height(4.dp))

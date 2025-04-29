@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.update
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 
+
 @Composable
 fun FeaturedScreen(userId: String) {
     val db = FirebaseDatabase.getInstance().reference
@@ -43,8 +44,21 @@ fun FeaturedScreen(userId: String) {
                     val isFavorited = child.child("isFavorited").getValue(Boolean::class.java) ?: false
                     val restaurantId = child.child("id").getValue(String::class.java) ?: "No id"
 
+                    // ← CHANGED: pull latitude & longitude from your DB
+                    val lat = child.child("latitude").getValue(Double::class.java) ?: 0.0
+                    val lng = child.child("longitude").getValue(Double::class.java) ?: 0.0
+
                     if (restaurantName != null && isFavorited) {
-                        Restaurant(restaurantName, address, phoneNumber, hours, restaurantId, isFavorited)
+                        Restaurant(
+                            name        = restaurantName,
+                            address     = address,
+                            phoneNumber = phoneNumber,
+                            hours       = hours,
+                            id          = restaurantId,
+                            isFavorited = isFavorited,
+                            latitude    = lat,    // ← CHANGED: pass latitude
+                            longitude   = lng     // ← CHANGED: pass longitude
+                        )
                     } else null
                 }
                 favoriteListFlow.update { favorites }
