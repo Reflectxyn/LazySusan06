@@ -232,15 +232,14 @@ fun HomeScreen(
 
                             delay(3000)
                             playingState = !playingState
-                            //val address = "4551 Linden Ave, Long Beach, CA"
 
-                            // 1) Request permissions if needed, then bail out
+                            // Request permissions if needed, then bail out
                             if (!locationPermissions.allPermissionsGranted) {
                                 locationPermissions.launchMultiplePermissionRequest()
                                 return@launch
                             }
 
-                            // 2) Await a real location
+                            // Await a real location
                             val location = getLocation(fusedLocationProviderClient)
                             if (location == null) {
                                 Log.e("LOCATION", "Could not fetch location")
@@ -545,7 +544,7 @@ fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant?) {
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .padding(8.dp)
-                .then(Modifier.heightIn(min = 600.dp, max = 800.dp)), // limit max height
+                .then(Modifier.heightIn(max = 800.dp)), // limit max height
             shape = RoundedCornerShape(16.dp)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
@@ -565,8 +564,6 @@ fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant?) {
                     )
                 }
                 Spacer(modifier = Modifier.height(12.dp))
-
-                // 🔴 Distance Info as labeled line
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -588,42 +585,12 @@ fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant?) {
                         color = Color.DarkGray
                     )
                 }
-
-                // Styled info rows
                 restaurant?.let {
                     InfoBoxWithIcon(R.drawable.history_popup_icon, it.address)
                     InfoBoxWithIcon(R.drawable.phone_icon, it.phoneNumber)
                     InfoBoxWithIcon(R.drawable.clock_icon, it.hours)
                 }
-
                 Spacer(modifier = Modifier.height(16.dp))
-                /*
-                Text(
-                    text = "Restaurant: ${restaurant?.name}",
-                    style = MaterialTheme.typography.titleLarge
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "Distance: ${restaurant?.distance}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "Address: ${restaurant?.address}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "Phone: ${restaurant?.phoneNumber}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "Hours: ${restaurant?.hours}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                */
-
                 if (!accepted) {
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(
@@ -658,7 +625,7 @@ fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant?) {
                         ) {
                             Text(text = "Reject")
                         }
-                        Spacer(modifier = Modifier.width(16.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
                         Button(
                             onClick = {
                                 val userId = FirebaseAuth.getInstance().currentUser?.uid
@@ -716,15 +683,11 @@ fun NoResultsDialog(showNoResults: MutableState<Boolean>) {
         }
     }
 }
-
-// Helper function to map a boolean rating list to a list of acceptable rating values.
-// DataSource.ratings is assumed to be a List<String> (for example, ["1", "2", "3", "4", "5"]).
 fun getSelectedRatings(checkValues: List<Boolean>, ratingStrings: List<String>): List<Double> {
     return checkValues.mapIndexedNotNull { index, isChecked ->
         if (isChecked) ratingStrings.getOrNull(index)?.toDoubleOrNull() else null
     }
 }
-
 fun getSelectedCuisines(
     selectedFlags: List<Boolean>,
     cuisines: List<Cuisine>
@@ -734,7 +697,6 @@ fun getSelectedCuisines(
         .filter { it.second }            // Keep only those pairs where flag == true
         .map { it.first.apiType }        // Extract the Cuisine.apiType from each pair
 }
-
 fun saveRestaurantToFirestore(
     restaurant: Restaurant,
     lat: Double,
@@ -778,28 +740,4 @@ fun saveRestaurantToFirestore(
         .addOnFailureListener { e ->
             Log.e("Firestore", "Failed to check if restaurant exists", e)
         }
-}
-@Composable
-fun InfoBoxWithIcon(iconRes: Int, infoText: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-            .background(Color(0xFFD3D3D3), shape = CircleShape)
-            .padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            painter = painterResource(id = iconRes),
-            contentDescription = null,
-            modifier = Modifier.size(24.dp)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = infoText,
-            style = MaterialTheme.typography.bodyLarge,
-            color = Color.Black,
-            fontSize = 16.sp
-        )
-    }
 }
