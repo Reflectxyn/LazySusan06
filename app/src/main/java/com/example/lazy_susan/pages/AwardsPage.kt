@@ -45,6 +45,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.lazy_susan.R
 import com.example.lazy_susan.ui.theme.HoneyMustardYellow
 import com.example.lazy_susan.ui.theme.PicnicTableRed
@@ -67,7 +68,7 @@ var items = listOf<AwardItem>(
 )
 
 @Composable
-fun AwardsScreen() {
+fun AwardsScreen(navController: NavHostController) {
     val expandedStates = remember { mutableStateListOf(*BooleanArray(items.size) { false }.toTypedArray()) }
     val listState = rememberLazyListState()
     Image(
@@ -77,20 +78,19 @@ fun AwardsScreen() {
         modifier = Modifier.fillMaxSize()
     )
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Spacer(modifier = Modifier.height(116.dp))
         Box(
-            contentAlignment = Alignment.TopCenter,
-            modifier = Modifier
-                .height(480.dp)
-                .width(376.dp)
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize()
         ) {
             Column(
                 modifier = Modifier
-                    .clip(shape = RoundedCornerShape(12.dp))
+                    .height(480.dp)
+                    .width(376.dp)
+                    .clip(shape = RoundedCornerShape(16.dp))
                     .border(
                         width = 2.dp,
                         color = Color.Black,
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(16.dp)
                     )
                     .background(color = HoneyMustardYellow)
                     .padding(start = 32.dp, top = 32.dp, bottom = 52.dp, end = 32.dp),
@@ -120,7 +120,8 @@ fun AwardsScreen() {
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                     contentPadding = PaddingValues(top = 8.dp, bottom = 32.dp),
-                    state = listState
+                    state = listState,
+                    modifier = Modifier.height(272.dp)
                 ) {
                     itemsIndexed(items, key = { index, _ -> index }) { index, item ->
                         ExpandableAwardItem(
@@ -129,6 +130,28 @@ fun AwardsScreen() {
                             onExpandedChange = { expandedStates[index] = it }
                         )
                     }
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .width(200.dp)
+                        .height(40.dp)
+                        .clip(RoundedCornerShape(174.dp))
+                        .background(color = Color.White)
+                        .border(
+                            width = 2.dp,
+                            color = Color.Black,
+                            shape = RoundedCornerShape(174.dp)
+                        )
+                        .clickable{
+                            navController.navigateUp()
+                        }
+                ) {
+                    Text(
+                        text = "Back",
+                        style = MaterialTheme.typography.titleLarge
+                    )
                 }
             }
         }
@@ -155,7 +178,11 @@ fun ExpandableAwardItem(
             .fillMaxWidth()
             .shadow(4.dp, shape = RoundedCornerShape(12.dp))
             .background(color = Color.White, shape = RoundedCornerShape(12.dp))
-            .clickable(enabled = item.isUnlocked, interactionSource = interactionSource, indication = null) {
+            .clickable(
+                enabled = item.isUnlocked,
+                interactionSource = interactionSource,
+                indication = null
+            ) {
                 onExpandedChange(!isExpanded)
             }
             .padding(16.dp)

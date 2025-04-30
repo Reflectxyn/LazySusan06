@@ -5,434 +5,436 @@
 5    android:versionName="1.0" >
 6
 7    <uses-sdk
-7-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:8:5-10:41
+7-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:8:5-10:41
 8        android:minSdkVersion="24"
-8-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:9:9-35
+8-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:9:9-35
 9        android:targetSdkVersion="35" />
-9-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:10:9-38
+9-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:10:9-38
 10
 11    <uses-permission android:name="android.permission.INTERNET" />
-11-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:12:5-67
-11-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:12:22-64
+11-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:12:5-67
+11-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:12:22-64
 12    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-12-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:13:5-79
-12-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:13:22-76
+12-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:13:5-79
+12-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:13:22-76
 13    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-13-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:14:5-81
-13-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:14:22-78
+13-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:14:5-81
+13-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:14:22-78
 14    <!-- Include required permissions for Google Maps API to run. -->
 15    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-15-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:16:5-79
-15-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:16:22-76
+15-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:16:5-79
+15-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:16:22-76
 16
 17    <uses-feature
-17-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:18:5-20:35
+17-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:18:5-20:35
 18        android:glEsVersion="0x00020000"
-18-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:19:9-41
+18-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:19:9-41
 19        android:required="true" />
-19-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:20:9-32
+19-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:20:9-32
 20
 21    <queries>
-21-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:22:5-26:15
+21-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:22:5-26:15
 22
 23        <!-- Needs to be explicitly declared on Android R+ -->
 24        <package android:name="com.google.android.apps.maps" />
-24-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:25:9-64
-24-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:25:18-61
+24-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:25:9-64
+24-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:25:18-61
 25    </queries>
 26
 27    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-27-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:28:5-98
-27-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:28:22-95
+27-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:28:5-98
+27-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:28:22-95
 28
 29    <permission
-29-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:30:5-32:47
+29-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:30:5-32:47
 30        android:name="com.example.lazy_susan.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
-30-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:31:9-87
+30-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:31:9-87
 31        android:protectionLevel="signature" />
-31-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:32:9-44
+31-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:32:9-44
 32
 33    <uses-permission android:name="com.example.lazy_susan.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
-33-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:34:5-103
-33-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:34:22-100
+33-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:34:5-103
+33-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:34:22-100
 34
 35    <application
-35-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:36:5-222:19
+35-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:36:5-222:19
 36        android:allowBackup="true"
-36-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:37:9-35
+36-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:37:9-35
 37        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-37-->[androidx.core:core:1.15.0] C:\Users\Michael\.gradle\caches\8.11.1\transforms\1a2837282de7d2b8849431ba58eadd93\transformed\core-1.15.0\AndroidManifest.xml:28:18-86
+37-->[androidx.core:core:1.16.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\6e664912514957bedde4f70fd41d3fe6\transformed\core-1.16.0\AndroidManifest.xml:28:18-86
 38        android:dataExtractionRules="@xml/data_extraction_rules"
-38-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:38:9-65
+38-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:38:9-65
 39        android:debuggable="true"
-39-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:39:9-34
+39-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:39:9-34
 40        android:extractNativeLibs="false"
-40-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:40:9-42
+40-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:40:9-42
 41        android:fullBackupContent="@xml/backup_rules"
-41-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:41:9-54
+41-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:41:9-54
 42        android:icon="@mipmap/ic_launcher"
-42-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:42:9-43
+42-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:42:9-43
 43        android:label="@string/app_name"
-43-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:43:9-41
+43-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:43:9-41
 44        android:roundIcon="@mipmap/ic_launcher_round"
-44-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:44:9-54
+44-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:44:9-54
 45        android:supportsRtl="true"
-45-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:45:9-35
+45-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:45:9-35
 46        android:testOnly="true"
-46-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:46:9-32
+46-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:46:9-32
 47        android:theme="@style/Theme.Lazy_Susan" >
-47-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:47:9-48
+47-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:47:9-48
 48        <meta-data
-48-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:49:9-51:59
+48-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:49:9-51:59
 49            android:name="com.google.android.geo.API_KEY"
-49-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:50:13-58
+49-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:50:13-58
 50            android:value="@string/google_maps_api_key" />
-50-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:51:13-56
+50-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:51:13-56
 51
 52        <activity
-52-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:52:9-62:20
+52-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:52:9-62:20
 53            android:name="com.example.lazy_susan.MainActivity"
-53-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:53:13-41
+53-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:53:13-41
 54            android:exported="true"
-54-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:54:13-36
+54-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:54:13-36
 55            android:label="@string/app_name"
-55-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:55:13-45
+55-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:55:13-45
 56            android:theme="@style/Theme.Lazy_Susan" >
-56-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:56:13-52
+56-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:56:13-52
 57            <intent-filter>
-57-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:57:13-61:29
+57-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:57:13-61:29
 58                <action android:name="android.intent.action.MAIN" />
-58-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:58:17-69
-58-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:58:25-66
+58-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:58:17-69
+58-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:58:25-66
 59
 60                <category android:name="android.intent.category.LAUNCHER" />
-60-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:60:17-77
-60-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:60:27-74
+60-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:60:17-77
+60-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:60:27-74
 61            </intent-filter>
 62        </activity>
 63        <activity
-63-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:63:9-65:39
+63-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:63:9-65:39
 64            android:name="androidx.compose.ui.tooling.PreviewActivity"
-64-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:64:13-71
+64-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:64:13-71
 65            android:exported="true" /> <!-- Needs to be explicitly declared on P+ -->
-65-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:65:13-36
+65-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:65:13-36
 66        <uses-library
-66-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:66:9-68:40
+66-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:66:9-68:40
 67            android:name="org.apache.http.legacy"
-67-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:67:13-50
+67-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:67:13-50
 68            android:required="false" />
-68-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:68:13-37
+68-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:68:13-37
 69
 70        <activity
-70-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:70:9-87:20
+70-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:70:9-87:20
 71            android:name="com.google.firebase.auth.internal.GenericIdpActivity"
-71-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:71:13-80
+71-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:71:13-80
 72            android:excludeFromRecents="true"
-72-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:72:13-46
+72-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:72:13-46
 73            android:exported="true"
-73-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:73:13-36
+73-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:73:13-36
 74            android:launchMode="singleTask"
-74-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:74:13-44
+74-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:74:13-44
 75            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-75-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:75:13-72
+75-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:75:13-72
 76            <intent-filter>
-76-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:76:13-86:29
+76-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:76:13-86:29
 77                <action android:name="android.intent.action.VIEW" />
-77-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:77:17-69
-77-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:77:25-66
+77-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:77:17-69
+77-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:77:25-66
 78
 79                <category android:name="android.intent.category.DEFAULT" />
-79-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:79:17-76
-79-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:79:27-73
+79-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:79:17-76
+79-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:79:27-73
 80                <category android:name="android.intent.category.BROWSABLE" />
-80-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:80:17-78
-80-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:80:27-75
+80-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:80:17-78
+80-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:80:27-75
 81
 82                <data
-82-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:82:17-85:51
+82-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:82:17-85:51
 83                    android:host="firebase.auth"
-83-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:83:21-49
+83-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:83:21-49
 84                    android:path="/"
-84-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:84:21-37
+84-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:84:21-37
 85                    android:scheme="genericidp" />
-85-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:85:21-48
+85-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:85:21-48
 86            </intent-filter>
 87        </activity>
 88        <activity
-88-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:88:9-105:20
+88-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:88:9-105:20
 89            android:name="com.google.firebase.auth.internal.RecaptchaActivity"
-89-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:89:13-79
+89-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:89:13-79
 90            android:excludeFromRecents="true"
-90-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:90:13-46
+90-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:90:13-46
 91            android:exported="true"
-91-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:91:13-36
+91-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:91:13-36
 92            android:launchMode="singleTask"
-92-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:92:13-44
+92-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:92:13-44
 93            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-93-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:93:13-72
+93-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:93:13-72
 94            <intent-filter>
-94-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:94:13-104:29
+94-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:94:13-104:29
 95                <action android:name="android.intent.action.VIEW" />
-95-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:77:17-69
-95-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:77:25-66
+95-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:77:17-69
+95-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:77:25-66
 96
 97                <category android:name="android.intent.category.DEFAULT" />
-97-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:79:17-76
-97-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:79:27-73
+97-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:79:17-76
+97-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:79:27-73
 98                <category android:name="android.intent.category.BROWSABLE" />
-98-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:80:17-78
-98-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:80:27-75
+98-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:80:17-78
+98-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:80:27-75
 99
 100                <data
-100-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:82:17-85:51
+100-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:82:17-85:51
 101                    android:host="firebase.auth"
-101-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:83:21-49
+101-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:83:21-49
 102                    android:path="/"
-102-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:84:21-37
+102-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:84:21-37
 103                    android:scheme="recaptcha" />
-103-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:85:21-48
+103-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:85:21-48
 104            </intent-filter>
 105        </activity>
 106
 107        <service
-107-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:106:9-125:19
+107-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:106:9-125:19
 108            android:name="com.google.firebase.components.ComponentDiscoveryService"
-108-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:107:13-84
+108-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:107:13-84
 109            android:directBootAware="true"
-109-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:108:13-43
+109-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:108:13-43
 110            android:exported="false" >
-110-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:109:13-37
+110-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:109:13-37
 111            <meta-data
-111-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:110:13-112:85
+111-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:110:13-112:85
 112                android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"
-112-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:111:17-109
+112-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:111:17-109
 113                android:value="com.google.firebase.components.ComponentRegistrar" />
-113-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:112:17-82
+113-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:112:17-82
 114            <meta-data
-114-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:113:13-115:85
+114-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:113:13-115:85
 115                android:name="com.google.firebase.components:com.google.firebase.database.FirebaseDatabaseKtxRegistrar"
-115-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:114:17-120
+115-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:114:17-120
 116                android:value="com.google.firebase.components.ComponentRegistrar" />
-116-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:115:17-82
+116-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:115:17-82
 117            <meta-data
-117-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:116:13-118:85
+117-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:116:13-118:85
 118                android:name="com.google.firebase.components:com.google.firebase.database.DatabaseRegistrar"
-118-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:117:17-109
+118-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:117:17-109
 119                android:value="com.google.firebase.components.ComponentRegistrar" />
-119-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:118:17-82
+119-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:118:17-82
 120            <meta-data
-120-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:119:13-121:85
+120-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:119:13-121:85
 121                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar"
-121-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:120:17-116
+121-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:120:17-116
 122                android:value="com.google.firebase.components.ComponentRegistrar" />
-122-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:121:17-82
+122-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:121:17-82
 123            <meta-data
-123-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:122:13-124:85
+123-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:122:13-124:85
 124                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
-124-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:123:17-109
+124-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:123:17-109
 125                android:value="com.google.firebase.components.ComponentRegistrar" />
-125-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:124:17-82
+125-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:124:17-82
 126            <meta-data
-126-->[com.google.firebase:firebase-auth-ktx:23.2.0] C:\Users\Michael\.gradle\caches\8.11.1\transforms\25c0749f2e579b34e43b3498b28bf626\transformed\firebase-auth-ktx-23.2.0\AndroidManifest.xml:11:13-13:85
+126-->[com.google.firebase:firebase-auth-ktx:23.2.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\67f213d65bd432cb37eb2140da9180d0\transformed\firebase-auth-ktx-23.2.0\AndroidManifest.xml:11:13-13:85
 127                android:name="com.google.firebase.components:com.google.firebase.auth.ktx.FirebaseAuthLegacyRegistrar"
-127-->[com.google.firebase:firebase-auth-ktx:23.2.0] C:\Users\Michael\.gradle\caches\8.11.1\transforms\25c0749f2e579b34e43b3498b28bf626\transformed\firebase-auth-ktx-23.2.0\AndroidManifest.xml:12:17-119
+127-->[com.google.firebase:firebase-auth-ktx:23.2.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\67f213d65bd432cb37eb2140da9180d0\transformed\firebase-auth-ktx-23.2.0\AndroidManifest.xml:12:17-119
 128                android:value="com.google.firebase.components.ComponentRegistrar" />
-128-->[com.google.firebase:firebase-auth-ktx:23.2.0] C:\Users\Michael\.gradle\caches\8.11.1\transforms\25c0749f2e579b34e43b3498b28bf626\transformed\firebase-auth-ktx-23.2.0\AndroidManifest.xml:13:17-82
+128-->[com.google.firebase:firebase-auth-ktx:23.2.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\67f213d65bd432cb37eb2140da9180d0\transformed\firebase-auth-ktx-23.2.0\AndroidManifest.xml:13:17-82
 129            <meta-data
-129-->[com.google.firebase:firebase-firestore-ktx:25.1.2] C:\Users\Michael\.gradle\caches\8.11.1\transforms\8ef31de52243cc559d6c9a47fdbb62cc\transformed\firebase-firestore-ktx-25.1.2\AndroidManifest.xml:12:13-14:85
+129-->[com.google.firebase:firebase-firestore-ktx:25.1.4] C:\Users\phung\.gradle\caches\8.11.1\transforms\aa00b991a16f357a0e16ac6c2d155881\transformed\firebase-firestore-ktx-25.1.4\AndroidManifest.xml:12:13-14:85
 130                android:name="com.google.firebase.components:com.google.firebase.firestore.ktx.FirebaseFirestoreLegacyRegistrar"
-130-->[com.google.firebase:firebase-firestore-ktx:25.1.2] C:\Users\Michael\.gradle\caches\8.11.1\transforms\8ef31de52243cc559d6c9a47fdbb62cc\transformed\firebase-firestore-ktx-25.1.2\AndroidManifest.xml:13:17-129
+130-->[com.google.firebase:firebase-firestore-ktx:25.1.4] C:\Users\phung\.gradle\caches\8.11.1\transforms\aa00b991a16f357a0e16ac6c2d155881\transformed\firebase-firestore-ktx-25.1.4\AndroidManifest.xml:13:17-129
 131                android:value="com.google.firebase.components.ComponentRegistrar" />
-131-->[com.google.firebase:firebase-firestore-ktx:25.1.2] C:\Users\Michael\.gradle\caches\8.11.1\transforms\8ef31de52243cc559d6c9a47fdbb62cc\transformed\firebase-firestore-ktx-25.1.2\AndroidManifest.xml:14:17-82
+131-->[com.google.firebase:firebase-firestore-ktx:25.1.4] C:\Users\phung\.gradle\caches\8.11.1\transforms\aa00b991a16f357a0e16ac6c2d155881\transformed\firebase-firestore-ktx-25.1.4\AndroidManifest.xml:14:17-82
 132            <meta-data
-132-->[com.google.firebase:firebase-firestore:25.1.2] C:\Users\Michael\.gradle\caches\8.11.1\transforms\bc52f5f1272050c96a30cc47fedde741\transformed\firebase-firestore-25.1.2\AndroidManifest.xml:17:13-19:85
+132-->[com.google.firebase:firebase-firestore:25.1.4] C:\Users\phung\.gradle\caches\8.11.1\transforms\5285f3c791a32f47ec3895a55be5efc1\transformed\firebase-firestore-25.1.4\AndroidManifest.xml:17:13-19:85
 133                android:name="com.google.firebase.components:com.google.firebase.firestore.FirebaseFirestoreKtxRegistrar"
-133-->[com.google.firebase:firebase-firestore:25.1.2] C:\Users\Michael\.gradle\caches\8.11.1\transforms\bc52f5f1272050c96a30cc47fedde741\transformed\firebase-firestore-25.1.2\AndroidManifest.xml:18:17-122
+133-->[com.google.firebase:firebase-firestore:25.1.4] C:\Users\phung\.gradle\caches\8.11.1\transforms\5285f3c791a32f47ec3895a55be5efc1\transformed\firebase-firestore-25.1.4\AndroidManifest.xml:18:17-122
 134                android:value="com.google.firebase.components.ComponentRegistrar" />
-134-->[com.google.firebase:firebase-firestore:25.1.2] C:\Users\Michael\.gradle\caches\8.11.1\transforms\bc52f5f1272050c96a30cc47fedde741\transformed\firebase-firestore-25.1.2\AndroidManifest.xml:19:17-82
+134-->[com.google.firebase:firebase-firestore:25.1.4] C:\Users\phung\.gradle\caches\8.11.1\transforms\5285f3c791a32f47ec3895a55be5efc1\transformed\firebase-firestore-25.1.4\AndroidManifest.xml:19:17-82
 135            <meta-data
-135-->[com.google.firebase:firebase-firestore:25.1.2] C:\Users\Michael\.gradle\caches\8.11.1\transforms\bc52f5f1272050c96a30cc47fedde741\transformed\firebase-firestore-25.1.2\AndroidManifest.xml:20:13-22:85
+135-->[com.google.firebase:firebase-firestore:25.1.4] C:\Users\phung\.gradle\caches\8.11.1\transforms\5285f3c791a32f47ec3895a55be5efc1\transformed\firebase-firestore-25.1.4\AndroidManifest.xml:20:13-22:85
 136                android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
-136-->[com.google.firebase:firebase-firestore:25.1.2] C:\Users\Michael\.gradle\caches\8.11.1\transforms\bc52f5f1272050c96a30cc47fedde741\transformed\firebase-firestore-25.1.2\AndroidManifest.xml:21:17-111
+136-->[com.google.firebase:firebase-firestore:25.1.4] C:\Users\phung\.gradle\caches\8.11.1\transforms\5285f3c791a32f47ec3895a55be5efc1\transformed\firebase-firestore-25.1.4\AndroidManifest.xml:21:17-111
 137                android:value="com.google.firebase.components.ComponentRegistrar" />
-137-->[com.google.firebase:firebase-firestore:25.1.2] C:\Users\Michael\.gradle\caches\8.11.1\transforms\bc52f5f1272050c96a30cc47fedde741\transformed\firebase-firestore-25.1.2\AndroidManifest.xml:22:17-82
+137-->[com.google.firebase:firebase-firestore:25.1.4] C:\Users\phung\.gradle\caches\8.11.1\transforms\5285f3c791a32f47ec3895a55be5efc1\transformed\firebase-firestore-25.1.4\AndroidManifest.xml:22:17-82
 138        </service>
 139        <service
-139-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:126:9-133:19
+139-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:126:9-133:19
 140            android:name="androidx.credentials.playservices.CredentialProviderMetadataHolder"
-140-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:127:13-94
+140-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:127:13-94
 141            android:enabled="true"
-141-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:128:13-35
+141-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:128:13-35
 142            android:exported="false" >
-142-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:129:13-37
+142-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:129:13-37
 143            <meta-data
-143-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:130:13-132:104
+143-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:130:13-132:104
 144                android:name="androidx.credentials.CREDENTIAL_PROVIDER_KEY"
-144-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:131:17-76
+144-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:131:17-76
 145                android:value="androidx.credentials.playservices.CredentialProviderPlayServicesImpl" />
-145-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:132:17-101
+145-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:132:17-101
 146        </service>
 147
 148        <activity
-148-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:135:9-142:20
+148-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:135:9-142:20
 149            android:name="androidx.credentials.playservices.HiddenActivity"
-149-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:136:13-76
+149-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:136:13-76
 150            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
-150-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:137:13-87
+150-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:137:13-87
 151            android:enabled="true"
-151-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:138:13-35
+151-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:138:13-35
 152            android:exported="false"
-152-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:139:13-37
+152-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:139:13-37
 153            android:fitsSystemWindows="true"
-153-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:140:13-45
+153-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:140:13-45
 154            android:theme="@style/Theme.Hidden" >
-154-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:141:13-48
+154-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:141:13-48
 155        </activity>
 156        <activity
-156-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:143:9-147:75
+156-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:143:9-147:75
 157            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
-157-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:144:13-93
+157-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:144:13-93
 158            android:excludeFromRecents="true"
-158-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:145:13-46
+158-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:145:13-46
 159            android:exported="false"
-159-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:146:13-37
+159-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:146:13-37
 160            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-160-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:147:13-72
+160-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:147:13-72
 161        <!--
 162            Service handling Google Sign-In user revocation. For apps that do not integrate with
 163            Google Sign-In, this service will never be started.
 164        -->
 165        <service
-165-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:152:9-156:51
+165-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:152:9-156:51
 166            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
-166-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:153:13-89
+166-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:153:13-89
 167            android:exported="true"
-167-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:154:13-36
+167-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:154:13-36
 168            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION"
-168-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:155:13-107
+168-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:155:13-107
 169            android:visibleToInstantApps="true" />
-169-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:156:13-48
+169-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:156:13-48
 170
 171        <activity
-171-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:158:9-161:75
+171-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:158:9-161:75
 172            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-172-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:159:13-79
+172-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:159:13-79
 173            android:exported="false"
-173-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:160:13-37
+173-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:160:13-37
 174            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-174-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:161:13-72
+174-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:161:13-72
 175
 176        <provider
-176-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:163:9-168:39
+176-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:163:9-168:39
 177            android:name="com.google.firebase.provider.FirebaseInitProvider"
-177-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:164:13-77
+177-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:164:13-77
 178            android:authorities="com.example.lazy_susan.firebaseinitprovider"
-178-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:165:13-78
+178-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:165:13-78
 179            android:directBootAware="true"
-179-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:166:13-43
+179-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:166:13-43
 180            android:exported="false"
-180-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:167:13-37
+180-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:167:13-37
 181            android:initOrder="100" />
-181-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:168:13-36
+181-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:168:13-36
 182
 183        <service
-183-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:170:9-173:40
+183-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:170:9-173:40
 184            android:name="androidx.room.MultiInstanceInvalidationService"
-184-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:171:13-74
+184-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:171:13-74
 185            android:directBootAware="true"
-185-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:172:13-43
+185-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:172:13-43
 186            android:exported="false" />
-186-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:173:13-37
+186-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:173:13-37
 187
 188        <provider
-188-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:175:9-188:20
+188-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:175:9-188:20
 189            android:name="androidx.startup.InitializationProvider"
-189-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:176:13-67
+189-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:176:13-67
 190            android:authorities="com.example.lazy_susan.androidx-startup"
-190-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:177:13-74
+190-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:177:13-74
 191            android:exported="false" >
-191-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:178:13-37
+191-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:178:13-37
 192            <meta-data
-192-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:179:13-181:52
+192-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:179:13-181:52
 193                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-193-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:180:17-75
+193-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:180:17-75
 194                android:value="androidx.startup" />
-194-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:181:17-49
+194-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:181:17-49
 195            <meta-data
-195-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:182:13-184:52
+195-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:182:13-184:52
 196                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-196-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:183:17-78
+196-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:183:17-78
 197                android:value="androidx.startup" />
-197-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:184:17-49
+197-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:184:17-49
 198            <meta-data
-198-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:185:13-187:52
+198-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:185:13-187:52
 199                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-199-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:186:17-85
+199-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:186:17-85
 200                android:value="androidx.startup" />
-200-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:187:17-49
+200-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:187:17-49
 201        </provider>
 202
 203        <meta-data
-203-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:190:9-192:69
+203-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:190:9-192:69
 204            android:name="com.google.android.gms.version"
-204-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:191:13-58
+204-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:191:13-58
 205            android:value="@integer/google_play_services_version" />
-205-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:192:13-66
+205-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:192:13-66
 206
 207        <activity
-207-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:194:9-196:39
+207-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:194:9-196:39
 208            android:name="androidx.activity.ComponentActivity"
-208-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:195:13-63
-209            android:exported="true" />
-209-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:196:13-36
-210
-211        <receiver
-211-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:198:9-216:20
-212            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-212-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:199:13-76
-213            android:directBootAware="false"
-213-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:200:13-44
-214            android:enabled="true"
-214-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:201:13-35
-215            android:exported="true"
-215-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:202:13-36
-216            android:permission="android.permission.DUMP" >
-216-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:203:13-57
-217            <intent-filter>
-217-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:204:13-206:29
-218                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-218-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:205:17-91
-218-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:205:25-88
-219            </intent-filter>
-220            <intent-filter>
-220-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:207:13-209:29
-221                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-221-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:208:17-85
-221-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:208:25-82
-222            </intent-filter>
-223            <intent-filter>
-223-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:210:13-212:29
-224                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-224-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:211:17-88
-224-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:211:25-85
-225            </intent-filter>
-226            <intent-filter>
-226-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:213:13-215:29
-227                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-227-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:214:17-95
-227-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:214:25-92
-228            </intent-filter>
-229        </receiver> <!-- The activities will be merged into the manifest of the hosting app. -->
-230        <activity
-230-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:217:9-221:65
-231            android:name="com.google.android.play.core.common.PlayCoreDialogWrapperActivity"
-231-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:218:13-93
-232            android:exported="false"
-232-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:219:13-37
-233            android:stateNotNeeded="true"
-233-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:220:13-42
-234            android:theme="@style/Theme.PlayCore.Transparent" />
-234-->C:\Users\Michael\Desktop\491B\Lazy\app\src\main\AndroidManifest.xml:221:13-62
-235    </application>
-236
-237</manifest>
+208-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:195:13-63
+209            android:exported="true"
+209-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:196:13-36
+210            android:theme="@android:style/Theme.Material.Light.NoActionBar" />
+210-->[androidx.compose.ui:ui-test-manifest:1.8.0] C:\Users\phung\.gradle\caches\8.11.1\transforms\5e29b417ab1dd1b253a5aa3bdb70cae7\transformed\ui-test-manifest-1.8.0\AndroidManifest.xml:26:13-76
+211
+212        <receiver
+212-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:198:9-216:20
+213            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+213-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:199:13-76
+214            android:directBootAware="false"
+214-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:200:13-44
+215            android:enabled="true"
+215-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:201:13-35
+216            android:exported="true"
+216-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:202:13-36
+217            android:permission="android.permission.DUMP" >
+217-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:203:13-57
+218            <intent-filter>
+218-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:204:13-206:29
+219                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+219-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:205:17-91
+219-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:205:25-88
+220            </intent-filter>
+221            <intent-filter>
+221-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:207:13-209:29
+222                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+222-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:208:17-85
+222-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:208:25-82
+223            </intent-filter>
+224            <intent-filter>
+224-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:210:13-212:29
+225                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+225-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:211:17-88
+225-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:211:25-85
+226            </intent-filter>
+227            <intent-filter>
+227-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:213:13-215:29
+228                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+228-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:214:17-95
+228-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:214:25-92
+229            </intent-filter>
+230        </receiver> <!-- The activities will be merged into the manifest of the hosting app. -->
+231        <activity
+231-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:217:9-221:65
+232            android:name="com.google.android.play.core.common.PlayCoreDialogWrapperActivity"
+232-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:218:13-93
+233            android:exported="false"
+233-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:219:13-37
+234            android:stateNotNeeded="true"
+234-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:220:13-42
+235            android:theme="@style/Theme.PlayCore.Transparent" />
+235-->C:\Users\phung\AndroidStudioProjects\LazySusan06_real\app\src\main\AndroidManifest.xml:221:13-62
+236    </application>
+237
+238</manifest>

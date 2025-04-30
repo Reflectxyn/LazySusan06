@@ -29,6 +29,7 @@
     <string msgid="1656852541809559762" name="abc_toolbar_collapse_description">"Жыйыштыруу"</string>
     <string msgid="8397015543330865059" name="android.credentials.TYPE_PASSWORD_CREDENTIAL">"Сырсөз"</string>
     <string msgid="3929015085059320822" name="androidx.credentials.TYPE_PUBLIC_KEY_CREDENTIAL">"Киргизүүчү ачкыч"</string>
+    <string msgid="389117264260014992" name="autofill">"Автотолтуруу функиясы"</string>
     <string msgid="881409763997275156" name="call_notification_answer_action">"Жооп берүү"</string>
     <string msgid="8793775615905189152" name="call_notification_answer_video_action">"Видео"</string>
     <string msgid="3229508546291798546" name="call_notification_decline_action">"Четке кагуу"</string>
@@ -122,12 +123,14 @@
     <string msgid="6616362054113087709" name="m3c_time_picker_pm">"түштөн кийин"</string>
     <string msgid="1805687647081129904" name="m3c_tooltip_long_press_label">"Калкып чыгуучу кеңешти көрсөтүү"</string>
     <string msgid="5460405025248574620" name="m3c_tooltip_pane_description">"Калкып чыгуучу кеңеш"</string>
+    <string msgid="2792228137354697160" name="mc2_snackbar_pane_title">"Эскертүү"</string>
     <string msgid="542007171693138492" name="navigation_menu">"Чабыттоо менюсу"</string>
     <string msgid="6610465462668679431" name="not_selected">"Тандалган жок"</string>
     <string msgid="5941395253238309765" name="range_end">"Диапазондун аягы"</string>
     <string msgid="7097486360902471446" name="range_start">"Диапазондун башы"</string>
     <string msgid="6264217191555673260" name="search_menu_title">"Издөө"</string>
     <string msgid="6043586758067023" name="selected">"Тандалды"</string>
+    <string msgid="2792228137354697160" name="snackbar_pane_title">"Эскертүү"</string>
     <string msgid="4139871816613051306" name="state_empty">"Бош"</string>
     <string msgid="5834637030682409883" name="state_off">"Өчүк"</string>
     <string msgid="1490883874751719580" name="state_on">"Күйүк"</string>

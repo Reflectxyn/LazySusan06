@@ -74,29 +74,29 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
 
-    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation(libs.androidx.appcompat.v161)
     // Networking (OkHttp + Retrofit)
-    implementation("com.squareup.okhttp3:okhttp:4.9.0")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation(libs.okhttp.v490)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
 
     // JSON Parsing (Gson)
-    implementation("com.google.code.gson:gson:2.8.9")
+    implementation(libs.gson.v289)
 
     // Jetpack Compose for Lists (LazyColumn)
-    implementation("androidx.compose.foundation:foundation:1.5.0")
+    implementation(libs.androidx.foundation.v150)
 
     // RecyclerView (if not using Compose)
-    implementation("androidx.recyclerview:recyclerview:1.2.1")
+    implementation(libs.androidx.recyclerview.v121)
 
-    implementation ("com.google.code.gson:gson:2.8.8")   // To parse JSON
+    implementation(libs.gson)   // To parse JSON
 
-    implementation("com.google.firebase:firebase-firestore-ktx:24.4.4")
-    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation(libs.firebase.firestore.ktx.v2514)
+    implementation(libs.firebase.auth.ktx)
 
-    implementation("com.google.accompanist:accompanist-permissions:0.31.5-beta")
-    implementation("com.google.android.gms:play-services-location:21.0.1")
-    implementation("com.google.android.gms:play-services-maps:18.1.0")
+    implementation(libs.accompanist.permissions.v0315beta)
+    implementation(libs.play.services.location.v2101)
+    implementation(libs.play.services.maps)
     // Jetpack Compose utilities for Maps
-    implementation(libs.maps.compose.v2115)
+    implementation(libs.android.maps.compose)
 }

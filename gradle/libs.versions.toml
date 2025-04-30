@@ -1,51 +1,54 @@
 [versions]
-accompanistPermissions = "0.28.0"
-agp = "8.9.1"
-androidMapsUtils = "3.4.0"
-appcompat = "1.7.0"
+accompanistPermissionsVersion = "0.31.5-beta"
+agp = "8.9.2"
+appcompatVersion = "1.7.0"
 converterGson = "2.9.0"
-firebaseBom = "33.10.0"
-foundation = "1.7.8"
-googleMapsCompose = "2.11.5"
+firebaseBom = "33.13.0"
+firebaseFirestoreKtx = "25.1.4"
+foundationVersion = "1.8.0"
+googleGson = "2.10.1"
 gson = "2.10.1"
-gsonVersion = "2.8.8"
 kotlin = "2.1.0"
-coreKtx = "1.15.0"
+coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.1"
-composeBom = "2025.03.00"
-mapsCompose = "6.4.1"
+composeBom = "2025.04.01"
 mapsComposeVersion = "4.3.3"
-material = "1.7.8"
-navigationRuntimeAndroid = "2.9.0-alpha08"
+material = "1.8.0"
+navigationRuntimeAndroid = "2.9.0-rc01"
 navigationCompose = "2.8.9"
-okhttp = "4.11.0"
-playServicesLocation = "21.3.0"
+okhttpVersion = "4.11.0"
+playServicesLocationVersion = "21.3.0"
 playServicesMaps = "19.2.0"
-recyclerview = "1.4.0"
+recyclerviewVersion = "1.4.0"
 retrofit = "2.9.0"
-runtimeLivedata = "1.7.8"
+runtimeLivedata = "1.8.0"
 firebaseDatabase = "21.0.0"
-roomRuntimeAndroid = "2.7.0"
+roomRuntimeAndroid = "2.7.1"
 
 [libraries]
-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
+accompanist-permissions-v0315beta = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissionsVersion" }
 android-maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsComposeVersion" }
-android-maps-utils = { module = "com.google.maps.android:android-maps-utils", version.ref = "androidMapsUtils" }
-androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+androidx-appcompat-v161 = { module = "androidx.appcompat:appcompat", version.ref = "appcompatVersion" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-androidx-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "foundation" }
+androidx-foundation-v150 = { module = "androidx.compose.foundation:foundation", version.ref = "foundationVersion" }
 androidx-material = { module = "androidx.compose.material:material", version.ref = "material" }
-androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
+androidx-recyclerview-v121 = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerviewVersion" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
+firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
-firebase-firestore-ktx = { module = "com.google.firebase:firebase-firestore-ktx", version = "24.4.4" }
+#noinspection SimilarGradleDependency
+firebase-firestore-ktx = { module = "com.google.firebase:firebase-firestore-ktx", version = "25.1.4" }
+#noinspection SimilarGradleDependency
+firebase-firestore-ktx-v2514 = { module = "com.google.firebase:firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
+#noinspection SimilarGradleDependency
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
-gson-v288 = { module = "com.google.code.gson:gson", version.ref = "gsonVersion" }
+#noinspection SimilarGradleDependency
+gson-v289 = { module = "com.google.code.gson:gson", version.ref = "googleGson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -64,10 +67,8 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 androidx-room-runtime-android = { group = "androidx.room", name = "room-runtime-android", version.ref = "roomRuntimeAndroid" }
-maps-compose = { module = "com.goole.maps.android:maps-compose", version.ref = "mapsCompose" }
-maps-compose-v2115 = { module = "com.google.maps.android:maps-compose", version.ref = "googleMapsCompose" }
-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
-play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
+okhttp-v490 = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttpVersion" }
+play-services-location-v2101 = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocationVersion" }
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 
