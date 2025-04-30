@@ -83,16 +83,17 @@ fun MapsScreen(lat: Float, lng: Float, @SuppressLint("ContextCastToActivity") fi
         )
         // 7) drop a marker for each
         restaurants.forEach { r ->
-            val pos = LatLng(r.latitude, r.longitude)
-            Marker(
-                state = MarkerState(position = pos),
-                title = r.name,
-                snippet = r.distance,
-                icon    = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED),
-                onClick = {
-                    selected = r
-                    showInfo = true
-                    true
+            if (r.latitude != null && r.longitude != null) {
+                val pos = LatLng(r.latitude!!, r.longitude!!)
+                Marker(
+                    state = MarkerState(position = pos),
+                    title = r.name,
+                    snippet = r.distance,
+                    icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED),
+                    onClick = {
+                        selected = r
+                        showInfo = true
+                        true
                 }
             )
         }
@@ -120,4 +121,4 @@ fun MapsScreen(lat: Float, lng: Float, @SuppressLint("ContextCastToActivity") fi
             }
         }
     }
-}
+}}

@@ -30,4 +30,25 @@ object FirebaseDatabaseHelper {
                 }
         }
     }
+    fun saveAndBlockRestaurant(userId: String, restaurant: Restaurant) {
+        val restaurantId = database.child("users").child(userId).child("userRestaurants").push().key
+
+        restaurantId?.let {
+            val updatedRestaurant = restaurant.copy(
+                id = it,
+                isBlocked = true,
+                timestamp = System.currentTimeMillis()
+            )
+
+            database.child("users").child(userId).child("userRestaurants").child(it)
+                .setValue(updatedRestaurant)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d("Firebase", "Restaurant saved and blocked")
+                    } else {
+                        Log.e("Firebase", "Error saving and blocking restaurant", task.exception)
+                    }
+                }
+        }
+    }
 }

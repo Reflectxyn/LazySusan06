@@ -243,9 +243,11 @@ object ApiHelper {
                             place.optJSONArray("types")?.getString(j)?.let { typesList += it }
                         }
                     }
-                    val geom = place.getJSONObject("geometry").getJSONObject("location")
-                    val placeLat = geom.getDouble("latitude")
-                    val placeLng = geom.getDouble("longitude")
+                    val geom = place.optJSONObject("geometry")?.optJSONObject("location")
+                    val placeLat = geom?.optDouble("lat")
+                    val placeLng = geom?.optDouble("lng")
+
+
 
                     restaurants.add(
                         Restaurant(
