@@ -98,6 +98,10 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.unit.sp
+import com.example.lazy_susan.InfoBoxWithIcon
 import com.example.lazy_susan.data.DataSource
 import com.example.lazy_susan.model.Cuisine
 import com.google.firebase.database.FirebaseDatabase
@@ -248,28 +252,6 @@ fun HomeScreen(
 
                             address = fetchAddress(lat, lng)
 
-                            /*
-                            coroutineScope.launch {
-                                fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-                                    location?.let {
-                                        val usrlat = it.latitude
-                                        val usrlng = it.longitude
-
-                                        lat = usrlat
-                                        lng = usrlng
-
-                                        // Fetch address from coordinates
-                                        getAddressFromCoordinates(usrlat, usrlng) { addr ->
-                                            address = addr
-                                        }
-                                    } ?: run {
-                                        address = "Failed to get location"
-                                    }
-                                }
-                            }
-                            */
-
-
                             ApiHelper.getCachedNearbyRestaurants(lat, lng, radiusMeters, minRating, cuisineSelection) { cachedRestaurants ->
                                 Log.d("CACHE_DEBUG", "Number of cached restaurants: ${cachedRestaurants.size}")
                                 if (cachedRestaurants.size < 20) {
@@ -326,7 +308,7 @@ fun HomeScreen(
                                     }}
                                 else
                                 {
-                                    // 3. If 20 or more restaurants are already cached (and within 5 miles), use those.
+                                    // If 20 or more restaurants are already cached (and within 5 miles), use those.
                                     val userId = FirebaseAuth.getInstance().currentUser?.uid
                                     if (userId != null) {
                                         FirebaseDatabase.getInstance().getReference("users/$userId/userRestaurants")
@@ -380,7 +362,7 @@ fun HomeScreen(
     if(showResult.value) {
         Result(showResult, selectedRestaurant)
     }
-    // 3) immediately after that, add your “no results” dialog:
+    // immediately after that, added “no results” dialog:
     if (showNoResults.value) {
         NoResultsDialog(showNoResults)
     }
@@ -562,15 +544,60 @@ fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant?) {
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .padding(16.dp)
-                .then(Modifier.heightIn(max = 600.dp)), // limit max height
+                .padding(8.dp)
+                .then(Modifier.heightIn(min = 600.dp, max = 800.dp)), // limit max height
             shape = RoundedCornerShape(16.dp)
         ) {
-            Column(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .verticalScroll(rememberScrollState()) // enable scrolling if needed
-            ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .shadow(6.dp, shape = CircleShape)
+                        .background(Color.White, shape = CircleShape)
+                        .padding(6.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = restaurant?.name ?: "Restaurant",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color.Black,
+                        fontSize = 28.sp
+                    )
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // 🔴 Distance Info as labeled line
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "Nearby:",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontSize = 18.sp,
+                        color = Color.Black
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = restaurant?.distance ?: "N/A",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontSize = 16.sp,
+                        color = Color.DarkGray
+                    )
+                }
+
+                // Styled info rows
+                restaurant?.let {
+                    InfoBoxWithIcon(R.drawable.history_popup_icon, it.address)
+                    InfoBoxWithIcon(R.drawable.phone_icon, it.phoneNumber)
+                    InfoBoxWithIcon(R.drawable.clock_icon, it.hours)
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+                /*
                 Text(
                     text = "Restaurant: ${restaurant?.name}",
                     style = MaterialTheme.typography.titleLarge
@@ -595,6 +622,7 @@ fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant?) {
                     text = "Hours: ${restaurant?.hours}",
                     style = MaterialTheme.typography.bodyMedium
                 )
+                */
 
                 if (!accepted) {
                     Spacer(modifier = Modifier.height(16.dp))
@@ -707,20 +735,6 @@ fun getSelectedCuisines(
         .map { it.first.apiType }        // Extract the Cuisine.apiType from each pair
 }
 
-
-/*
-@Composable
-fun getSelectedCuisines(
-    checkValues: List<Boolean>,
-    cuisineOptions: List<Cuisine>
-): List<String> {
-    val context = LocalContext.current
-    return checkValues.mapIndexedNotNull { index, isChecked ->
-        if (isChecked) context.getString(cuisineOptions.getOrNull(index)?.name ?: 0) else null
-    }
-}
-*/
-
 fun saveRestaurantToFirestore(
     restaurant: Restaurant,
     lat: Double,
@@ -765,7 +779,27 @@ fun saveRestaurantToFirestore(
             Log.e("Firestore", "Failed to check if restaurant exists", e)
         }
 }
-/*
- Notes:
- - Vending Machines can count as restaurants? (Specific Vending machines like Farmers Fridge w/ full meals)
-*/
+@Composable
+fun InfoBoxWithIcon(iconRes: Int, infoText: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+            .background(Color(0xFFD3D3D3), shape = CircleShape)
+            .padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            painter = painterResource(id = iconRes),
+            contentDescription = null,
+            modifier = Modifier.size(24.dp)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = infoText,
+            style = MaterialTheme.typography.bodyLarge,
+            color = Color.Black,
+            fontSize = 16.sp
+        )
+    }
+}

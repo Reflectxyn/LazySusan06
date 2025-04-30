@@ -230,32 +230,32 @@ fun RestaurantItem(
     }
 
     if (showDialog) {
-        AlertDialog(
-            onDismissRequest = { onDismissDialog() },
-            title = {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .shadow(6.dp, shape = CircleShape)
-                        .background(Color.White, shape = CircleShape)
-                        .padding(16.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = restaurant.name,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = Color.Black,
-                        fontSize = 28.sp
-                    )
-                }
-            },
-            text = {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    InfoBoxWithIcon(R.drawable.history_popup_icon, restaurant.address)
-                    InfoBoxWithIcon(R.drawable.clock_icon, restaurant.hours)
-                    InfoBoxWithIcon(R.drawable.phone_icon, restaurant.phoneNumber)
-                }
-            },
+                AlertDialog(
+                    onDismissRequest = { onDismissDialog() },
+                    title = {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .shadow(6.dp, shape = CircleShape)
+                                .background(Color.White, shape = CircleShape)
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = restaurant.name,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Color.Black,
+                                fontSize = 28.sp
+                            )
+                        }
+                    },
+                    text = {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            InfoBoxWithIcon(R.drawable.history_popup_icon, restaurant.address)
+                            InfoBoxWithIcon(R.drawable.clock_icon, restaurant.hours)
+                            InfoBoxWithIcon(R.drawable.phone_icon, restaurant.phoneNumber)
+                        }
+                    },
             confirmButton = {
                 Box(
                     modifier = Modifier
