@@ -356,7 +356,7 @@ fun FiltersScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "Cancel",
+                                text = "Back",
                                 style = Typography.titleLarge
                             )
                         }
