@@ -91,14 +91,6 @@ dependencies {
 
     implementation ("com.google.code.gson:gson:2.8.8")   // To parse JSON
 
-    /*
-    implementation (libs.play.services.location)
-    implementation (libs.accompanist.permissions)
-    implementation (libs.maps.compose.v2115)
-    implementation (libs.play.services.maps)
-    implementation (libs.play.services.location)
-    implementation (libs.android.maps.utils)
-    */
     implementation("com.google.firebase:firebase-firestore-ktx:24.4.4")
     implementation("com.google.firebase:firebase-auth-ktx")
 
@@ -106,5 +98,5 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.0.1")
     implementation("com.google.android.gms:play-services-maps:18.1.0")
     // Jetpack Compose utilities for Maps
-    implementation("com.google.maps.android:maps-compose:2.11.5")
+    implementation(libs.maps.compose.v2115)
 }
