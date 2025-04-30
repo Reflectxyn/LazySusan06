@@ -53,6 +53,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.lazy_susan.pages.AwardsScreen
+import com.example.lazy_susan.pages.BlockedScreen
 import com.example.lazy_susan.pages.FiltersScreen
 import com.example.lazy_susan.pages.HomeScreen
 import com.example.lazy_susan.pages.MapsScreen
@@ -73,7 +74,9 @@ enum class AppScreen(@StringRes val title: Int, @DrawableRes val icon: Int) {
     Signup(title = R.string.accounts_page, icon = R.drawable.person),
     ProfileHome(title = R.string.accounts_page, icon = R.drawable.person),
     ChangePassword(title = R.string.accounts_page, icon = R.drawable.person),
-    PresetsPage(title = R.string.accounts_page, icon = R.drawable.person)
+    PresetsPage(title = R.string.accounts_page, icon = R.drawable.person),
+    BlockedPage(title = R.string.accounts_page, icon = R.drawable.person)
+
 }
 
 enum class TabPage(@StringRes val route: Int, @DrawableRes val icon: Int) {
@@ -326,6 +329,10 @@ fun AccountNav(
         composable(route = AppScreen.Filters.name) {
             val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
             FiltersScreen(navController, userId = userId)
+        }
+        composable(route = AppScreen.BlockedPage.name) {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+            BlockedScreen( userId = userId,navController)
         }
         composable(
             route = "filters/{presetId}",

@@ -105,6 +105,9 @@ import com.example.lazy_susan.InfoBoxWithIcon
 import com.example.lazy_susan.data.DataSource
 import com.example.lazy_susan.model.Cuisine
 import com.google.firebase.database.FirebaseDatabase
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.AnnotatedString
 
 
 @Composable
@@ -586,7 +589,34 @@ fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant?) {
                     )
                 }
                 restaurant?.let {
-                    InfoBoxWithIcon(R.drawable.history_popup_icon, it.address)
+                    val uriHandler = LocalUriHandler.current
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                            .background(Color(0xFFD3D3D3), shape = CircleShape)
+                            .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.history_popup_icon),
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        ClickableText(
+                            text = AnnotatedString(restaurant?.address ?: "Address not available"),
+                            onClick = {
+                                restaurant?.address?.let { address ->
+                                    val encoded = java.net.URLEncoder.encode(address, "UTF-8")
+                                    val uri = "https://www.google.com/maps/search/?api=1&query=$encoded"
+                                    uriHandler.openUri(uri)
+                                }
+                            },
+                            style = MaterialTheme.typography.bodyLarge.copy(color = Color.Blue, fontSize = 16.sp)
+                        )
+                    }
                     InfoBoxWithIcon(R.drawable.phone_icon, it.phoneNumber)
                     InfoBoxWithIcon(R.drawable.clock_icon, it.hours)
                 }
