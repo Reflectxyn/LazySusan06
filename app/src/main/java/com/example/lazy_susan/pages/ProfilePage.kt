@@ -47,7 +47,7 @@ fun ProfilePage(modifier: Modifier, navController: NavController, authViewModel:
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
-                    onClick = {},
+                    onClick = {navController.navigate(route = AppScreen.BlockedPage.name)},
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
                     shape = RoundedCornerShape(8.dp),
                     modifier = Modifier
