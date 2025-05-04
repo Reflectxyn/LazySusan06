@@ -635,7 +635,9 @@ fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant?) {
                         text = restaurant?.name ?: "Restaurant",
                         style = MaterialTheme.typography.bodyLarge,
                         color = Color.Black,
-                        fontSize = 28.sp
+                        fontSize = 28.sp,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
                 Spacer(modifier = Modifier.height(12.dp))
