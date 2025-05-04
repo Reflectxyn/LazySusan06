@@ -14,8 +14,8 @@
     <string name="hours">Hours</string>
 
     <string name="awards">Awards</string>
-    <string name="restaurant_stats">You discovered:\n%d new\nrestaurants!</string>
-    <string name="distance_stats">Miles\ntraveled:\n%d</string>
+    <string name="restaurant_stats">You discovered:\n%d\nrestaurants!</string>
+    <string name="distance_stats">Miles\ntraveled:\n%.2f</string>
     <string name="streak_stats">Hot\nStreak:\n%d</string>
 
     <string name="signup_prompt">Sign Up</string>

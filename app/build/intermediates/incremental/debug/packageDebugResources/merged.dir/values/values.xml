@@ -17,7 +17,7 @@
     <string name="cancel">Cancel</string>
     <string name="change_password">Change Password</string>
     <string name="chinese_cuisine">chinese_restaurant</string>
-    <string name="distance_stats">Miles\ntraveled:\n%d</string>
+    <string name="distance_stats">Miles\ntraveled:\n%.2f</string>
     <string name="email_prompt">Email</string>
     <string name="featured_page">Featured</string>
     <string name="filters_page">Filters</string>
@@ -44,7 +44,7 @@
     <string name="presets_page">Presets</string>
     <string name="project_id" translatable="false">lazysusan-ad87c</string>
     <string name="restaurant_name_default">Restaurant Name</string>
-    <string name="restaurant_stats">You discovered:\n%d new\nrestaurants!</string>
+    <string name="restaurant_stats">You discovered:\n%d\nrestaurants!</string>
     <string name="send">Send</string>
     <string name="signup_prompt">Sign Up</string>
     <string name="signup_question">Don\'t have an account?</string>

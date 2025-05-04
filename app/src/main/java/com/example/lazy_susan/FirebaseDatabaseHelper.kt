@@ -3,6 +3,11 @@ package com.example.lazy_susan
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.example.lazy_susan.pages.AwardItem
 
 object FirebaseDatabaseHelper {
 
@@ -51,4 +56,44 @@ object FirebaseDatabaseHelper {
                 }
         }
     }
+    fun saveAwardsToFirebase(awards: List<AwardItem>) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val dbRef = FirebaseDatabase.getInstance().reference
+            .child("users")
+            .child(userId)
+            .child("awards")
+
+        val awardMap = awards.associate { it.title to it.isUnlocked }
+        dbRef.setValue(awardMap)
+    }
+
+    // Load award unlock status and apply to a list of AwardItem
+    fun loadAwardsFromFirebase(
+        items: MutableList<AwardItem>,
+        onComplete: () -> Unit
+    ) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val dbRef = FirebaseDatabase.getInstance().reference
+            .child("users")
+            .child(userId)
+            .child("awards")
+
+        dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                snapshot.children.forEach { awardSnapshot ->
+                    val title = awardSnapshot.key
+                    val isUnlocked = awardSnapshot.getValue(Boolean::class.java) ?: false
+                    items.find { it.title == title }?.isUnlocked = isUnlocked
+                }
+                onComplete()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error if needed
+                onComplete()
+            }
+        })
+    }
 }
+
+

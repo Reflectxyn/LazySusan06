@@ -32,6 +32,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -49,6 +50,7 @@ import androidx.navigation.NavHostController
 import com.example.lazy_susan.R
 import com.example.lazy_susan.ui.theme.HoneyMustardYellow
 import com.example.lazy_susan.ui.theme.PicnicTableRed
+import com.example.lazy_susan.FirebaseDatabaseHelper
 
 data class AwardItem(
     val icon: Int,
@@ -58,19 +60,31 @@ data class AwardItem(
     var isUnlocked: Boolean = false
 )
 
-var items = listOf<AwardItem>(
-    AwardItem(icon = R.drawable.award_star, title = "Newcomer", description = "Register to Lazy Susan.", isUnlocked = true),
-    AwardItem(icon = R.drawable.star_unfavorited, title = "Opinionated", description = "Favorite a restaurant."),
+
+val initialAwardList = listOf(
+    AwardItem(icon = R.drawable.award_star, title = "Newcomer", description = "Register to Lazy Susan."),
     AwardItem(icon = R.drawable.history_popup_icon, title = "Aspiring Foodie", description = "Accept 5 restaurants."),
     AwardItem(icon = R.drawable.history_popup_icon, title = "Experienced Foodie", description = "Accept 10 restaurants."),
     AwardItem(icon = R.drawable.history_popup_icon, title = "Master Foodie", description = "Accept 20 restaurants."),
-    AwardItem(icon = R.drawable.thumb_down, title = "Picky Lil B*tch", description = "Reject a restaurant.")
+    AwardItem(icon = R.drawable.thumb_down, title = "Maybe not this one", description = "Reject a restaurant.")
 )
 
 @Composable
 fun AwardsScreen(navController: NavHostController) {
-    val expandedStates = remember { mutableStateListOf(*BooleanArray(items.size) { false }.toTypedArray()) }
+    val expandedStates = remember { mutableStateListOf(*BooleanArray(initialAwardList.size) { false }.toTypedArray()) }
     val listState = rememberLazyListState()
+    val items = remember { mutableStateListOf<AwardItem>() }
+
+    LaunchedEffect(Unit) {
+
+        items.addAll(initialAwardList)
+        FirebaseDatabaseHelper.loadAwardsFromFirebase(items) {
+            // UI updates when data is loaded
+        }
+
+
+    }
+
     Image(
         painter = painterResource(R.drawable.background),
         contentDescription = null,

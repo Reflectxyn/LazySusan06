@@ -115,6 +115,41 @@ fun HomeScreen(
     navController: NavHostController,
     filterViewModel: FilterViewModel = viewModel(LocalContext.current as ComponentActivity)
 ) {
+    val userId = FirebaseAuth.getInstance().currentUser?.uid
+    var acceptClickCount by remember { mutableStateOf(0) }
+    var distanceCount by remember { mutableStateOf(0.0) }
+    var StreakTotal by remember { mutableStateOf(0) }
+    LaunchedEffect(userId) {
+        if (userId != null) {
+            val dbRef = FirebaseDatabase.getInstance().reference
+                .child("users")
+                .child(userId)
+                .child("acceptClickCount")
+
+            dbRef.get().addOnSuccessListener { snapshot ->
+                val count = snapshot.getValue(Int::class.java) ?: 0
+                acceptClickCount = count
+            }
+            val dbRe = FirebaseDatabase.getInstance().reference
+                .child("users")
+                .child(userId)
+                .child("distanceTotal")
+
+            dbRe.get().addOnSuccessListener { snapshot ->
+                val count = snapshot.getValue(Double::class.java) ?: 0.0
+                distanceCount = count
+            }
+            val dbR = FirebaseDatabase.getInstance().reference
+                .child("users")
+                .child(userId)
+                .child("StreakTotal")
+
+            dbR.get().addOnSuccessListener { snapshot ->
+                val count = snapshot.getValue(Int::class.java) ?: 0
+                StreakTotal = count
+            }
+        }
+    }
     var displayState = remember { mutableStateOf("Wheel") }
     var playingState by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
@@ -190,18 +225,18 @@ fun HomeScreen(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            text = stringResource(R.string.restaurant_stats, 10),
+                            text = stringResource(R.string.restaurant_stats, acceptClickCount),
                             style = MaterialTheme.typography.titleLarge,
                             textAlign = TextAlign.Center
                         )
                         Spacer(modifier = Modifier.height(32.dp))
                         Row {
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text(text = stringResource(R.string.distance_stats, 4),
+                            Text(text = stringResource(R.string.distance_stats, distanceCount),
                                 style = MaterialTheme.typography.titleLarge,
                                 textAlign = TextAlign.Center)
                             Spacer(modifier = Modifier.width(168.dp))
-                            Text(text = stringResource(R.string.streak_stats, 5),
+                            Text(text = stringResource(R.string.streak_stats, StreakTotal),
                                 style = MaterialTheme.typography.titleLarge,
                                 textAlign = TextAlign.Center)
                             Spacer(modifier = Modifier.width(12.dp))
@@ -540,6 +575,43 @@ fun WheelAnimation(
 @Composable
 fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant?) {
     var accepted by remember { mutableStateOf(false) }  // Track if accepted
+    val userId = FirebaseAuth.getInstance().currentUser?.uid
+    var acceptClickCount by remember { mutableStateOf(0) }
+    var distanceCount by remember { mutableStateOf(0.0) }
+    var StreakTotal by remember { mutableStateOf(0) }
+
+    LaunchedEffect(userId) {
+        if (userId != null) {
+            val dbRef = FirebaseDatabase.getInstance().reference
+                .child("users")
+                .child(userId)
+                .child("acceptClickCount")
+
+            dbRef.get().addOnSuccessListener { snapshot ->
+                val count = snapshot.getValue(Int::class.java) ?: 0
+                acceptClickCount = count
+            }
+            val dbRe = FirebaseDatabase.getInstance().reference
+                .child("users")
+                .child(userId)
+                .child("distanceTotal")
+
+            dbRe.get().addOnSuccessListener { snapshot ->
+                val count = snapshot.getValue(Double::class.java) ?: 0.0
+                distanceCount = count
+            }
+            val dbR = FirebaseDatabase.getInstance().reference
+                .child("users")
+                .child(userId)
+                .child("StreakTotal")
+
+            dbR.get().addOnSuccessListener { snapshot ->
+                val count = snapshot.getValue(Int::class.java) ?: 0
+                StreakTotal = count
+            }
+
+        }
+    }
 
     Dialog(onDismissRequest = { showResult.value = false }) {
         Card(
@@ -628,7 +700,69 @@ fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant?) {
                             val userId = FirebaseAuth.getInstance().currentUser?.uid
                             if (userId != null) {
                                 FirebaseDatabaseHelper.saveRestaurantToFirebase(userId, restaurant!!)
+
+                                FirebaseDatabase.getInstance().reference
+                                    .child("users")
+                                    .child(userId)
+                                    .child("awards")
+                                    .child("Newcomer")
+                                    .setValue(true)
+
+                                if (acceptClickCount > 5){
+                                FirebaseDatabase.getInstance().reference
+                                    .child("users")
+                                    .child(userId)
+                                    .child("awards")
+                                    .child("Aspiring Foodie")
+                                    .setValue(true)}
+                                if (acceptClickCount > 10){
+                                    FirebaseDatabase.getInstance().reference
+                                        .child("users")
+                                        .child(userId)
+                                        .child("awards")
+                                        .child("Experienced Foodie")
+                                        .setValue(true)}
+                                if (acceptClickCount > 20){
+                                    FirebaseDatabase.getInstance().reference
+                                        .child("users")
+                                        .child(userId)
+                                        .child("awards")
+                                        .child("Master Foodie")
+                                        .setValue(true)}
+
+                                // Increment and save the updated count
+                                val updatedCount = acceptClickCount + 1
+                                FirebaseDatabase.getInstance().reference
+                                    .child("users")
+                                    .child(userId)
+                                    .child("acceptClickCount")
+                                    .setValue(updatedCount)
+
+                                acceptClickCount = updatedCount
+
+                                val updatedStreak = StreakTotal + 1
+                                FirebaseDatabase.getInstance().reference
+                                    .child("users")
+                                    .child(userId)
+                                    .child("StreakTotal")
+                                    .setValue(updatedStreak)
+
+                                StreakTotal = updatedStreak
+
+
+                                val Dist2Double = restaurant.distance.split(" ").get(0)
+                                val newDistance = Dist2Double.toDouble() + distanceCount
+
+
+                                FirebaseDatabase.getInstance().reference
+                                    .child("users")
+                                    .child(userId)
+                                    .child("distanceTotal")
+                                    .setValue(newDistance)
+
+                                distanceCount = newDistance
                             }
+
                             accepted = true  // Hide buttons after accepting
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
@@ -646,7 +780,25 @@ fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant?) {
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Button(
-                            onClick = { showResult.value = false },
+                            onClick = {
+                                if (userId != null) {
+                                    FirebaseDatabaseHelper.saveRestaurantToFirebase(userId, restaurant!!)
+
+                                    FirebaseDatabase.getInstance().reference
+                                        .child("users")
+                                        .child(userId)
+                                        .child("StreakTotal")
+                                        .setValue(0)
+
+                                    FirebaseDatabase.getInstance().reference
+                                        .child("users")
+                                        .child(userId)
+                                        .child("awards")
+                                        .child("Maybe not this one")
+                                        .setValue(true)
+
+                                }
+                                showResult.value = false },
                             colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
                             shape = RoundedCornerShape(8.dp),
                             modifier = Modifier
@@ -658,6 +810,7 @@ fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant?) {
                         Spacer(modifier = Modifier.width(8.dp))
                         Button(
                             onClick = {
+
                                 val userId = FirebaseAuth.getInstance().currentUser?.uid
                                 if (userId != null && restaurant != null) {
                                     FirebaseDatabaseHelper.saveAndBlockRestaurant(userId, restaurant)
