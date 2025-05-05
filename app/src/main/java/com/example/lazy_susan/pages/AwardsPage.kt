@@ -52,7 +52,7 @@ import com.example.lazy_susan.ui.theme.HoneyMustardYellow
 import com.example.lazy_susan.ui.theme.PicnicTableRed
 import com.example.lazy_susan.FirebaseDatabaseHelper
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
+
 
 data class AwardItem(
     val icon: Int,
