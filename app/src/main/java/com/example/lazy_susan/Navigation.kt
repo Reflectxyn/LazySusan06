@@ -52,6 +52,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.lazy_susan.pages.ArchiveScreen
 import com.example.lazy_susan.pages.AwardsScreen
 import com.example.lazy_susan.pages.BlockedScreen
 import com.example.lazy_susan.pages.FiltersScreen
@@ -70,6 +71,7 @@ enum class AppScreen(@StringRes val title: Int, @DrawableRes val icon: Int) {
     Maps(title = R.string.map_page, icon = R.drawable.home),
     Awards(title = R.string.app_name, icon = R.drawable.home),
     History(title = R.string.history_page, icon = R.drawable.history),
+    Archive(title = R.string.history_page, icon = R.drawable.history),
     Profile(title = R.string.accounts_page, icon = R.drawable.person),
     Signup(title = R.string.accounts_page, icon = R.drawable.person),
     ProfileHome(title = R.string.accounts_page, icon = R.drawable.person),
@@ -178,7 +180,7 @@ fun LazySusanApp(
                 when (currentPage) {
                     0 -> FeaturedScreen(userId = userId)
                     1 -> HomeNav(navController)
-                    2 -> HistoryScreen(userId = userId )
+                    2 -> HistoryNav(navController)
                     3 -> AccountNav(modifier, navController, authViewModel)
                 }
             }
@@ -283,12 +285,29 @@ fun HomeNav(
         composable(route = AppScreen.Awards.name){
             AwardsScreen(navController)
         }
+    }
+}
+
+@Composable
+fun HistoryNav(
+    navController: NavHostController
+) {
+    NavHost(
+        navController = navController,
+        startDestination = AppScreen.History.name,
+        modifier = Modifier.fillMaxSize()
+    ) {
         composable(route = AppScreen.History.name) {
             val userId = FirebaseAuth.getInstance().currentUser?.uid
             if (userId != null) {
-                HistoryScreen(userId = userId)
+                HistoryScreen(userId = userId, navController = navController)
             }
-
+        }
+        composable(route = AppScreen.Archive.name) {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+            if (userId != null) {
+                ArchiveScreen(userId = userId)
+            }
         }
     }
 }

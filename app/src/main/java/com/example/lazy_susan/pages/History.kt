@@ -38,16 +38,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 @Composable
-fun HistoryScreen(userId: String) {
+fun HistoryScreen(userId: String, navController: NavController) {
     val db = FirebaseDatabase.getInstance().reference
     val restaurantListFlow = remember { MutableStateFlow<List<Restaurant>>(emptyList()) }
     val currentPopupIndex = remember { mutableStateOf(-1) }
@@ -83,7 +86,8 @@ fun HistoryScreen(userId: String) {
                                 isFavorited = isFavorited,
                                 isBlocked = isBlocked,
                                 latitude    = lat,      // ← CHANGED: pass latitude
-                                longitude   = lng       // ← CHANGED: pass longitude
+                                longitude   = lng,       // ← CHANGED: pass longitude
+                                timestamp = timestamp
 
                             )
                         } else null
@@ -159,6 +163,27 @@ fun HistoryScreen(userId: String) {
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 50.dp)
+                        .background(Color.Black, shape = CircleShape)
+                        .padding(vertical = 12.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    TextButton(
+                        onClick = {navController.navigate(route = AppScreen.Archive.name)}
+                    ) {
+                        Text(
+                            text = "Show More",
+                            color = Color.White,
+                            fontSize = 20.sp
+                        )
+                    }
+                }
             }
         }
     }
@@ -175,6 +200,11 @@ fun RestaurantItem(
 ) {
     val db = FirebaseDatabase.getInstance().reference
     var isFavorited by remember { mutableStateOf(restaurant.isFavorited) }
+
+    fun formatTimestampToDate(timestamp: Long): String {
+        val sdf = SimpleDateFormat("EEEE, MMMM d", Locale.getDefault())
+        return sdf.format(Date(timestamp))
+    }
 
     DisposableEffect(userId, restaurant.id) {
         val restaurantRef = db.child("users").child(userId).child("userRestaurants").child(restaurant.id)
@@ -194,8 +224,18 @@ fun RestaurantItem(
     }
 
     fun toggleFavorite() {
-        val restaurantRef = db.child("users").child(userId).child("userRestaurants").child(restaurant.id)
-        restaurantRef.child("isFavorited").setValue(!isFavorited)
+        val restaurantRef = db.child("users").child(userId).child("userRestaurants")
+
+        restaurantRef.get().addOnSuccessListener { snapshot ->
+            snapshot.children.forEach { child ->
+                val name = child.child("name").getValue(String::class.java)
+                val address = child.child("address").getValue(String::class.java)
+
+                if (name == restaurant.name && address == restaurant.address) {
+                    child.ref.child("isFavorited").setValue(!isFavorited)
+                }
+            }
+        }
     }
 
     Box(
@@ -214,13 +254,20 @@ fun RestaurantItem(
                 )
             }
             Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = restaurant.name,
-                style = MaterialTheme.typography.bodyLarge,
-                color = Color.Black,
-                fontSize = 24.sp,
-                modifier = Modifier.weight(1f)
-            )
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = restaurant.name,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color.Black,
+                    fontSize = 24.sp,
+                )
+                Text(
+                    text = formatTimestampToDate(restaurant.timestamp),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.Gray,
+                    fontSize = 16.sp,
+                )
+            }
             IconButton(onClick = { onShowDialog() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.history_popup_icon),

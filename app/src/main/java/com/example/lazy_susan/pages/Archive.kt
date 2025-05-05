@@ -1,5 +1,8 @@
-package com.example.lazy_susan
+package com.example.lazy_susan.pages
 
+import com.example.lazy_susan.R
+import com.example.lazy_susan.Restaurant
+import com.example.lazy_susan.RestaurantItem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -25,18 +27,26 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+
+
 
 @Composable
-fun FeaturedScreen(userId: String) {
+fun ArchiveScreen(userId: String) {
     val db = FirebaseDatabase.getInstance().reference
-    val favoriteListFlow = remember { MutableStateFlow<List<Restaurant>>(emptyList()) }
+    val archiveListFlow = remember { MutableStateFlow<List<Restaurant>>(emptyList()) }
 
     DisposableEffect(userId) {
         val restaurantRef = db.child("users").child(userId).child("userRestaurants")
         val listener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val favorites = snapshot.children.mapNotNull { child ->
-                    val restaurantName = child.child("name").getValue(String::class.java)
+                val currentTime = System.currentTimeMillis()
+                val ninetyDays = 90L * 24 * 60 * 60 * 1000
+                val thirtyDays = 30L * 24 * 60 * 60 * 1000
+
+                val archive = snapshot.children.mapNotNull { child ->
+                    val restaurantName = child.child("name").getValue(String::class.java) ?: "Name not found"
                     val address = child.child("address").getValue(String::class.java) ?: "Address not found"
                     val phoneNumber = child.child("phoneNumber").getValue(String::class.java) ?: "Phone number not found"
                     val hours = child.child("hours").getValue(String::class.java) ?: "Hours not found"
@@ -48,7 +58,13 @@ fun FeaturedScreen(userId: String) {
                     val lat = child.child("latitude").getValue(Double::class.java) ?: 0.0
                     val lng = child.child("longitude").getValue(Double::class.java) ?: 0.0
 
-                    if (restaurantName != null && isFavorited) {
+                    // to remove restaurants that exceed 90 days from database
+                    if (timestamp != null && timestamp < (currentTime - ninetyDays)) {
+                        child.ref.removeValue()
+                        return@mapNotNull null
+                    }
+
+                    if (timestamp >= (currentTime - ninetyDays) && timestamp < (currentTime - thirtyDays)){
                         Restaurant(
                             name        = restaurantName,
                             address     = address,
@@ -63,9 +79,8 @@ fun FeaturedScreen(userId: String) {
                     } else null
                 }
 
-                val uniqueFavorites = favorites.distinctBy { it.name to it.address }
-                favoriteListFlow.update { uniqueFavorites }
-                favoriteListFlow.update { uniqueFavorites }
+
+                archiveListFlow.update { archive }
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -79,7 +94,7 @@ fun FeaturedScreen(userId: String) {
         }
     }
 
-    val favoriteList by favoriteListFlow.collectAsState()
+    val archiveList by archiveListFlow.collectAsState()
     val currentPopupIndex = remember { mutableStateOf(-1) }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -96,13 +111,13 @@ fun FeaturedScreen(userId: String) {
                     .padding(16.dp)
                     .verticalScroll(rememberScrollState())
             ) {
-                if (favoriteList.isEmpty()) {
+                if (archiveList.isEmpty()) {
                     Text(
-                        text = "No favorites yet.",
+                        text = "Archive is empty.",
                         style = MaterialTheme.typography.bodyLarge
                     )
                 } else {
-                    favoriteList.forEachIndexed { index, restaurant ->
+                    archiveList.forEachIndexed { index, restaurant ->
                         RestaurantItem(
                             restaurant = restaurant,
                             userId = userId,
@@ -111,8 +126,8 @@ fun FeaturedScreen(userId: String) {
                             onDismissDialog = { currentPopupIndex.value = -1 },
                             onNavigate = { direction ->
                                 val newIndex = when (direction) {
-                                    "left" -> (currentPopupIndex.value - 1 + favoriteList.size) % favoriteList.size
-                                    "right" -> (currentPopupIndex.value + 1) % favoriteList.size
+                                    "left" -> (currentPopupIndex.value - 1 + archiveList.size) % archiveList.size
+                                    "right" -> (currentPopupIndex.value + 1) % archiveList.size
                                     else -> currentPopupIndex.value
                                 }
                                 currentPopupIndex.value = newIndex
@@ -124,3 +139,14 @@ fun FeaturedScreen(userId: String) {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
