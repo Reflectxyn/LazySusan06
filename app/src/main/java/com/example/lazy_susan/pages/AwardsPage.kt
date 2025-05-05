@@ -51,6 +51,8 @@ import com.example.lazy_susan.R
 import com.example.lazy_susan.ui.theme.HoneyMustardYellow
 import com.example.lazy_susan.ui.theme.PicnicTableRed
 import com.example.lazy_susan.FirebaseDatabaseHelper
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 data class AwardItem(
     val icon: Int,
@@ -60,7 +62,7 @@ data class AwardItem(
     var isUnlocked: Boolean = false
 )
 
-
+val userId = FirebaseAuth.getInstance().currentUser?.uid
 val initialAwardList = listOf(
     AwardItem(icon = R.drawable.award_star, title = "Newcomer", description = "Register to Lazy Susan."),
     AwardItem(icon = R.drawable.history_popup_icon, title = "Aspiring Foodie", description = "Accept 5 restaurants."),

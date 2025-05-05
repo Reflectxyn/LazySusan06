@@ -784,7 +784,6 @@ fun Result(showResult: MutableState<Boolean>, restaurant: Restaurant?) {
                         Button(
                             onClick = {
                                 if (userId != null) {
-                                    FirebaseDatabaseHelper.saveRestaurantToFirebase(userId, restaurant!!)
 
                                     FirebaseDatabase.getInstance().reference
                                         .child("users")

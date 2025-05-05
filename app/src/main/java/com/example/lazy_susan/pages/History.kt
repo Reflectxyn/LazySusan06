@@ -104,6 +104,7 @@ fun HistoryScreen(userId: String) {
     }
 
     val restaurantList by restaurantListFlow.collectAsState()
+    val reversedList = restaurantList.reversed()
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -119,13 +120,13 @@ fun HistoryScreen(userId: String) {
                     .padding(16.dp)
                     .verticalScroll(rememberScrollState())
             ) {
-                if (restaurantList.isEmpty()) {
+                if (reversedList.isEmpty()) {
                     Text(
                         text = "No restaurant history available.",
                         style = MaterialTheme.typography.bodyLarge
                     )
                 } else {
-                    restaurantList.forEachIndexed { index, restaurant ->
+                    reversedList.forEachIndexed { index, restaurant ->
                         RestaurantItem(
                             restaurant = restaurant,
                             userId = userId,
@@ -134,8 +135,8 @@ fun HistoryScreen(userId: String) {
                             onDismissDialog = { currentPopupIndex.value = -1 },
                             onNavigate = { direction ->
                                 val newIndex = when (direction) {
-                                    "left" -> (currentPopupIndex.value - 1 + restaurantList.size) % restaurantList.size
-                                    "right" -> (currentPopupIndex.value + 1) % restaurantList.size
+                                    "left" -> (currentPopupIndex.value - 1 + reversedList.size) % reversedList.size
+                                    "right" -> (currentPopupIndex.value + 1) % reversedList.size
                                     else -> currentPopupIndex.value
                                 }
                                 currentPopupIndex.value = newIndex
