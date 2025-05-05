@@ -1,8 +1,5 @@
 package com.example.lazy_susan.pages
 
-import com.example.lazy_susan.R
-import com.example.lazy_susan.Restaurant
-import com.example.lazy_susan.RestaurantItem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,21 +13,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.lazy_susan.R
+import com.example.lazy_susan.Restaurant
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-
-
 
 @Composable
 fun ArchiveScreen(userId: String) {

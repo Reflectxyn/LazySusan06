@@ -1,4 +1,4 @@
-package com.example.lazy_susan
+package com.example.lazy_susan.pages
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +19,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.lazy_susan.AppScreen
+import com.example.lazy_susan.AuthState
+import com.example.lazy_susan.AuthViewModel
+import com.example.lazy_susan.R
 
 @Composable
 fun ProfilePage(modifier: Modifier, navController: NavController, authViewModel: AuthViewModel){

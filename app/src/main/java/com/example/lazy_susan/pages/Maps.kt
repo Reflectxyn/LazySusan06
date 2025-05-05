@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.lazy_susan.ApiHelper
-import com.example.lazy_susan.InfoBoxWithIcon
+import com.example.lazy_susan.R
 import com.example.lazy_susan.Restaurant
 import com.example.lazy_susan.data.DataSource
 import com.example.lazy_susan.ui.theme.PicnicTableRed
@@ -31,7 +31,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
-import com.example.lazy_susan.R
 
 @Composable
 fun MapsScreen(lat: Float, lng: Float, @SuppressLint("ContextCastToActivity") filterViewModel: FilterViewModel = viewModel(LocalContext.current as ComponentActivity)) {

@@ -27,9 +27,9 @@ class RestaurantAdapter(private val restaurants: List<Restaurant>) : RecyclerVie
         // Bind the restaurant data to the view
         val restaurant = restaurants[position]
         holder.restaurantName.text = restaurant.name
-        holder.restaurantAddress.text = "${restaurant.address}"
-        holder.restaurantPhone.text = "${restaurant.phoneNumber}"
-        holder.restaurantHours.text = "${restaurant.hours}"
+        holder.restaurantAddress.text = restaurant.address
+        holder.restaurantPhone.text = restaurant.phoneNumber
+        holder.restaurantHours.text = restaurant.hours
     }
 
     override fun getItemCount(): Int {

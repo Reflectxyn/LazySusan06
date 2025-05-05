@@ -47,12 +47,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.lazy_susan.FirebaseDatabaseHelper
 import com.example.lazy_susan.R
 import com.example.lazy_susan.ui.theme.HoneyMustardYellow
 import com.example.lazy_susan.ui.theme.PicnicTableRed
-import com.example.lazy_susan.FirebaseDatabaseHelper
 import com.google.firebase.auth.FirebaseAuth
-
+import kotlin.collections.addAll
+import kotlin.collections.listOf
+import kotlin.collections.toTypedArray
 
 data class AwardItem(
     val icon: Int,

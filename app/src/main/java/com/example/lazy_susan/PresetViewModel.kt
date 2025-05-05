@@ -8,7 +8,6 @@ import com.google.firebase.database.FirebaseDatabase
 import java.util.UUID
 
 class PresetViewModel(private val userId: String) : ViewModel() {
-
     private val database =
         FirebaseDatabase.getInstance().getReference("users").child(userId).child("presets")
     private val _presets = MutableLiveData<List<Preset>>(emptyList())

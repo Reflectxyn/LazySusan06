@@ -23,13 +23,13 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -62,11 +62,9 @@ import com.example.lazy_susan.ui.theme.LightGray
 import com.example.lazy_susan.ui.theme.Typography
 import com.google.android.gms.location.LocationServices
 
-
 val cuisineLabels = listOf("Italian", "Japanese", "Thai", "Mexican", "Indian", "Chinese", "Greek", "American")
 val ratingLabels = listOf("2", "3", "4", "5")
 val distanceOptions = listOf("1", "2", "5", "10", "15")
-
 
 @Composable
 fun FiltersScreen(
@@ -76,10 +74,6 @@ fun FiltersScreen(
     presetId: String = "",
     presetViewModel: PresetViewModel = viewModel(factory = PresetViewModelFactory(userId))
 ) {
-    /*
-    val cuisineSelections = filterViewModel.selectedCuisineBooleans
-    var distanceDefault = filterViewModel.selectedDistance
-     */
 
     val preset = presetViewModel
         .presets
@@ -375,21 +369,6 @@ fun FiltersScreen(
 }
 
 @Composable
-fun CuisineFilter(checkValue: MutableList<Boolean>) {
-    Column {
-        DataSource.cuisines.forEachIndexed { index, cuisine ->
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(
-                    checked = checkValue[index],
-                    onCheckedChange = { checkValue[index] = it }
-                )
-                Text(stringResource(cuisine.name))
-            }
-        }
-    }
-}
-
-@Composable
 fun RatingFilter(selected: MutableState<String>) {
     Row {
         ratingLabels.forEachIndexed { index, rating ->
@@ -413,34 +392,6 @@ fun RatingFilter(selected: MutableState<String>) {
         }
     }
 }
-/*
-@Composable
-fun RatingFilter(filterViewModel: FilterViewModel) {
-    // Get the rating options from DataSource
-    val ratingOptions = DataSource.ratings // For example: ["2", "3", "4", "5"]
-    // Get the current selected rating threshold from the shared ViewModel
-    val selectedRating = filterViewModel.selectedRatingThreshold.value
-
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        // Optionally display the currently selected rating threshold
-        Text(text = "Selected Rating: $selectedRating or higher", style = Typography.bodyLarge)
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            ratingOptions.forEach { rating ->
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    RadioButton(
-                        selected = (selectedRating == rating),
-                        onClick = { filterViewModel.selectedRatingThreshold.value = rating }
-                    )
-                    Text(text = rating)
-                }
-            }
-        }
-    }
-}
- */
 
 @Composable
 fun DistanceFilter(selected: MutableState<String>) {
@@ -459,24 +410,3 @@ fun DistanceFilter(selected: MutableState<String>) {
         }
     }
 }
-/*
-@Composable
-fun getSelectedCuisines(
-    selectedBooleans: List<Boolean>,
-    cuisineList: List<Cuisine>
-): List<String> {
-    val ctx: Context = LocalContext.current
-    return selectedBooleans
-        .mapIndexedNotNull { idx, isSelected ->
-            if (!isSelected) null
-            else {
-                // e.g. "Italian" → "italian_restaurant"
-                val uiLabel = ctx.getString(cuisineList[idx].name)
-                uiLabel
-                    .lowercase(Locale.getDefault())
-                    .replace(' ', '_') +
-                        "_restaurant"
-            }
-        }
-}
-*/

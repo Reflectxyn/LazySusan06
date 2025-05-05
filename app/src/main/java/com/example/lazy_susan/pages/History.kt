@@ -1,8 +1,9 @@
-package com.example.lazy_susan
+package com.example.lazy_susan.pages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,8 +15,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
@@ -32,13 +36,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.lazy_susan.AppScreen
+import com.example.lazy_susan.R
+import com.example.lazy_susan.Restaurant
+import com.example.lazy_susan.ui.theme.Typography
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -46,8 +56,8 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import java.text.SimpleDateFormat
-import java.util.*
-
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun HistoryScreen(userId: String, navController: NavController) {
@@ -85,8 +95,8 @@ fun HistoryScreen(userId: String, navController: NavController) {
                                 id = restaurantId,
                                 isFavorited = isFavorited,
                                 isBlocked = isBlocked,
-                                latitude    = lat,      // ← CHANGED: pass latitude
-                                longitude   = lng,       // ← CHANGED: pass longitude
+                                latitude = lat,      // ← CHANGED: pass latitude
+                                longitude = lng,       // ← CHANGED: pass longitude
                                 timestamp = timestamp
 
                             )
@@ -110,27 +120,34 @@ fun HistoryScreen(userId: String, navController: NavController) {
     val restaurantList by restaurantListFlow.collectAsState()
     val reversedList = restaurantList.reversed()
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        Image(
-            painter = painterResource(id = R.drawable.background),
-            contentDescription = null,
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier.fillMaxSize()
-        )
-
-        Column(modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .verticalScroll(rememberScrollState())
+    Image(
+        painter = painterResource(id = R.drawable.background),
+        contentDescription = null,
+        contentScale = ContentScale.FillBounds,
+        modifier = Modifier.fillMaxSize()
+    )
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(8.dp)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(RoundedCornerShape(8.dp))
+                .background(brush = SolidColor(Color.White), alpha = 0.8f)
+                .verticalScroll(rememberScrollState())
             ) {
-                if (reversedList.isEmpty()) {
-                    Text(
-                        text = "No restaurant history available.",
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                } else {
-                    reversedList.forEachIndexed { index, restaurant ->
+            Spacer(modifier = Modifier.height(16.dp))
+            if (reversedList.isEmpty()) {
+                Text(
+                    text = "No restaurant history available.",
+                    style = MaterialTheme.typography.titleLarge
+                )
+            } else {
+                LazyColumn {
+                    itemsIndexed(reversedList, key = { index, _ -> index }) { index, restaurant ->
                         RestaurantItem(
                             restaurant = restaurant,
                             userId = userId,
@@ -148,42 +165,37 @@ fun HistoryScreen(userId: String, navController: NavController) {
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(16.dp))
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 10.dp)
-                        .background(Color.White, shape = CircleShape)
-                        .padding(10.dp)
-                ) {
-                    Text(
-                        text = "Disclaimer: Past results will be archived after 30 days",
-                        style = MaterialTheme.typography.bodySmall.copy(color = Color.Red),
-                        fontSize = 16.sp,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 50.dp)
-                        .background(Color.Black, shape = CircleShape)
-                        .padding(vertical = 12.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    TextButton(
-                        onClick = {navController.navigate(route = AppScreen.Archive.name)}
-                    ) {
-                        Text(
-                            text = "Show More",
-                            color = Color.White,
-                            fontSize = 20.sp
-                        )
-                    }
-                }
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 10.dp)
+                    .padding(10.dp)
+            ) {
+                Text(
+                    text = "Disclaimer: Past results will be archived after 30 days",
+                    style = MaterialTheme.typography.bodySmall.copy(color = Color.Red),
+                    fontSize = 16.sp,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .width(104.dp)
+                    .height(36.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(color = Color.Black)
+                    .clickable {
+                        navController.navigate(route = AppScreen.Archive.name)
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Show More",
+                    style = Typography.bodyLarge,
+                    color = Color.White
+                )
             }
         }
     }

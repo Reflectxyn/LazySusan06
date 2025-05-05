@@ -55,10 +55,16 @@ import androidx.navigation.navArgument
 import com.example.lazy_susan.pages.ArchiveScreen
 import com.example.lazy_susan.pages.AwardsScreen
 import com.example.lazy_susan.pages.BlockedScreen
+import com.example.lazy_susan.pages.ChangePassword
+import com.example.lazy_susan.pages.FeaturedScreen
 import com.example.lazy_susan.pages.FiltersScreen
+import com.example.lazy_susan.pages.HistoryScreen
 import com.example.lazy_susan.pages.HomeScreen
+import com.example.lazy_susan.pages.LoginPage
 import com.example.lazy_susan.pages.MapsScreen
 import com.example.lazy_susan.pages.PresetPage
+import com.example.lazy_susan.pages.ProfilePage
+import com.example.lazy_susan.pages.SignupPage
 import com.example.lazy_susan.ui.theme.HoneyMustardYellow
 import com.example.lazy_susan.ui.theme.PicnicTableRed
 import com.google.firebase.auth.FirebaseAuth
@@ -78,7 +84,6 @@ enum class AppScreen(@StringRes val title: Int, @DrawableRes val icon: Int) {
     ChangePassword(title = R.string.accounts_page, icon = R.drawable.person),
     PresetsPage(title = R.string.accounts_page, icon = R.drawable.person),
     BlockedPage(title = R.string.accounts_page, icon = R.drawable.person)
-
 }
 
 enum class TabPage(@StringRes val route: Int, @DrawableRes val icon: Int) {
@@ -262,7 +267,6 @@ fun HomeNav(
             if (userId != null) {
                 FeaturedScreen(userId = userId)
             }
-
         }
         composable(route = AppScreen.Home.name) {
             HomeScreen(navController)
@@ -363,3 +367,6 @@ fun AccountNav(
         }
     }
 }
+
+@Composable
+fun

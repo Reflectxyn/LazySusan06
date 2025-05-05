@@ -1,4 +1,4 @@
-package com.example.lazy_susan
+package com.example.lazy_susan.pages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -36,6 +36,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.lazy_susan.AppScreen
+import com.example.lazy_susan.AuthState
+import com.example.lazy_susan.AuthViewModel
+import com.example.lazy_susan.R
 import com.example.lazy_susan.ui.theme.Typography
 
 @Composable

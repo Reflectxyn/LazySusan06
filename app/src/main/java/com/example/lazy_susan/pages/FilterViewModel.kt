@@ -1,7 +1,7 @@
 package com.example.lazy_susan.pages
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 
 class FilterViewModel : ViewModel(){

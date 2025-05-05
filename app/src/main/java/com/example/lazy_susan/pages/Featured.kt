@@ -1,4 +1,4 @@
-package com.example.lazy_susan
+package com.example.lazy_susan.pages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -19,6 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.lazy_susan.R
+import com.example.lazy_susan.Restaurant
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -50,14 +52,14 @@ fun FeaturedScreen(userId: String) {
 
                     if (restaurantName != null && isFavorited) {
                         Restaurant(
-                            name        = restaurantName,
-                            address     = address,
+                            name = restaurantName,
+                            address = address,
                             phoneNumber = phoneNumber,
-                            hours       = hours,
-                            id          = restaurantId,
+                            hours = hours,
+                            id = restaurantId,
                             isFavorited = isFavorited,
-                            latitude    = lat,    // ← CHANGED: pass latitude
-                            longitude   = lng,     // ← CHANGED: pass longitude
+                            latitude = lat,    // ← CHANGED: pass latitude
+                            longitude = lng,     // ← CHANGED: pass longitude
                             timestamp = timestamp
                         )
                     } else null

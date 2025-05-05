@@ -1,13 +1,13 @@
 package com.example.lazy_susan
 
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import android.util.Log
+import com.example.lazy_susan.pages.AwardItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.example.lazy_susan.pages.AwardItem
 
 object FirebaseDatabaseHelper {
 
