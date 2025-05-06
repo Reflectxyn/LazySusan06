@@ -310,7 +310,7 @@ fun HistoryNav(
         composable(route = AppScreen.Archive.name) {
             val userId = FirebaseAuth.getInstance().currentUser?.uid
             if (userId != null) {
-                ArchiveScreen(userId = userId)
+                ArchiveScreen(userId = userId, navController = navController)
             }
         }
     }

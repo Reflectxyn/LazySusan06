@@ -1,12 +1,14 @@
 package com.example.lazy_susan.pages
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,10 +17,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.lazy_susan.AppScreen
 import com.example.lazy_susan.R
 import com.example.lazy_susan.Restaurant
 import com.google.firebase.database.DataSnapshot
@@ -82,6 +89,7 @@ fun FeaturedScreen(userId: String) {
     }
 
     val favoriteList by favoriteListFlow.collectAsState()
+    val reversedList = favoriteList.reversed()
     val currentPopupIndex = remember { mutableStateOf(-1) }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -91,35 +99,54 @@ fun FeaturedScreen(userId: String) {
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.fillMaxSize()
         )
-
-        Column(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp)
+        ) {
             Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .padding(16.dp)
-                    .verticalScroll(rememberScrollState())
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(brush = SolidColor(Color.White), alpha = 0.8f)
             ) {
-                if (favoriteList.isEmpty()) {
-                    Text(
-                        text = "No favorites yet.",
-                        style = MaterialTheme.typography.bodyLarge
+                Box(modifier = Modifier
+                    .padding(
+                        top = 20.dp,
+                        bottom = 10.dp,
+                        start = 20.dp,
+                        end = 20.dp
                     )
-                } else {
-                    favoriteList.forEachIndexed { index, restaurant ->
-                        RestaurantItem(
-                            restaurant = restaurant,
-                            userId = userId,
-                            showDialog = currentPopupIndex.value == index,
-                            onShowDialog = { currentPopupIndex.value = index },
-                            onDismissDialog = { currentPopupIndex.value = -1 },
-                            onNavigate = { direction ->
-                                val newIndex = when (direction) {
-                                    "left" -> (currentPopupIndex.value - 1 + favoriteList.size) % favoriteList.size
-                                    "right" -> (currentPopupIndex.value + 1) % favoriteList.size
-                                    else -> currentPopupIndex.value
-                                }
-                                currentPopupIndex.value = newIndex
-                            }
+                ) {
+                    if (reversedList.isEmpty()) {
+                        Text(
+                            text = "No favorites yet.",
+                            style = MaterialTheme.typography.titleLarge
                         )
+                    } else {
+                        LazyColumn {
+                            itemsIndexed(
+                                reversedList,
+                                key = { index, _ -> index }) { index, restaurant ->
+                                RestaurantItem(
+                                    restaurant = restaurant,
+                                    page = AppScreen.Featured.name,
+                                    userId = userId,
+                                    showDialog = currentPopupIndex.value == index,
+                                    onShowDialog = { currentPopupIndex.value = index },
+                                    onDismissDialog = { currentPopupIndex.value = -1 },
+                                    onNavigate = { direction ->
+                                        val newIndex = when (direction) {
+                                            "left" -> (currentPopupIndex.value - 1 + reversedList.size) % reversedList.size
+                                            "right" -> (currentPopupIndex.value + 1) % reversedList.size
+                                            else -> currentPopupIndex.value
+                                        }
+                                        currentPopupIndex.value = newIndex
+                                    }
+                                )
+                            }
+                        }
                     }
                 }
             }

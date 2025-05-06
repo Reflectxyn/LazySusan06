@@ -12,15 +12,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -133,69 +131,86 @@ fun HistoryScreen(userId: String, navController: NavController) {
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxSize()
                 .clip(RoundedCornerShape(8.dp))
                 .background(brush = SolidColor(Color.White), alpha = 0.8f)
-                .verticalScroll(rememberScrollState())
-            ) {
-            Spacer(modifier = Modifier.height(16.dp))
-            if (reversedList.isEmpty()) {
-                Text(
-                    text = "No restaurant history available.",
-                    style = MaterialTheme.typography.titleLarge
+        ) {
+            Box(modifier = Modifier
+                .padding(
+                    top = 20.dp,
+                    bottom = 10.dp,
+                    start = 20.dp,
+                    end = 20.dp
                 )
-            } else {
-                LazyColumn {
-                    itemsIndexed(reversedList, key = { index, _ -> index }) { index, restaurant ->
-                        RestaurantItem(
-                            restaurant = restaurant,
-                            userId = userId,
-                            showDialog = currentPopupIndex.value == index,
-                            onShowDialog = { currentPopupIndex.value = index },
-                            onDismissDialog = { currentPopupIndex.value = -1 },
-                            onNavigate = { direction ->
-                                val newIndex = when (direction) {
-                                    "left" -> (currentPopupIndex.value - 1 + reversedList.size) % reversedList.size
-                                    "right" -> (currentPopupIndex.value + 1) % reversedList.size
-                                    else -> currentPopupIndex.value
+            ) {
+                if (reversedList.isEmpty()) {
+                    Text(
+                        text = "No restaurant history available.",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                } else {
+                    LazyColumn(modifier = Modifier.heightIn(0.dp, 556.dp)) {
+                        itemsIndexed(
+                            reversedList,
+                            key = { index, _ -> index }) { index, restaurant ->
+                            RestaurantItem(
+                                restaurant = restaurant,
+                                page = AppScreen.History.name,
+                                userId = userId,
+                                showDialog = currentPopupIndex.value == index,
+                                onShowDialog = { currentPopupIndex.value = index },
+                                onDismissDialog = { currentPopupIndex.value = -1 },
+                                onNavigate = { direction ->
+                                    val newIndex = when (direction) {
+                                        "left" -> (currentPopupIndex.value - 1 + reversedList.size) % reversedList.size
+                                        "right" -> (currentPopupIndex.value + 1) % reversedList.size
+                                        else -> currentPopupIndex.value
+                                    }
+                                    currentPopupIndex.value = newIndex
                                 }
-                                currentPopupIndex.value = newIndex
-                            }
-                        )
+                            )
+                        }
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(16.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 10.dp)
-                    .padding(10.dp)
-            ) {
+            Column(modifier = Modifier.padding(horizontal = 16.dp)) {
                 Text(
-                    text = "Disclaimer: Past results will be archived after 30 days",
+                    text = "Disclaimer:",
                     style = MaterialTheme.typography.bodySmall.copy(color = Color.Red),
-                    fontSize = 16.sp,
-                    modifier = Modifier.align(Alignment.Center)
+                    fontSize = 16.sp
                 )
-            }
-            Box(
-                modifier = Modifier
-                    .width(104.dp)
-                    .height(36.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(color = Color.Black)
-                    .clickable {
-                        navController.navigate(route = AppScreen.Archive.name)
-                    },
-                contentAlignment = Alignment.Center
-            ) {
                 Text(
-                    text = "Show More",
-                    style = Typography.bodyLarge,
-                    color = Color.White
+                    text = "Past results will be archived after 30 days",
+                    style = MaterialTheme.typography.bodySmall.copy(color = Color.Red),
+                    fontSize = 16.sp
                 )
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .width(104.dp)
+                            .height(36.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(color = Color.Black)
+                            .clickable {
+                                navController.navigate(route = AppScreen.Archive.name)
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Show More",
+                            style = Typography.bodyLarge,
+                            color = Color.White
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(10.dp))
             }
         }
     }
@@ -204,6 +219,7 @@ fun HistoryScreen(userId: String, navController: NavController) {
 @Composable
 fun RestaurantItem(
     restaurant: Restaurant,
+    page: String,
     userId: String,
     showDialog: Boolean = false,
     onShowDialog: () -> Unit = {},
@@ -254,7 +270,8 @@ fun RestaurantItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .background(Color.White, shape = MaterialTheme.shapes.medium)
+            .background(Color.White, shape = RoundedCornerShape(16.dp))
+            .border(width = 2.dp, color = Color.Black, shape = RoundedCornerShape(16.dp))
             .padding(16.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -273,12 +290,14 @@ fun RestaurantItem(
                     color = Color.Black,
                     fontSize = 24.sp,
                 )
-                Text(
-                    text = formatTimestampToDate(restaurant.timestamp),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.Gray,
-                    fontSize = 16.sp,
-                )
+                if(page != AppScreen.Featured.name) {
+                    Text(
+                        text = formatTimestampToDate(restaurant.timestamp),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray,
+                        fontSize = 16.sp,
+                    )
+                }
             }
             IconButton(onClick = { onShowDialog() }) {
                 Icon(
@@ -289,33 +308,32 @@ fun RestaurantItem(
         }
     }
 
-    if (showDialog) {
-                AlertDialog(
-                    onDismissRequest = { onDismissDialog() },
-                    title = {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .shadow(6.dp, shape = CircleShape)
-                                .background(Color.White, shape = CircleShape)
-                                .padding(16.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = restaurant.name,
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = Color.Black,
-                                fontSize = 28.sp
-                            )
-                        }
-                    },
-                    text = {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            InfoBoxWithIcon(R.drawable.history_popup_icon, restaurant.address)
-                            InfoBoxWithIcon(R.drawable.clock_icon, restaurant.hours)
-                            InfoBoxWithIcon(R.drawable.phone_icon, restaurant.phoneNumber)
-                        }
-                    },
+    if(showDialog) {
+        AlertDialog(
+            onDismissRequest = { onDismissDialog() },
+            title = {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .shadow(6.dp, shape = RoundedCornerShape(10.dp))
+                        .background(Color.White, shape = RoundedCornerShape(10.dp))
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = restaurant.name,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color.Black,
+                        fontSize = 28.sp
+                    )
+                } },
+            text = {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    InfoBoxWithIcon(R.drawable.history_popup_icon, restaurant.address)
+                    InfoBoxWithIcon(R.drawable.clock_icon, restaurant.hours)
+                    InfoBoxWithIcon(R.drawable.phone_icon, restaurant.phoneNumber)
+                }
+                   },
             confirmButton = {
                 Box(
                     modifier = Modifier
@@ -329,9 +347,9 @@ fun RestaurantItem(
                             modifier = Modifier
                                 .width(150.dp)
                                 .height(45.dp)
-                                .border(1.dp, Color.Black, CircleShape)
-                                .shadow(4.dp, shape = CircleShape)
-                                .background(Color.White, shape = CircleShape)
+                                .border(1.dp, Color.Black, RoundedCornerShape(10.dp))
+                                .shadow(4.dp, shape = RoundedCornerShape(10.dp))
+                                .background(Color.White, shape = RoundedCornerShape(10.dp))
                                 .padding(10.dp),
                             contentAlignment = Alignment.Center
                         ) {
@@ -364,7 +382,7 @@ fun InfoBoxWithIcon(iconRes: Int, infoText: String) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .background(Color(0xFFD3D3D3), shape = CircleShape)
+            .background(Color(0xFFD3D3D3), shape = RoundedCornerShape(16.dp))
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

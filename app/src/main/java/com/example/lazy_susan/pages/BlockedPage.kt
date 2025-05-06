@@ -2,15 +2,23 @@ package com.example.lazy_susan.pages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -27,14 +35,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.lazy_susan.AppScreen
 import com.example.lazy_susan.R
 import com.example.lazy_susan.Restaurant
+import com.example.lazy_susan.ui.theme.Typography
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -96,93 +109,196 @@ fun BlockedScreen(userId: String, navController: NavController) {
     }
 
     val blockedList by blockedListFlow.collectAsState()
+    val reversedList = blockedList.reversed()
 
     // UI
-    Box(modifier = Modifier.fillMaxSize()) {
-        Image(
-            painter = painterResource(id = R.drawable.background),
-            contentDescription = null,
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier.fillMaxSize()
-        )
-
-        Column(modifier = Modifier
+    Image(
+        painter = painterResource(id = R.drawable.background),
+        contentDescription = null,
+        contentScale = ContentScale.FillBounds,
+        modifier = Modifier.fillMaxSize()
+    )
+    Box(
+        modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState())) {
-            Button(
-                onClick = { navController.navigate(route = AppScreen.ProfileHome.name)},
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp)
-            ) {
-                Text(text = "Back to Profile")
-            }
-            if (blockedList.isEmpty()) {
-                Text(
-                    text = "No blocked restaurants.",
-                    style = MaterialTheme.typography.bodyLarge
+            .padding(8.dp)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(RoundedCornerShape(8.dp))
+                .background(brush = SolidColor(Color.White), alpha = 0.8f)
+        ) {
+            Box(modifier = Modifier
+                .padding(
+                    top = 20.dp,
+                    bottom = 10.dp,
+                    start = 20.dp,
+                    end = 20.dp
                 )
-            } else {
-                blockedList.forEachIndexed { index, restaurant ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp)
-                            .background(MaterialTheme.colorScheme.surface, shape = MaterialTheme.shapes.medium)
-                            .padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (reversedList.isEmpty()) {
+                    Text(
+                        text = "No blocked restaurants.",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                } else {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
+                        modifier = Modifier.heightIn(0.dp, 600.dp)
                     ) {
-                        Text(
-                            text = restaurant.name,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = Color.Black,
-                            modifier = Modifier.weight(1f)
-                        )
-                        Button(
-                            onClick = {
-                                db.child("users")
-                                    .child(userId)
-                                    .child("userRestaurants")
-                                    .child(restaurant.id)
-                                    .removeValue()
-                            },
-                            colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
-                            modifier = Modifier.height(36.dp)
-                        ) {
-                            Text("Unblock")
-                        }
-                        IconButton(onClick = { currentPopupIndex.value = index }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.history_popup_icon),
-                                contentDescription = "More Info"
-                            )
-                        }
-                    }
-
-                    // Dialog popup
-                    if (currentPopupIndex.value == index) {
-                        AlertDialog(
-                            onDismissRequest = { currentPopupIndex.value = -1 },
-                            title = {
-                                Text(text = restaurant.name, style = MaterialTheme.typography.titleLarge)
-                            },
-                            text = {
-                                Column {
-                                    Text("Address: ${restaurant.address}")
-                                    Text("Phone: ${restaurant.phoneNumber}")
-                                    Text("Hours: ${restaurant.hours}")
+                        itemsIndexed(
+                            reversedList,
+                            key = { index, _ -> index }) { index, restaurant ->
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp)
+                                    .background(Color.White, shape = RoundedCornerShape(16.dp))
+                                    .border(
+                                        width = 2.dp,
+                                        color = Color.Black,
+                                        shape = RoundedCornerShape(16.dp)
+                                    )
+                                    .padding(16.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = restaurant.name,
+                                    style = MaterialTheme.typography.titleLarge,
+                                    color = Color.Black,
+                                    modifier = Modifier.weight(1f)
+                                )
+                                Button(
+                                    onClick = {
+                                        db.child("users")
+                                            .child(userId)
+                                            .child("userRestaurants")
+                                            .child(restaurant.id)
+                                            .removeValue()
+                                    },
+                                    colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
+                                    modifier = Modifier.height(36.dp)
+                                ) {
+                                    Text("Unblock")
                                 }
-                            },
-                            confirmButton = {
-                                TextButton(onClick = { currentPopupIndex.value = -1 }) {
-                                    Text("Close")
+                                IconButton(onClick = { currentPopupIndex.value = index }) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.history_popup_icon),
+                                        contentDescription = "More Info"
+                                    )
                                 }
                             }
+
+                            // Dialog popup
+                            if(currentPopupIndex.value == index) {
+                                AlertDialog(
+                                    onDismissRequest = { currentPopupIndex.value = -1 },
+                                    title = {
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .shadow(6.dp, shape = RoundedCornerShape(10.dp))
+                                                .background(Color.White, shape = RoundedCornerShape(10.dp))
+                                                .padding(16.dp),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text(
+                                                text = restaurant.name,
+                                                style = MaterialTheme.typography.bodyLarge,
+                                                color = Color.Black,
+                                                fontSize = 28.sp
+                                            )
+                                        } },
+                                    text = {
+                                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                            InfoBoxWithIcon(R.drawable.history_popup_icon, restaurant.address)
+                                            InfoBoxWithIcon(R.drawable.clock_icon, restaurant.hours)
+                                            InfoBoxWithIcon(R.drawable.phone_icon, restaurant.phoneNumber)
+                                        }
+                                    },
+                                    confirmButton = {
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(top = 50.dp, bottom = 8.dp),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            TextButton(onClick = { currentPopupIndex.value = -1 }
+                                            ) {
+                                                Box(
+                                                    modifier = Modifier
+                                                        .width(150.dp)
+                                                        .height(45.dp)
+                                                        .border(1.dp, Color.Black, RoundedCornerShape(10.dp))
+                                                        .shadow(4.dp, shape = RoundedCornerShape(10.dp))
+                                                        .background(Color.White, shape = RoundedCornerShape(10.dp))
+                                                        .padding(10.dp),
+                                                    contentAlignment = Alignment.Center
+                                                ) {
+                                                    Text("Done", fontSize = 24.sp, color = Color.Black)
+                                                }
+                                            }
+                                        }
+                                    },
+                                    dismissButton = {
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.SpaceBetween
+                                        ) {
+                                            IconButton(
+                                                onClick = {
+                                                    val newIndex = (currentPopupIndex.value - 1 + reversedList.size) % reversedList.size
+                                                    currentPopupIndex.value = newIndex
+                                                }
+                                            ) {
+                                                Icon(painter = painterResource(R.drawable.left_arrow), contentDescription = "Previous", modifier = Modifier.size(60.dp))
+                                            }
+                                            IconButton(
+                                                onClick = {
+                                                    val newIndex = (currentPopupIndex.value + 1) % reversedList.size
+                                                    currentPopupIndex.value = newIndex
+                                                }
+                                            ) {
+                                                Icon(painter = painterResource(R.drawable.right_arrow), contentDescription = "Next", modifier = Modifier.size(60.dp))
+                                            }
+                                        }
+                                    },
+                                    containerColor = Color(0xFFF0F0F0)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+            Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .width(104.dp)
+                            .height(36.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(color = Color.Black)
+                            .clickable {
+                                navController.navigate(route = AppScreen.ProfileHome.name)
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Back",
+                            style = Typography.bodyLarge,
+                            color = Color.White
                         )
                     }
                 }
+                Spacer(modifier = Modifier.height(10.dp))
             }
         }
     }
